@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 78c1ddab589ae614880c0f34518d1c40
+guid: 62190c2ea9cb8c74caa267d63514ccef
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,28 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Back
-    second: {fileID: 2100000, guid: 868babbf9f190944ca74a5c0282109e7, type: 2}
+      name: M_CleanPlaster_White
+    second: {fileID: 2100000, guid: 17856aa13436beb408baa0f30a4127f5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Front
-    second: {fileID: 2100000, guid: 04ba977efd5f86c4c8d3ab7894086c30, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Left
-    second: {fileID: 2100000, guid: aaa74ffa0f76a49498837960e2620e06, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Right
-    second: {fileID: 2100000, guid: 804a3147a4e8cf74fb1b8b947a7f6d08, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Top
-    second: {fileID: 2100000, guid: 9d44aed96d65bc149840e8d1e209810d, type: 2}
+      name: M_SmoothBrick_Gray
+    second: {fileID: 2100000, guid: ebcb81201983bda4f9634dc873db7d59, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
