@@ -1,0 +1,45 @@
+# ProBuilder 5.2.0
+# https://unity3d.com/unity/features/worldbuilding/probuilder
+# 03/12/2023 23:09:41
+
+mtllib ./FoundationFlooring.mtl
+o FoundationFlooring
+
+g FoundationFlooring
+v 1 -0.05000001 1
+v 0 -0.05000001 1
+v 1 -0.05000001 0
+v 0 -0.05000001 0
+v 1 -1 0
+v 0 -1 0
+v 1 -1 1
+v 0 -1 1
+
+vt -1 1
+vt 0 1
+vt -1 0
+vt 0 0
+vt 1 0
+vt 1 1
+vt 1 -1
+vt 0 -1
+vt 0 -0.05000001
+vt 1 -0.05000001
+vt -1 -0.05000001
+vt -1 -1
+
+vn 0 1 0
+vn 0 -1 0
+vn 0 0 1
+vn 1 0 0
+vn -1 0 0
+vn 0 0 -1
+
+usemtl M_BareCleanConcrete
+f 1/10/3 2/9/3 8/8/3 7/7/3
+f 2/10/5 4/9/5 6/8/5 8/7/5
+f 6/8/6 4/9/6 3/11/6 5/12/6
+f 5/8/4 3/9/4 1/11/4 7/12/4
+f 3/3/1 4/4/1 2/2/1 1/1/1
+f 7/6/2 8/2/2 6/4/2 5/5/2
+

@@ -1,0 +1,7 @@
+newmtl M_BareCleanConcrete
+bump ../../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_NORMAL.jpg
+disp ../../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_DISPL.jpg
+map_Kd ../../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_DIFF.jpg
+Kd 1 1 1
+d 1
+
