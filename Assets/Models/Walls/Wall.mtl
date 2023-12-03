@@ -1,14 +1,14 @@
 newmtl M_SmoothBrick_Gray
-bump ../../Textures/Sketchup_99_GrayFacingSmoothBrick/Sketchup_99_GrayFacingSmoothBrick_NORMAL.jpg
-disp ../../Textures/Sketchup_99_GrayFacingSmoothBrick/Sketchup_99_GrayFacingSmoothBrick_DISP.jpg
-map_Kd ../../Textures/Sketchup_99_GrayFacingSmoothBrick/Sketchup_99_GrayFacingSmoothBrick_DIFF.jpg
+bump ../../Textures/Sketchup_21366_GrayFacingSmoothBrick/Sketchup_21366_GrayFacingSmoothBrick_NORMAL.jpg
+disp ../../Textures/Sketchup_21366_GrayFacingSmoothBrick/Sketchup_21366_GrayFacingSmoothBrick_DISP.jpg
+map_Kd ../../Textures/Sketchup_21366_GrayFacingSmoothBrick/Sketchup_21366_GrayFacingSmoothBrick_DIFF.jpg
 Kd 0.9063317 0.9063317 0.9063317
 d 1
 
 newmtl M_CleanPlaster_White
-bump ../../Textures/Sketchup_76_CleanPlaster/T_Sketchup_76_CleanPlaster_NORMAL.jpg
-disp ../../Textures/Sketchup_76_CleanPlaster/T_Sketchup_76_CleanPlaster_DISPL.jpg
-map_Kd ../../Textures/Sketchup_76_CleanPlaster/T_Sketchup_76_CleanPlaster_DIFF_A.jpg
+bump ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_NORMAL.jpg
+disp ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DISPL.jpg
+map_Kd ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DIFF_A.jpg
 Kd 0.9063317 0.9063317 0.9063317
 d 1
 
