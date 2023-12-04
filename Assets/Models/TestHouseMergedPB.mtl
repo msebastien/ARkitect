@@ -1,0 +1,28 @@
+newmtl M_BareCleanConcrete
+bump ../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_NORMAL.jpg
+disp ../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_DISPL.jpg
+map_Kd ../Textures/Sketchup_01213_BareCleanConcrete/T_Sketchup_01213_BareCleanConcrete_DIFF.jpg
+Kd 1 1 1
+d 1
+
+newmtl M_SmoothBrick_Gray
+bump ../Textures/Sketchup_21366_GrayFacingSmoothBrick/T_Sketchup_21366_GrayFacingSmoothBrick_NORMAL.jpg
+disp ../Textures/Sketchup_21366_GrayFacingSmoothBrick/T_Sketchup_21366_GrayFacingSmoothBrick_DISP.jpg
+map_Kd ../Textures/Sketchup_21366_GrayFacingSmoothBrick/T_Sketchup_21366_GrayFacingSmoothBrick_DIFF.jpg
+Kd 0.9063317 0.9063317 0.9063317
+d 1
+
+newmtl M_CleanPlaster_White
+bump ../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_NORMAL.jpg
+disp ../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DISPL.jpg
+map_Kd ../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DIFF_A.jpg
+Kd 0.9063317 0.9063317 0.9063317
+d 1
+
+newmtl M_LightParquet
+bump ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_NORMAL.jpg
+disp ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_DISPL.jpg
+map_Kd ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_DIFF_A.jpg
+Kd 1 1 1
+d 1
+
