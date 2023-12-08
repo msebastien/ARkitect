@@ -1,0 +1,7 @@
+newmtl M_CleanPlaster_White
+bump ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_NORMAL.jpg
+disp ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DISPL.jpg
+map_Kd ../../Textures/Sketchup_22374_CleanPlaster/T_Sketchup_22374_CleanPlaster_DIFF_A.jpg
+Kd 0.9063317 0.9063317 0.9063317
+d 1
+

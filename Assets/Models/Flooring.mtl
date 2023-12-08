@@ -1,0 +1,7 @@
+newmtl M_LightParquet
+bump ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_NORMAL.jpg
+disp ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_DISPL.jpg
+map_Kd ../Textures/Sketchup_17654_LightParquet/T_Sketchup_17654_LightParquet_DIFF_A.jpg
+Kd 1 1 1
+d 1
+
