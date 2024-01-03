@@ -1,0 +1,1 @@
+ARkitect icon variants generated with IconKitchen (https://icon.kitchen)
