@@ -5,7 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ARKitect.Core
+using ARKitect.Core;
+using Logger = ARKitect.Core.Logger;
+
+namespace ARKitect.UI
 {
     // Simple scrolling window that prints to the application screen whatever is printed through
     // calls to the UnityEngine.Debug.Log method.
@@ -128,27 +131,21 @@ namespace ARKitect.Core
         {
             string line = $"<color=\"green\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.AddLogEntry(line);
-#if UNITY_EDITOR
-            Debug.Log(line);
-#endif
+            Logger.LogInfo(line);
         }
 
         public static void LogWarning(string message)
         {
             string line = $"<color=\"yellow\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.AddLogEntry(line);
-#if UNITY_EDITOR
-            Debug.LogWarning(line);
-#endif
+            Logger.LogWarning(line);
         }
 
         public static void LogError(string message)
         {
             string line = $"<color=\"red\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.AddLogEntry(line);
-#if UNITY_EDITOR
-            Debug.LogError(line);
-#endif
+            Logger.LogError(line);
         }
 
         public static void Clear()

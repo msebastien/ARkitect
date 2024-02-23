@@ -2,13 +2,16 @@ using TMPro;
 using UnityEngine;
 using System;
 
+using ARKitect.Core;
+using Logger = ARKitect.Core.Logger;
 
-namespace ARKitect.Core
+
+namespace ARKitect.UI
 {
     /// <summary>
     /// Write formatted debug data in the Unity console and the Application console
     /// </summary>
-    public class LoggerOld : Singleton<LoggerOld>
+    public class SimpleLogger : Singleton<SimpleLogger>
     {
         [SerializeField]
         private TextMeshProUGUI debugAreaText = null;
@@ -45,9 +48,7 @@ namespace ARKitect.Core
             ClearLines();
             string line = $"<color=\"green\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.debugAreaText.text += line;
-#if UNITY_EDITOR
-            Debug.Log(line);
-#endif
+            Logger.LogInfo(line);
         }
 
         public static void LogWarning(string message)
@@ -55,9 +56,7 @@ namespace ARKitect.Core
             ClearLines();
             string line = $"<color=\"yellow\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.debugAreaText.text += line;
-#if UNITY_EDITOR
-            Debug.LogWarning(line);
-#endif
+            Logger.LogWarning(line);
         }
 
         public static void LogError(string message)
@@ -65,9 +64,7 @@ namespace ARKitect.Core
             ClearLines();
             string line = $"<color=\"red\">{DateTime.Now.ToString("HH:mm:ss.fff")} {message}</color>\n";
             Instance.debugAreaText.text += line;
-#if UNITY_EDITOR
-            Debug.LogError(line);
-#endif
+            Logger.LogError(line);
         }
 
         public static void ClearLines()
