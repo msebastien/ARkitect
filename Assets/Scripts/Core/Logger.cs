@@ -25,13 +25,13 @@ namespace ARKitect.Core
         [Conditional("ENABLE_LOGS")]
         public static void LogWarning(string message)
         {
-            UnityEngine.Debug.Log(message);
+            UnityEngine.Debug.LogWarning(message);
         }
 
         [Conditional("ENABLE_LOGS")]
         public static void LogError(string message)
         {
-            UnityEngine.Debug.Log(message);
+            UnityEngine.Debug.LogError(message);
         }
     }
 
