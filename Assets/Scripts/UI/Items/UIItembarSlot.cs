@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.UI;
 
-namespace UI.Items
+namespace ARKitect.UI.Items
 {
     public class UIItembarSlot : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine.InputSystem.UI;
 
-namespace UI
+namespace ARKitect.UI
 {
     public interface IDragHandler
     {

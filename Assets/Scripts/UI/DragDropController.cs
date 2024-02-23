@@ -5,7 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 
-namespace UI
+using Logger = ARKitect.Core.Logger;
+
+
+namespace ARKitect.UI
 {
     public class DragDropController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
@@ -14,35 +17,28 @@ namespace UI
 
         public void OnBeginDrag(ExtendedPointerEventData eventData)
         {
-#if DEBUG
-            Debug.Log($"Begin Drag {eventData.position}");
-#endif
+            Logger.LogInfo($"Begin Drag {eventData.position}");
             if(resetPositionRelease)
                 startPosition = eventData.position;
         }
 
         public void OnDrag(ExtendedPointerEventData eventData)
         {
-#if DEBUG
-            Debug.Log($"Dragging {eventData.position}");
-#endif
+            Logger.LogInfo($"Dragging {eventData.position}");
             transform.position = eventData.position;
         }
 
         public void OnEndDrag(ExtendedPointerEventData eventData)
         {
-#if DEBUG
-            Debug.Log($"End Drag {eventData.position}");
-#endif
+            Logger.LogInfo($"End Drag {eventData.position}");
+
             var hits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, hits);
 
             var hit = hits.FirstOrDefault(t => t.gameObject.CompareTag("Droppable"));
             if(hit.isValid)
             {
-#if DEBUG
-                Debug.Log($"Dropped {gameObject} on {hit.gameObject}");
-#endif
+                Logger.LogInfo($"Dropped {gameObject} on {hit.gameObject}");
                 return;
             }
 
