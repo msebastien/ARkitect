@@ -14,7 +14,7 @@
         "com.unity.xr.management": "4.0.1",
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "7e30bd752fb0305a0c04fca5cc8f1a6ccce1a49e"
+      "hash": "7cc172749e6577d934f1af4719c2de9fb78a205f"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -175,7 +175,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
