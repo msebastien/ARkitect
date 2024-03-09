@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 using ARKitect.Items;
 using ARKitect.Core;
 using Logger = ARKitect.Core.Logger;
-using System;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+
+
 
 namespace ARKitect.UI.Items
 {

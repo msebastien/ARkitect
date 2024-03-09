@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 148911603}
   - component: {fileID: 148911605}
   - component: {fileID: 148911604}
+  - component: {fileID: 148911606}
   m_Layer: 5
   m_Name: DragItem
   m_TagString: Untagged
@@ -200,6 +201,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148911602}
   m_CullTransparentMesh: 1
+--- !u!114 &148911606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148911602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83173ae876f58474cab95d9c64a96bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +528,7 @@ GameObject:
   - component: {fileID: 943147325}
   - component: {fileID: 943147324}
   - component: {fileID: 943147326}
+  - component: {fileID: 943147327}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -593,6 +607,47 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!114 &943147327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943147322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b25f201a5b04040a0517e1f706d7aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: itemCatalog
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[ARKitect.Items.Identifier,
+        Assembly-CSharp],[ARKitect.Items.Item, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[ARKitect.Items.Identifier,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!224 &1204041914 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5878166824409447947, guid: c738c79a054facb47a442ad5773cf553,
@@ -646,7 +701,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1997619293
 MonoBehaviour:
   m_ObjectHideFlags: 0
