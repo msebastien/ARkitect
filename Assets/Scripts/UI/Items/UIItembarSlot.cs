@@ -51,18 +51,18 @@ namespace ARKitect.UI.Items
             icon.sprite = itemDefinition?.Icon;
         }
 
-        public void OnBeginDrag(ExtendedPointerEventData eventData)
+        public void OnBeginDrag(PointerEventData eventData)
         {
             DragIcon.Instance.SetSprite(icon.sprite);
             DragIcon.Instance.gameObject.SetActive(true);
         }
 
-        public void OnDrag(ExtendedPointerEventData eventData)
+        public void OnDrag(PointerEventData eventData)
         {
             DragIcon.Instance.transform.position = eventData.position;
         }
 
-        public void OnEndDrag(ExtendedPointerEventData eventData)
+        public void OnEndDrag(PointerEventData eventData)
         {
             if (DropOnItemSlot(eventData) ||
                 DropOnGround())
@@ -84,7 +84,7 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        private bool DropOnItemSlot(ExtendedPointerEventData eventData)
+        private bool DropOnItemSlot(PointerEventData eventData)
         {
             var hits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, hits);

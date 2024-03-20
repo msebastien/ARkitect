@@ -15,20 +15,20 @@ namespace ARKitect.UI
         public bool resetPositionRelease = true;
         private Vector3 startPosition;
 
-        public void OnBeginDrag(ExtendedPointerEventData eventData)
+        public void OnBeginDrag(PointerEventData eventData)
         {
             Logger.LogInfo($"Begin Drag {eventData.position}");
             if(resetPositionRelease)
                 startPosition = eventData.position;
         }
 
-        public void OnDrag(ExtendedPointerEventData eventData)
+        public void OnDrag(PointerEventData eventData)
         {
             Logger.LogInfo($"Dragging {eventData.position}");
             transform.position = eventData.position;
         }
 
-        public void OnEndDrag(ExtendedPointerEventData eventData)
+        public void OnEndDrag(PointerEventData eventData)
         {
             Logger.LogInfo($"End Drag {eventData.position}");
 
