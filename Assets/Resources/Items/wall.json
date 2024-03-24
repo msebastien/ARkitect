@@ -1,0 +1,24 @@
+{
+  "item": {
+    "id": "arkitect:wall",
+    "builtin": true,
+    "name": "Simple wall", 
+    "icon": "Textures/Items/Item_Wall.png",
+    "category": "Wall",
+    "description": "A magnificent wall (1x3m)",
+    "resources": [
+        {
+            "type": "model",
+            "path": "Models/Walls/Wall.obj"
+        },
+        {
+            "type": "material",
+            "path": "Materials/SmoothBrick/M_SmoothBrick_Gray.mat"
+        },
+        {
+            "type": "material",
+            "path": "Materials/CleanPlaster/M_CleanPlaster_White.mat"
+        }
+    ]
+  }
+}
