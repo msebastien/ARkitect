@@ -1179,21 +1179,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PanelItemBar
       objectReference: {fileID: 0}
-    - target: {fileID: 6792541548903316876, guid: 9d703c5ae565b9847a51dd746b2aac6d,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6792541548903316876, guid: 9d703c5ae565b9847a51dd746b2aac6d,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6792541548903316876, guid: 9d703c5ae565b9847a51dd746b2aac6d,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9040639654008278578, guid: 9d703c5ae565b9847a51dd746b2aac6d,
         type: 3}
       propertyPath: m_AnchorMax.x
