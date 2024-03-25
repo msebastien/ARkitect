@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/ARkitectParts.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/ARkitectBootstrapper.unity
+    guid: 68e4469f916fa8a48bec57f032f1cbe9
   - enabled: 1
     path: Assets/Scenes/ARkitectEditor.unity
     guid: 7b2541855cd64d446afa4c72bfd0ea56
+  - enabled: 0
+    path: Assets/Scenes/ARkitectParts.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     Niantic.Lightship.AR.LightshipSettings: {fileID: 11400000, guid: ecae686d27397074dacf2cdc4c6b74b6,
       type: 2}

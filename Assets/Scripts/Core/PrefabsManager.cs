@@ -11,6 +11,7 @@ namespace ARKitect.Core
     /// <summary>
     /// Manage prefab instances and store item definitions
     /// </summary>
+    [AddComponentMenu("ARkitect/Prefabs Manager")]
     public class PrefabsManager : SerializedSingleton<PrefabsManager>
     {
         // Maybe a "resource locator" instead of a basic string like "namespace:itemID" ?
