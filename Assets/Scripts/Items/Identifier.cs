@@ -17,6 +17,8 @@ namespace ARKitect.Items
 
         public string Name => nameId;
 
+        public bool IsUndefined => nameId == "undefined";
+
         public Identifier() { }
 
         public Identifier(string namespaceId, string nameId)
