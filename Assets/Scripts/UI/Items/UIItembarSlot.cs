@@ -23,33 +23,70 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private Image icon;
 
-        private ItemsController itemBar;
+        private ItemsController controller;
 
         public byte index;
 
-        public void Bind(ItemsController itemBar, byte index)
+        /// <summary>
+        /// Assign an item from an item controller to this slot
+        /// </summary>
+        /// <param name="controller">Items controller managing the assignment of items to slots</param>
+        /// <param name="index">Slot index</param>
+        public void Bind(ItemsController controller, byte index)
         {
             this.index = index;
-            this.itemBar = itemBar;
-            Identifier itemDefinitionId = itemBar.ItemDefinitionsInSlots.Count > index ? itemBar.ItemDefinitionsInSlots[index] : new Identifier();
+            this.controller = controller;
+            Identifier itemDefinitionId = controller.ItemDefinitionsInSlots.Count > index ? controller.ItemDefinitionsInSlots[index] : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
+        /// <summary>
+        /// Refresh the slot visual (the icon of the assigned item)
+        /// </summary>
         public void RefreshItemVisuals()
         {
-            Identifier itemDefinitionId = itemBar.ItemDefinitionsInSlots.Count > index ? itemBar.ItemDefinitionsInSlots[index] : new Identifier();
+            Identifier itemDefinitionId = controller.ItemDefinitionsInSlots.Count > index ? controller.ItemDefinitionsInSlots[index] : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
+        /// <summary>
+        /// Display item in slot
+        /// </summary>
+        /// <param name="itemDefinitionId">Item identifier</param>
         public void ShowItemDefinition(Identifier itemDefinitionId)
         {
+            // If no Image component is referenced
+            if (icon == null) { Logger.LogError("Icon is null"); return; }
+
+            // If the identifier is undefined, it means the slot is empty : there is no valid item assigned to it
+            if (itemDefinitionId.IsUndefined)
+            {
+                icon.sprite = null;
+                Logger.LogWarning($"Itembar Slot (idx:{index}) has an undefined item definition. ({itemDefinitionId})");
+                return;
+            }
+
+            // Get the item matching the identifier from the item database/catalog
             var itemDefinition = PrefabsManager.Instance.Items[itemDefinitionId];
 
             if (itemDefinition == null) { Logger.LogError($"Item {itemDefinitionId} not found in catalog."); }
 
-            if (icon == null) { Logger.LogError("Icon is null"); return; }
+            icon.sprite = itemDefinition.Icon;
+        }
 
-            icon.sprite = itemDefinition?.Icon;
+        /// <summary>
+        /// Remove the item definition by replacing it with an undefined identifier
+        /// </summary>
+        public void RemoveItemDefinition()
+        {
+            controller.Remove(index);
+            RefreshItemVisuals();
+        }
+
+        public void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
+        {
+            controller.Swap(slot1.index, slot2.index);
+            RefreshItemVisuals();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -76,10 +113,11 @@ namespace ARKitect.UI.Items
         private bool DropOnGround()
         {
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
-            if(Physics.Raycast(ray, out var hit)) 
+            if (Physics.Raycast(ray, out var hit))
             {
+                // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
                 // TODO: Spawn Item's prefab
-                itemBar.Spawn(hit.point);
+                //controller.Spawn(hit.point);
                 return true;
             }
             return false;
@@ -90,10 +128,10 @@ namespace ARKitect.UI.Items
             var hits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, hits);
 
-            foreach(var hit in hits)
+            foreach (var hit in hits)
             {
                 var droppedSlot = hit.gameObject.GetComponent<UIItemBarSlot>();
-                if(droppedSlot)
+                if (droppedSlot)
                 {
                     Logger.LogInfo($"Drag End {droppedSlot?.name}");
                     Swap(this, droppedSlot);
@@ -105,13 +143,10 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        public void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
-        {
-            itemBar.Swap(slot1.index, slot2.index);
-        }
-        
 
-        
+
+
+
     }
 
 }
