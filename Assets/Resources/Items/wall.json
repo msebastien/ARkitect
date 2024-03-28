@@ -4,6 +4,7 @@
     "builtin": true,
     "name": "Simple wall",
     "icon": "Icons/Item_Wall.png",
+    "type": "object",
     "category": "Wall",
     "description": "A magnificent wall (1x3m)",
     "author": "ARKitect",

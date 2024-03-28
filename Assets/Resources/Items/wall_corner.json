@@ -4,6 +4,7 @@
     "builtin": true,
     "name": "Wall corner",
     "icon": "Icons/Item_WallCorner.png",
+    "type": "object",
     "category": "Wall",
     "description": "A magnificent wall corner (1x1x3m)",
     "author": "ARKitect",
