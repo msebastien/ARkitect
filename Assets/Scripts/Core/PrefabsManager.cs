@@ -14,13 +14,19 @@ namespace ARKitect.Core
     [AddComponentMenu("ARkitect/Prefabs Manager")]
     public class PrefabsManager : SerializedSingleton<PrefabsManager>
     {
-        // Maybe a "resource locator" instead of a basic string like "namespace:itemID" ?
-        // Use OdinInspector to serialize the dictionary
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
         [SerializeField]
         private Dictionary<Identifier, Item> itemCatalog = new Dictionary<Identifier, Item>();
         public Dictionary<Identifier, Item> Items => itemCatalog;
-        
+
+        // TODO: Initialize the Item Catalog when starting the app (called via the bootstrapper)
+
+
+        // TODO: Check if the item can be instantiated. If it is an object, instantiate it.
+        public void Spawn(Identifier item, Vector3 position)
+        {
+
+        }
     }
 
 }
