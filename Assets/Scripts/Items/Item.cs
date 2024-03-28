@@ -7,9 +7,12 @@ namespace ARKitect.Items
     {
         Foundation,
         Wall,
+        Texture,
         Prop,
         Misc
     }
+
+    // TODO: Create children classes: ItemObject and ItemTexture and make Item an abstract class
 
     /// <summary>
     /// Define properties for an item from the building parts' library
@@ -27,7 +30,7 @@ namespace ARKitect.Items
         private string description;
         [SerializeField]
         private GameObject prefab;
-        
+
 
         public Sprite Icon => icon;
         public string Name => name;
