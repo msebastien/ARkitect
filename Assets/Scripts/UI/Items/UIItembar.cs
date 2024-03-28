@@ -2,18 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 using ARKitect.Items;
-using ARKitect.UI.Events;
 
-
-
-namespace ARKitect.UI.Events
-{
-    [System.Serializable]
-    public class OnItembarSlotCountChanged : UnityEvent<byte> { }
-}
 
 namespace ARKitect.UI.Items
 {
@@ -48,9 +39,6 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private UIItemBarSlot slotPrefab;
 
-        [Header("Event")]
-        public OnItembarSlotCountChanged slotCountChangedEvent;
-
         // Keep references to slots internally to avoid looking for them
         // with FindObjectOfType<T>(), which is terribly inefficient, or GetComponentsInChildren<T>()
         private List<UIItemBarSlot> slotCache = new List<UIItemBarSlot>();
@@ -75,7 +63,6 @@ namespace ARKitect.UI.Items
             // Check if the number of active slots has changed
             if (numSlots != currNumSlots)
             {
-                slotCountChangedEvent.Invoke(numSlots);
                 UpdateSlots();
                 currNumSlots = numSlots;
             }
