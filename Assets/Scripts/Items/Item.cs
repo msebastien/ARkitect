@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 
 namespace ARKitect.Items
@@ -12,41 +13,49 @@ namespace ARKitect.Items
         Misc
     }
 
-    // TODO: Create children classes: ItemObject and ItemTexture and make Item an abstract class
+    public interface IItem 
+    {
+        public Sprite Icon { get; }
+        public string Name { get; }
+        public ItemCategory Category { get; }
+        public string Description { get; }
+    }
 
     /// <summary>
-    /// Define properties for an item from the building parts' library
+    /// Define properties of an item from the building parts' library
     /// </summary>
-    public class Item
+    public class Item<T> : IItem where T : UnityEngine.Object
     {
         [PreviewField]
         [SerializeField]
-        private Sprite icon;
+        protected Sprite icon;
         [SerializeField]
-        private string name = "default";
+        protected string name = "default";
         [SerializeField]
-        private ItemCategory category;
+        protected ItemCategory category;
         [SerializeField]
-        private string description;
-        [SerializeField]
-        private GameObject prefab;
+        protected string description;
 
+        [SerializeField]
+        private T resource; // T -> GameObject or Texture2D
+        // Link an item to a command (Command Pattern) ?
 
         public Sprite Icon => icon;
         public string Name => name;
         public ItemCategory Category => category;
         public string Description => description;
 
-        public Item() { }
+        public T Resource => resource;
 
-        public Item(string name, Sprite icon, GameObject prefab, ItemCategory category = ItemCategory.Misc, string description = default)
+        public Item(string name, Sprite icon, T resource, ItemCategory category = ItemCategory.Misc, string description = default)
         {
             this.name = name;
             this.icon = icon;
             this.category = category;
-            this.prefab = prefab;
+            this.resource = resource;
             this.description = description;
         }
+
     }
 
 }

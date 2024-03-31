@@ -42,7 +42,6 @@ namespace ARKitect.UI.Items
             if (Physics.Raycast(ray, out var hit))
             {
                 // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                // TODO: Spawn Item's prefab
                 controller.Spawn(index, hit.point);
                 return true;
             }

@@ -66,9 +66,6 @@ namespace ARKitect.UI.Items
             icon.sprite = itemDefinition.Icon;
         }
 
-        /// <summary>
-        /// Remove the item definition by replacing it with an undefined identifier
-        /// </summary>
         public void RemoveItemDefinition()
         {
             controller.Remove(index);

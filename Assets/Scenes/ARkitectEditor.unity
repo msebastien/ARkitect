@@ -636,11 +636,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0431ce9621fd64d4599c8667ec0fd714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemController: {fileID: 0}
+  itemsController: {fileID: 0}
   numSlots: 5
-  slotCountChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  slotsParent: {fileID: 0}
+  slotPrefab: {fileID: 0}
 --- !u!114 &1162125005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,6 +652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d34d05b391e2a4894cee098d4f780f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preallocated: 0
+  capacity: 8
 --- !u!4 &1162125006
 Transform:
   m_ObjectHideFlags: 0

@@ -13,13 +13,8 @@ namespace ARKitect.UI.Items
     /// <summary>
     /// Manage a item slot in library
     /// </summary>
-    public class UIItemLibrarySlot : MonoBehaviour
+    public class UIItemLibrarySlot : UISlot
     {
-        [SerializeField]
-        private Image icon;
-
-        private ItemsController library;
-
 
     }
 

@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.XR.CoreUtils;
+
 using ARKitect.Core;
-using System;
-using UnityEngine.InputSystem.XR;
 
 namespace ARKitect.Items
 {
