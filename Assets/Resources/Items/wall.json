@@ -6,7 +6,7 @@
     "icon": "Icons/Item_Wall.png",
     "type": "object",
     "category": "Wall",
-    "description": "A magnificent wall (1x3m)",
+    "description": "A magnificent wall (L=1m,l=30cm,h=3m)",
     "author": "ARKitect",
     "resources": [
       {

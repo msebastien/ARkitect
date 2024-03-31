@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:flooring",
+    "builtin": true,
+    "name": "Flooring",
+    "icon": "Icons/Item_Flooring.png",
+    "type": "object",
+    "category": "Foundation",
+    "description": "Flooring is a necessity for your floor and living normally!",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/Flooring.prefab"
+      }
+    ]
+  }
+}

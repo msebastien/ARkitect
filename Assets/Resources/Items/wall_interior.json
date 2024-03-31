@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:wall_interior",
+    "builtin": true,
+    "name": "Interior wall",
+    "icon": "Icons/Item_WallInterior.png",
+    "type": "object",
+    "category": "Wall",
+    "description": "A magnificent interior wall (L=1m,l=10cm,h=3m)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/WallInterior.prefab"
+      }
+    ]
+  }
+}

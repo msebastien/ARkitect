@@ -6,7 +6,7 @@
     "icon": "Icons/Item_WallCorner.png",
     "type": "object",
     "category": "Wall",
-    "description": "A magnificent wall corner (1x1x3m)",
+    "description": "A magnificent wall corner (L=1m,l=30cm,h=3m)",
     "author": "ARKitect",
     "resources": [
       {

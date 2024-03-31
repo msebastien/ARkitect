@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:wall_interior_door",
+    "builtin": true,
+    "name": "Interior wall door opening",
+    "icon": "Icons/Item_WallInteriorCorner.png",
+    "type": "object",
+    "category": "Wall",
+    "description": "A magnificent interior wall opening (L=2m,l=10cm,h=3m) for an interior door (h=2.04m,l=83cm)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/WallInteriorDoor.prefab"
+      }
+    ]
+  }
+}

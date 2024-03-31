@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:wall_frontdoor",
+    "builtin": true,
+    "name": "Wall front door opening",
+    "icon": "Icons/Item_WallFrontDoor.png",
+    "type": "object",
+    "category": "Wall",
+    "description": "A magnificent wall opening (L=2m,l=30cm,h=3m) for a front door (h=2.15m,l=90cm)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/WallFrontDoor.prefab"
+      }
+    ]
+  }
+}
