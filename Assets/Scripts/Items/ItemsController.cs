@@ -21,9 +21,9 @@ namespace ARKitect.Items
         public bool Preallocated => preallocated;
 
         [Tooltip("Capacity to preallocate for the item definitions list")]
-        public int capacity = 8;
+        public int capacity = 7;
 
-        private void Start()
+        private void Awake()
         {
             // Initialize the Item definitions list with a predefined/pre-allocated capacity.
             if (preallocated)

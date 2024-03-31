@@ -20,7 +20,7 @@ namespace ARKitect.UI.Items
         private ItemsController itemsController;
 
         // Total number of slots instantiated
-        public const byte MaxSlotCount = 8;
+        public const byte MaxSlotCount = 7;
 
         [Header("Config")]
         [Range(1, MaxSlotCount)]
@@ -45,7 +45,9 @@ namespace ARKitect.UI.Items
 
         private void Awake()
         {
-            if (itemsController == null) itemsController = GetComponent<ItemsController>();
+            if (itemsController == null) 
+                itemsController = GetComponent<ItemsController>();
+            
             itemsController.capacity = MaxSlotCount;
             currNumSlots = numSlots;
         }

@@ -13,6 +13,7 @@ namespace ARKitect.UI.Items
     /// <summary>
     /// Manage a slot with draggable item in shortcut bar
     /// </summary>
+    [AddComponentMenu("ARkitect/UI/Slots/Item bar slot")]
     public class UIItemBarSlot : UISlot, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         public void OnBeginDrag(PointerEventData eventData)

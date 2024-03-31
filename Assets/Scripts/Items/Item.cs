@@ -44,7 +44,6 @@ namespace ARKitect.Items
         public string Name => name;
         public ItemCategory Category => category;
         public string Description => description;
-
         public T Resource => resource;
 
         public Item(string name, Sprite icon, T resource, ItemCategory category = ItemCategory.Misc, string description = default)
