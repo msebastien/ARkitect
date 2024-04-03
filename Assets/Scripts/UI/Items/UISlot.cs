@@ -54,7 +54,7 @@ namespace ARKitect.UI.Items
             if (itemDefinitionId.IsUndefined)
             {
                 icon.sprite = null;
-                Logger.LogWarning($"Itembar Slot (idx:{index}) has an undefined item definition. ({itemDefinitionId})");
+                icon.color = Color.clear;
                 return;
             }
 
@@ -64,6 +64,7 @@ namespace ARKitect.UI.Items
             if (itemDefinition == null) { Logger.LogError($"Item {itemDefinitionId} not found in catalog."); }
 
             icon.sprite = itemDefinition.Icon;
+            icon.color = Color.white;
         }
 
         public void RemoveItemDefinition()

@@ -14,8 +14,9 @@ namespace ARKitect.UI.Items
         {
             icon = GetComponent<Image>();
         }
-        
+
         public void SetSprite(Sprite sprite) { icon.sprite = sprite; }
+        public void SetColor(Color color) { icon.color = color; }
     }
 
 }

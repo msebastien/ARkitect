@@ -57,6 +57,12 @@ namespace ARKitect.UI.Items
         {
             InstantiateSlots();
             BindSlots();
+            
+            itemsController.LoadDefaultItems();    
+            foreach (var slot in slotCache)
+            {
+                slot.RefreshItemVisuals();
+            }     
         }
 
         // Update is called once per frame

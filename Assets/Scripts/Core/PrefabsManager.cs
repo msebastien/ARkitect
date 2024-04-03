@@ -20,7 +20,7 @@ namespace ARKitect.Core
         public Dictionary<Identifier, IItem> Items => itemCatalog;
 
         // Cached object instances
-        // Maybe use a dictionary with a UUID as instance identifier ?
+        // Maybe use a dictionary with the Unity instance ID ?
         private List<GameObject> instances = new List<GameObject>();
 
         // TODO: Initialize the Item Catalog when starting the app (called via the bootstrapper)

@@ -19,6 +19,7 @@ namespace ARKitect.UI.Items
         public void OnBeginDrag(PointerEventData eventData)
         {
             DragIcon.Instance.SetSprite(icon.sprite);
+            DragIcon.Instance.SetColor(Color.white);
             DragIcon.Instance.gameObject.SetActive(true);
         }
 
@@ -29,10 +30,11 @@ namespace ARKitect.UI.Items
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (DropOnItemSlot(eventData) ||
-                DropOnGround())
+            //if (DropOnItemSlot(eventData) || DropOnGround())
+            if(DropOnItemSlot(eventData))
             {
                 DragIcon.Instance.SetSprite(null);
+                DragIcon.Instance.SetColor(Color.clear);
                 DragIcon.Instance.gameObject.SetActive(false);
             }
         }
@@ -43,7 +45,7 @@ namespace ARKitect.UI.Items
             if (Physics.Raycast(ray, out var hit))
             {
                 // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                controller.Spawn(index, hit.point);
+                //controller.Spawn(index, hit.point);
                 return true;
             }
             return false;
