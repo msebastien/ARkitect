@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:foundation_wall",
-    "builtin": true,
     "name": "Foundation wall",
     "icon": "Icons/Item_FoundationWall.png",
     "type": "object",

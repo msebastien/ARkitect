@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:wall",
-    "builtin": true,
     "name": "Simple wall",
     "icon": "Icons/Item_Wall.png",
     "type": "object",

@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:wall_corner",
-    "builtin": true,
     "name": "Wall corner",
     "icon": "Icons/Item_WallCorner.png",
     "type": "object",

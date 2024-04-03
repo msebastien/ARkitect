@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:flooring",
-    "builtin": true,
     "name": "Flooring",
     "icon": "Icons/Item_Flooring.png",
     "type": "object",

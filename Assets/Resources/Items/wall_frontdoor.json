@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:wall_frontdoor",
-    "builtin": true,
     "name": "Wall front door opening",
     "icon": "Icons/Item_WallFrontDoor.png",
     "type": "object",

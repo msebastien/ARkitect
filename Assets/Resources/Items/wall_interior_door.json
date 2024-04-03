@@ -1,7 +1,6 @@
 {
   "item": {
     "id": "arkitect:wall_interior_door",
-    "builtin": true,
     "name": "Interior wall door opening",
     "icon": "Icons/Item_WallInteriorCorner.png",
     "type": "object",
