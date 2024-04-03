@@ -41,9 +41,9 @@ namespace ARKitect.Items
 
         private void Init(string namespaceId, string nameId) 
         {
-            if (String.IsNullOrWhiteSpace(namespaceId))
+            if (!String.IsNullOrWhiteSpace(namespaceId))
                 this.namespaceId = namespaceId.ToLower().Replace(" ", "_");
-            if (String.IsNullOrWhiteSpace(nameId))
+            if (!String.IsNullOrWhiteSpace(nameId))
                 this.nameId = nameId.ToLower().Replace(" ", "_");
         }
 

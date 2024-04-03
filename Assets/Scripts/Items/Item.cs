@@ -6,11 +6,11 @@ namespace ARKitect.Items
 {
     public enum ItemCategory
     {
-        Foundation,
-        Wall,
-        Texture,
+        Misc,
         Prop,
-        Misc
+        Texture,
+        Foundation,
+        Wall
     }
 
     public interface IItem 
@@ -28,31 +28,43 @@ namespace ARKitect.Items
     {
         [PreviewField]
         [SerializeField]
-        protected Sprite icon;
+        private Sprite icon;
+        public Sprite Icon => icon;
+
         [SerializeField]
-        protected string name = "default";
+        private string name = "default";
+        public string Name => name;
+
         [SerializeField]
-        protected ItemCategory category;
+        private ItemCategory category;
+        public ItemCategory Category => category;
+
         [SerializeField]
-        protected string description;
+        private string description;
+        public string Description => description;
+
+        [SerializeField]
+        private string author;
+        public string Author => author;
+
+        [SerializeField]
+        private bool builtin;
+        public bool IsBuiltIn => builtin;
 
         [SerializeField]
         private T resource; // T -> GameObject or Texture2D
-        // Link an item to a command (Command Pattern) ?
-
-        public Sprite Icon => icon;
-        public string Name => name;
-        public ItemCategory Category => category;
-        public string Description => description;
+        // Link an item to a command (Command Pattern) ?    
         public T Resource => resource;
 
-        public Item(string name, Sprite icon, T resource, ItemCategory category = ItemCategory.Misc, string description = default)
+        public Item(string name, Sprite icon, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", bool builtin = false)
         {
             this.name = name;
             this.icon = icon;
             this.category = category;
             this.resource = resource;
             this.description = description;
+            this.author = author;
+            this.builtin = builtin;
         }
 
     }

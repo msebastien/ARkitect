@@ -23,6 +23,12 @@ namespace ARKitect.Items
         [Tooltip("Capacity to preallocate for the item definitions list")]
         public int capacity = 7;
 
+        private string[] defaultItems = new string[]
+        {
+            "arkitect:foundation_wall", "arkitect:wall", "arkitect:wall_corner", 
+            "arkitect:wall_frontdoor", "arkitect:wall_interior"
+        };
+
         private void Awake()
         {
             // Initialize the Item definitions list with a predefined/pre-allocated capacity.
@@ -42,6 +48,22 @@ namespace ARKitect.Items
             for (int i = 0; i < capacity; i++)
             {
                 itemDefinitions.Add(new Identifier());
+            }
+        }
+
+        public void LoadDefaultItems()
+        {
+            for (int i = 0; i < defaultItems.Length; i++)
+            {
+                var item = new Identifier(defaultItems[i]);
+                if (preallocated)
+                {
+                    itemDefinitions[i] = item;
+                }   
+                else
+                {
+                    itemDefinitions.Add(item);
+                }                
             }
         }
 

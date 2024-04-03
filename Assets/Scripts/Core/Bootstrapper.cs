@@ -1,3 +1,4 @@
+using ARKitect.Items.Import;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,13 @@ namespace ARKitect.Core
     public class Bootstrapper : MonoBehaviour
     {
         // Start is called before the first frame update
-        public void Start()
+        public void Awake()
         {
             Application.runInBackground = true;
 
             // Load assets
+            InternalImporter importer = GetComponent<InternalImporter>();
+            importer.Import();
 
             if (SceneManager.loadedSceneCount == 1)
                 SceneManager.LoadScene("ARkitectEditor", LoadSceneMode.Additive);
