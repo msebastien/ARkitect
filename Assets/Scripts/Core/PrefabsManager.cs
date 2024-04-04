@@ -14,16 +14,17 @@ namespace ARKitect.Core
     [AddComponentMenu("ARkitect/Prefabs Manager")]
     public class PrefabsManager : SerializedSingleton<PrefabsManager>
     {
+        [Header("Item Catalog")]
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
         [SerializeField]
         private Dictionary<Identifier, IItem> itemCatalog = new Dictionary<Identifier, IItem>();
         public Dictionary<Identifier, IItem> Items => itemCatalog;
 
         // Cached object instances
-        // Maybe use a dictionary with the Unity instance ID ?
+        [Header("Instances")]
+        [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
+        [SerializeField]
         private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
-
-        // TODO: Initialize the Item Catalog when starting the app (called via the bootstrapper)
 
 
         /// <summary>
@@ -33,8 +34,7 @@ namespace ARKitect.Core
         /// <param name="position">Coordinates in World Space</param>
         /// <param name="parent">Parent transform of this newly instanced object</param>
         public void Spawn(Identifier item, Vector3 position, Transform parent = null)
-        {
-            var selectedItem = itemCatalog[item];
+        {       
             if (itemCatalog[item] is Item<GameObject>)
             {
                 var itemObject = itemCatalog[item] as Item<GameObject>;

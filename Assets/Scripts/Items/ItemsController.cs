@@ -15,6 +15,7 @@ namespace ARKitect.Items
         private List<Identifier> itemDefinitions;
         public List<Identifier> ItemDefinitionsInSlots => itemDefinitions;
 
+        [Header("Config")]
         [Tooltip("Whether to preallocate capacity for the item definitions list")]
         [SerializeField]
         private bool preallocated = false;
@@ -22,6 +23,10 @@ namespace ARKitect.Items
 
         [Tooltip("Capacity to preallocate for the item definitions list")]
         public int capacity = 7;
+
+        [SerializeField]
+        [Tooltip("Parent of the spawned objects")]
+        private Transform instancesParent;
 
         private string[] defaultItems = new string[]
         {
@@ -95,7 +100,7 @@ namespace ARKitect.Items
         public void Spawn(int slot, Vector3 position)
         {
             var itemDefinitionId = itemDefinitions[slot];
-            PrefabsManager.Instance.Spawn(itemDefinitionId, position);
+            PrefabsManager.Instance.Spawn(itemDefinitionId, position, instancesParent);
         }
     }
 
