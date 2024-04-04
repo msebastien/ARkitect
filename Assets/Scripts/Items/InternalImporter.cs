@@ -126,7 +126,7 @@ namespace ARKitect.Items.Import
                 Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);
 
                 // Cast into the correct type
-                if (itemResource == null) break; // Go to the next item
+                if (itemResource == null) continue; // Go to the next item
 
                 var type = itemResource.GetType();
                 if (type == typeof(GameObject))
