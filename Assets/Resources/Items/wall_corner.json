@@ -1,0 +1,17 @@
+{
+  "item": {
+    "id": "arkitect:wall_corner",
+    "name": "Wall corner",
+    "icon": "Icons/Item_WallCorner.png",
+    "type": "Object",
+    "category": "Wall",
+    "description": "A magnificent wall corner (L=1m,l=30cm,h=3m)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/WallCorner.prefab"
+      }
+    ]
+  }
+}

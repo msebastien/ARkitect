@@ -1,0 +1,17 @@
+{
+  "item": {
+    "id": "arkitect:foundation_wall",
+    "name": "Foundation wall",
+    "icon": "Icons/Item_FoundationWall.png",
+    "type": "Object",
+    "category": "Foundation",
+    "description": "You need this to lay the walls of your house on top of it.",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/FoundationWall.prefab"
+      }
+    ]
+  }
+}

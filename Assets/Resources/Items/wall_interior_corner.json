@@ -1,0 +1,17 @@
+{
+  "item": {
+    "id": "arkitect:wall_interior_corner",
+    "name": "Interior wall corner",
+    "icon": "Icons/Item_WallInteriorCorner.png",
+    "type": "Object",
+    "category": "Wall",
+    "description": "A magnificent interior wall corner (L=1m,l=10cm,h=3m)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/WallInteriorCorner.prefab"
+      }
+    ]
+  }
+}

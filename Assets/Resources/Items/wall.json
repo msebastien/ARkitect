@@ -1,0 +1,17 @@
+{
+  "item": {
+    "id": "arkitect:wall",
+    "name": "Simple wall",
+    "icon": "Icons/Item_Wall.png",
+    "type": "Object",
+    "category": "Wall",
+    "description": "A magnificent wall (L=1m,l=30cm,h=3m)",
+    "author": "ARKitect",
+    "resources": [
+      {
+        "type": "prefab",
+        "path": "BuildingParts/Wall.prefab"
+      }
+    ]
+  }
+}
