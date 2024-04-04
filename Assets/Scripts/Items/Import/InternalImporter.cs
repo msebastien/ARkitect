@@ -1,14 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
 using Logger = ARKitect.Core.Logger;
-using System;
 using ARKitect.Core;
 
 namespace ARKitect.Items.Import

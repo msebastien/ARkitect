@@ -21,7 +21,7 @@ namespace ARKitect.Core
 
         // Cached object instances
         // Maybe use a dictionary with the Unity instance ID ?
-        private List<GameObject> instances = new List<GameObject>();
+        private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
 
         // TODO: Initialize the Item Catalog when starting the app (called via the bootstrapper)
 
@@ -38,7 +38,8 @@ namespace ARKitect.Core
             if (itemCatalog[item] is Item<GameObject>)
             {
                 var itemObject = itemCatalog[item] as Item<GameObject>;
-                instances.Add(Instantiate(itemObject.Resource, position, Quaternion.identity, parent));
+                var go = Instantiate(itemObject.Resource, position, Quaternion.identity, parent);
+                instances.Add(go.GetInstanceID(), go);
                 Logger.LogInfo($"Object of the item {item} has been instantiated.");
             }
             else
