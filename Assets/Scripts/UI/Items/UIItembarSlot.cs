@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -30,8 +31,7 @@ namespace ARKitect.UI.Items
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            //if (DropOnItemSlot(eventData) || DropOnGround())
-            if(DropOnItemSlot(eventData))
+            if (DropOnItemSlot(eventData) || DropOnGround())
             {
                 DragIcon.Instance.SetSprite(null);
                 DragIcon.Instance.SetColor(Color.clear);
@@ -41,11 +41,18 @@ namespace ARKitect.UI.Items
 
         private bool DropOnGround()
         {
+#if UNITY_EDITOR
+            var ray = UnityEngine.Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+#elif UNITY_ANDROID
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
-            if (Physics.Raycast(ray, out var hit))
+#endif
+            Logger.LogInfo($"Ray: {ray.ToString()}");
+            
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
+                Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
                 // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                //controller.Spawn(index, hit.point);
+                controller.Spawn(index, hit.point);
                 return true;
             }
             return false;
@@ -59,6 +66,7 @@ namespace ARKitect.UI.Items
             foreach (var hit in hits)
             {
                 var droppedSlot = hit.gameObject.GetComponent<UIItemBarSlot>();
+                
                 if (droppedSlot)
                 {
                     Logger.LogInfo($"Drag End {droppedSlot?.name}");
@@ -74,7 +82,8 @@ namespace ARKitect.UI.Items
         public void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
         {
             controller.Swap(slot1.index, slot2.index);
-            RefreshItemVisuals();
+            slot1.RefreshItemVisuals();
+            slot2.RefreshItemVisuals();
         }
 
 
