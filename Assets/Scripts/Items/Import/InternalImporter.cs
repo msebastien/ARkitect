@@ -78,6 +78,9 @@ namespace ARKitect.Items.Import
         [Tooltip("Path to the directory which contains all the item definition JSON files")]
         private string _path = "Items";
 
+        /// <summary>
+        /// Import built-in item definitions synchronously from the internal "Resources" directory
+        /// </summary>
         public void Import()
         {
             Dictionary<string, IItem> items = ParseItemDefinitionJSON();
@@ -125,14 +128,14 @@ namespace ARKitect.Items.Import
                 // Create Item icon
                 Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);
 
-                // Cast into the correct type
                 if (itemResource == null) continue; // Go to the next item
 
+                // Create item and cast resource into the correct Unity type
                 var type = itemResource.GetType();
                 if (type == typeof(GameObject))
                 {
                     Item<GameObject> item = new Item<GameObject>(parsedItemData.Name, icon,
-                                                                ItemType.Object,
+                                                                parsedItemData.Type,
                                                                 (GameObject)itemResource,
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,
@@ -143,7 +146,7 @@ namespace ARKitect.Items.Import
                 else if (type == typeof(Material))
                 {
                     Item<Material> item = new Item<Material>(parsedItemData.Name, icon,
-                                                                ItemType.Material,
+                                                                parsedItemData.Type,
                                                                 (Material)itemResource,
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,

@@ -35,7 +35,7 @@ namespace ARKitect.Core
         /// <param name="parent">Parent transform of this newly instanced object</param>
         public void Spawn(Identifier item, Vector3 position, Transform parent = null)
         {       
-            if (itemCatalog[item] is Item<GameObject>)
+            if (itemCatalog[item].Type == ItemType.Object)
             {
                 var itemObject = itemCatalog[item] as Item<GameObject>;
                 var go = Instantiate(itemObject.Resource, position, Quaternion.identity, parent);

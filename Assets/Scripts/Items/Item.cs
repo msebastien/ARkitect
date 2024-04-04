@@ -23,8 +23,11 @@ namespace ARKitect.Items
     {
         public Sprite Icon { get; }
         public string Name { get; }
+        public ItemType Type { get; }
         public ItemCategory Category { get; }
         public string Description { get; }
+        public string Author { get; }
+        public bool IsBuiltIn { get; }
     }
 
     /// <summary>
@@ -70,6 +73,7 @@ namespace ARKitect.Items
         {
             this.name = name;
             this.icon = icon;
+            this.type = type;
             this.category = category;
             this.resource = resource;
             this.description = description;
