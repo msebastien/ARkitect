@@ -19,7 +19,7 @@ namespace ARKitect.Core
 
             // Load assets
             InternalImporter importer = GetComponent<InternalImporter>();
-            importer.Import();
+            importer?.Import();
 
             if (SceneManager.loadedSceneCount == 1)
                 SceneManager.LoadScene("ARkitectEditor", LoadSceneMode.Additive);
