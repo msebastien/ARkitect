@@ -3,7 +3,7 @@
     "id": "arkitect:flooring",
     "name": "Flooring",
     "icon": "Icons/Item_Flooring.png",
-    "type": "object",
+    "type": "Object",
     "category": "Foundation",
     "description": "Flooring is a necessity for your floor and living normally!",
     "author": "ARKitect",

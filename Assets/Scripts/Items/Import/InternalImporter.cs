@@ -29,7 +29,8 @@ namespace ARKitect.Items.Import
         public string IconPath { get; set; }
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemType Type { get; set; }
 
         [JsonProperty("category")]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -105,18 +106,20 @@ namespace ARKitect.Items.Import
                 foreach (var resourceDef in parsedItemData.Resources)
                 {
                     string path = resourceDef.Path.Split('.')[0];
+                    string resourceType = resourceDef.Type.ToLower();
 
-                    switch (resourceDef.Type.ToLower())
+                    switch(parsedItemData.Type) 
                     {
-                        case "prefab":
-                            itemResource = Resources.Load<GameObject>(path);
+                        case ItemType.Object:
+                            if(resourceType == "prefab") itemResource = Resources.Load<GameObject>(path);
                             break;
-                        case "material":
-                            itemResource = Resources.Load<Material>(path);
+                        case ItemType.Material:
+                            if(resourceType == "material") itemResource = Resources.Load<Material>(path);
                             break;
                         default:
                             break;
                     }
+
                 }
 
                 // Create Item icon
@@ -129,6 +132,7 @@ namespace ARKitect.Items.Import
                 if (type == typeof(GameObject))
                 {
                     Item<GameObject> item = new Item<GameObject>(parsedItemData.Name, icon,
+                                                                ItemType.Object,
                                                                 (GameObject)itemResource,
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,
@@ -139,6 +143,7 @@ namespace ARKitect.Items.Import
                 else if (type == typeof(Material))
                 {
                     Item<Material> item = new Item<Material>(parsedItemData.Name, icon,
+                                                                ItemType.Material,
                                                                 (Material)itemResource,
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,

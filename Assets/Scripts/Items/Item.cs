@@ -13,6 +13,12 @@ namespace ARKitect.Items
         Wall
     }
 
+    public enum ItemType
+    {
+        Object,
+        Material
+    }
+
     public interface IItem 
     {
         public Sprite Icon { get; }
@@ -36,6 +42,10 @@ namespace ARKitect.Items
         public string Name => name;
 
         [SerializeField]
+        private ItemType type;
+        public ItemType Type => type;
+
+        [SerializeField]
         private ItemCategory category;
         public ItemCategory Category => category;
 
@@ -56,7 +66,7 @@ namespace ARKitect.Items
         // Link an item to a command (Command Pattern) ?    
         public T Resource => resource;
 
-        public Item(string name, Sprite icon, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", bool builtin = false)
+        public Item(string name, Sprite icon, ItemType type, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", bool builtin = false)
         {
             this.name = name;
             this.icon = icon;
