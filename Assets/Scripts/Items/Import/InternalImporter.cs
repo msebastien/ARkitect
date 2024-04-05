@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -6,7 +5,6 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
 using Logger = ARKitect.Core.Logger;
-using ARKitect.Core;
 
 namespace ARKitect.Items.Import
 {
@@ -74,6 +72,8 @@ namespace ARKitect.Items.Import
     [AddComponentMenu("ARkitect/Internal Importer")]
     public class InternalImporter : MonoBehaviour
     {
+        private Dictionary<Identifier, IItem> importedItems = new Dictionary<Identifier, IItem>();
+
         [SerializeField]
         [Tooltip("Path to the directory which contains all the item definition JSON files")]
         private string _path = "Items";
@@ -83,15 +83,26 @@ namespace ARKitect.Items.Import
         /// </summary>
         public void Import()
         {
-            Dictionary<string, IItem> items = ParseItemDefinitionJSON();
+            Dictionary<string, IItem> items = ParseJSONItemDefinition();
             foreach (var item in items)
             {
-                PrefabsManager.Instance.Items.Add(new Identifier(item.Key), item.Value);
+                importedItems.Add(new Identifier(item.Key), item.Value);
             }
         }
 
+        /// <summary>
+        /// Transfer imported items data while clearing imported internal data
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<Identifier, IItem> Load()
+        {
+            Dictionary<Identifier, IItem> tempDict = new Dictionary<Identifier, IItem>(importedItems);
+            importedItems.Clear();
+            return tempDict;
+        }
+
         // TODO: Maybe, we should load assets asynchronously ?
-        private Dictionary<string, IItem> ParseItemDefinitionJSON()
+        private Dictionary<string, IItem> ParseJSONItemDefinition()
         {
             Dictionary<string, IItem> parsedItems = new Dictionary<string, IItem>();
 
@@ -158,6 +169,11 @@ namespace ARKitect.Items.Import
 
             return parsedItems;
         }
+
+        /*private Dictionary<string, IItem> ParseJSONItemDefinitionAsync()
+        {
+
+        }*/
 
         private void OnParsingError(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
         {
