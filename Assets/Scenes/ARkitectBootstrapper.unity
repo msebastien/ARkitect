@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &128297841
+--- !u!1 &1972953110
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,84 +131,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 128297843}
-  - component: {fileID: 128297842}
+  - component: {fileID: 1972953112}
+  - component: {fileID: 1972953111}
   m_Layer: 0
-  m_Name: Prefabs Manager
+  m_Name: InternalImporter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &128297842
+--- !u!114 &1972953111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128297841}
+  m_GameObject: {fileID: 1972953110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17b25f201a5b04040a0517e1f706d7aa, type: 3}
+  m_Script: {fileID: 11500000, guid: c53525b24fe395744aecde416f79700f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: itemCatalog
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[ARKitect.Items.Identifier,
-        Assembly-CSharp],[ARKitect.Items.IItem, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[ARKitect.Items.Identifier,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: instances
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[UnityEngine.GameObject,
-        UnityEngine.CoreModule]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  instancesParent: {fileID: 0}
---- !u!4 &128297843
+  _path: Items
+--- !u!4 &1972953112
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128297841}
+  m_GameObject: {fileID: 1972953110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -227,7 +178,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2118648878}
   - component: {fileID: 2118648877}
-  - component: {fileID: 2118648879}
   m_Layer: 0
   m_Name: Bootstrapper
   m_TagString: Untagged
@@ -247,6 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8dd52d0770b9646bda98004e12d470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  internalItemsImporter: {fileID: 1972953111}
 --- !u!4 &2118648878
 Transform:
   m_ObjectHideFlags: 0
@@ -256,28 +207,15 @@ Transform:
   m_GameObject: {fileID: 2118648876}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 638.37476, y: 1565.8367, z: -21.814953}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2118648879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118648876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53525b24fe395744aecde416f79700f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _path: Items
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2118648878}
-  - {fileID: 128297843}
+  - {fileID: 1972953112}

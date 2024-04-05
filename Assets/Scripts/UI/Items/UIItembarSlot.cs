@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 using Logger = ARKitect.Core.Logger;
 
-
-
 namespace ARKitect.UI.Items
 {
     /// <summary>

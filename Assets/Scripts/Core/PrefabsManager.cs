@@ -5,6 +5,7 @@ using UnityEngine;
 
 using ARKitect.Items;
 using Sirenix.OdinInspector;
+using ARKitect.Items.Import;
 
 namespace ARKitect.Core
 {
@@ -26,6 +27,18 @@ namespace ARKitect.Core
         [SerializeField]
         private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
 
+        private InternalImporter internalImporter;
+
+        private void Awake()
+        {
+            internalImporter = FindObjectOfType<InternalImporter>();
+        }
+
+        private void Start()
+        {
+            // Load built-in items
+            itemCatalog.AddRange(internalImporter?.Load());
+        }
 
         /// <summary>
         /// Instantiate an item and save it

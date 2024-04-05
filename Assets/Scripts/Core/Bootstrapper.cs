@@ -12,14 +12,18 @@ namespace ARKitect.Core
     [AddComponentMenu("ARkitect/Bootstrapper")]
     public class Bootstrapper : MonoBehaviour
     {
-        // Start is called before the first frame update
+        [SerializeField]
+        private InternalImporter internalItemsImporter;
+
         public void Awake()
         {
             Application.runInBackground = true;
 
+            if(internalItemsImporter == null )
+                internalItemsImporter = FindObjectOfType<InternalImporter>();
+
             // Load assets
-            InternalImporter importer = GetComponent<InternalImporter>();
-            importer?.Import();
+            internalItemsImporter?.Import();
 
             if (SceneManager.loadedSceneCount == 1)
                 SceneManager.LoadScene("ARkitectEditor", LoadSceneMode.Additive);
