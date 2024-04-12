@@ -1,4 +1,5 @@
 using ARKitect.Items.Import;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace ARKitect.Core
 
             // Load assets
             internalItemsImporter?.Import();
+
+            DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(200, 10);
 
             if (SceneManager.loadedSceneCount == 1)
                 SceneManager.LoadScene("ARkitectEditor", LoadSceneMode.Additive);
