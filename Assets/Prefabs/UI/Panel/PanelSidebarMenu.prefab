@@ -438,7 +438,7 @@ MonoBehaviour:
   sidebar: {fileID: 5820713430312295975}
   background: {fileID: 0}
   autoCloseDelay: 7
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0.8}
+  alpha: 0.8
 --- !u!1 &9213146905898255109
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,6 +525,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8416095219130227318}
     m_Modifications:
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8406937372581612679}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ARKitect.UI.UISidebar, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667378192444597558, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3928734528989139462, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
         type: 3}
       propertyPath: m_Name
