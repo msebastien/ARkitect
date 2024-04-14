@@ -15,20 +15,17 @@ namespace ARKitect.UI.Items
             icon = GetComponent<Image>();
         }
 
-        private void SetSprite(Sprite sprite) { icon.sprite = sprite; }
-        private void SetColor(Color color) { icon.color = color; }
-
-        public void SetIcon(Sprite icon)
+        public void SetIcon(Sprite sprite)
         {
-            SetSprite(icon);
-            SetColor(Color.white);
+            icon.sprite = sprite;
+            icon.color = Color.white;
             gameObject.SetActive(true);
         }
 
         public void Clear()
         {
-            SetSprite(null);
-            SetColor(Color.clear);
+            icon.sprite = null;
+            icon.color = Color.clear;
             gameObject.SetActive(false);
         }
     }
