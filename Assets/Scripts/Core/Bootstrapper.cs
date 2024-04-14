@@ -26,7 +26,10 @@ namespace ARKitect.Core
             // Load assets
             internalItemsImporter?.Import();
 
-            DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(200, 10);
+            // Init and configure DOTween for UI animations
+            DOTween.Init(true, true, LogBehaviour.Default).SetCapacity(200, 10);
+            DOTween.useSmoothDeltaTime = true;
+            DOTween.defaultEaseType = Ease.OutQuint;
 
             if (SceneManager.loadedSceneCount == 1)
                 SceneManager.LoadScene("ARkitectEditor", LoadSceneMode.Additive);

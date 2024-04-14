@@ -46,42 +46,30 @@ namespace ARKitect.UI
             gameObject.SetActive(true);
             if (background != null) background.DOFade(alpha, 0.25F);
 
-            StartCoroutine(OpenCoroutine());
+            sidebar.DOAnchorPosX(0.0F, 0.4F)
+                .OnComplete(() =>
+                {
+                    isOpen = true;
+                    StartCoroutine(WaitForAutoClose());
+                });
         }
 
         public void Close()
         {
             if (background != null) background.DOFade(0.0F, 0.25F);
 
-            StartCoroutine(CloseCoroutine());
-        }
-
-        private void OnUIBackgroundClick()
-        {
-            if (isOpen) Close();
-        }
-
-        private IEnumerator OpenCoroutine()
-        {
-            yield return sidebar.DOAnchorPosX(0.0F, 0.5F)
-                .OnComplete(() =>
-                {
-                    isOpen = true;
-                    StartCoroutine(WaitForAutoClose());
-                })
-                .WaitForCompletion();
-        }
-
-        private IEnumerator CloseCoroutine()
-        {
-            yield return sidebar.DOAnchorPosX(-sidebar.sizeDelta.x, 0.5F)
+            sidebar.DOAnchorPosX(-sidebar.sizeDelta.x, 0.4F)
                 .From(Vector2.zero)
                 .OnComplete(() =>
                 {
                     isOpen = false;
                     gameObject.SetActive(false); // also stop coroutines
-                })
-                .WaitForCompletion();
+                });
+        }
+
+        private void OnUIBackgroundClick()
+        {
+            if (isOpen) Close();
         }
 
         private IEnumerator WaitForAutoClose()
