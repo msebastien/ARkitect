@@ -8,11 +8,9 @@ using UnityEngine.UI;
 using ARKitect.Coroutine;
 using Logger = ARKitect.Core.Logger;
 using UnityEngine.Assertions;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 namespace ARKitect.UI.Page
 {
-    //[RequireComponent(typeof(RectMask2D))]
     [AddComponentMenu("ARkitect/UI/Page/Page Container")]
     public class UIPageContainer : Core.Singleton<UIPageContainer>
     {
@@ -126,7 +124,7 @@ namespace ARKitect.UI.Page
             }
 
             // Enable enter page
-            enterPage.gameObject.SetActive(true);
+            //enterPage.gameObject.SetActive(true);
 
             // Init
             enterPage.Init((RectTransform)transform);
@@ -164,7 +162,7 @@ namespace ARKitect.UI.Page
             enterPage.AfterEnter(exitPage);
 
             // Disable Unused/Exited Page
-            exitPage?.gameObject.SetActive(false);
+            //exitPage?.gameObject.SetActive(false);
 
             if (!_enableInteractionInTransition)
                 Interactable = true;
@@ -204,7 +202,7 @@ namespace ARKitect.UI.Page
             var enterPage = enterPageId == null ? null : _pages[enterPageId];
 
             // Enable enter page
-            enterPage?.gameObject.SetActive(true);
+            //enterPage?.gameObject.SetActive(true);
 
             // Preprocess
             exitPage.BeforeExit(false, enterPage);
