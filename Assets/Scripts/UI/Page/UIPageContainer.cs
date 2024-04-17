@@ -66,12 +66,12 @@ namespace ARKitect.UI.Page
         private void RegisterPages()
         {
             var pages = GetComponentsInChildren<UIPage>(true);
-            foreach(var page in pages)
+            foreach (var page in pages)
             {
                 if (!_pages.TryAdd(page.Id, page))
                 {
                     Logger.LogError("This page has not been registered as it has the same Id as another page");
-                }     
+                }
             }
         }
 
@@ -115,9 +115,9 @@ namespace ARKitect.UI.Page
                 Interactable = false;
 
             // Get the enter page reference
-            if(String.IsNullOrWhiteSpace(pageId)) yield break;
+            if (String.IsNullOrWhiteSpace(pageId)) yield break;
 
-            if(!_pages.TryGetValue(pageId, out var enterPage)) 
+            if (!_pages.TryGetValue(pageId, out var enterPage))
             {
                 Logger.LogError($"Unable to get the page from the register with the specified Id ({pageId})");
                 yield break;
@@ -144,7 +144,7 @@ namespace ARKitect.UI.Page
             else
             {
                 animationHandles.Add(enterPage.Enter(enterPage));
-            }    
+            }
 
             foreach (var coroutineHandle in animationHandles)
                 while (!coroutineHandle.IsTerminated)
@@ -201,7 +201,7 @@ namespace ARKitect.UI.Page
 
             // Play Animations
             var animationHandles = new List<AsyncProcessHandle>();
-            if (enterPage != null) 
+            if (enterPage != null)
             {
                 animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
                 animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
@@ -209,7 +209,7 @@ namespace ARKitect.UI.Page
             else
             {
                 animationHandles.Add(exitPage.Exit(exitPage, playAnimation));
-            } 
+            }
 
             foreach (var coroutineHandle in animationHandles)
                 while (!coroutineHandle.IsTerminated)
