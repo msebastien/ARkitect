@@ -15,12 +15,12 @@ namespace ARKitect.UI.Page
     {
         [SerializeField]
         private string _identifier;
-        public string Id 
-        { 
+        public string Id
+        {
             get => _identifier;
         }
 
-        [SerializeField] 
+        [SerializeField]
         private int _renderingOrder;
 
         private CanvasGroup _canvasGroup;
@@ -43,8 +43,13 @@ namespace ARKitect.UI.Page
 
         private void Awake()
         {
-            if(_transitions == null)
-                _transitions = gameObject.GetOrAddComponent<PageTransitionAnimations>();
+            if (_transitions == null)
+            {
+                _transitions = GetComponent<PageTransitionAnimations>();
+                if (_transitions == null)
+                    _transitions = gameObject.AddComponent<UIDefaultPageTransitionAnimations>();
+            }
+
         }
 
         internal void Init(RectTransform parentTransform)
@@ -93,7 +98,7 @@ namespace ARKitect.UI.Page
 
             if (playAnimation)
             {
-                switch(_transitionAnimationType)
+                switch (_transitionAnimationType)
                 {
                     case PageTransitionAnimationType.PushEnter:
                         yield return _transitions.AnimatePushEnter(partnerPage);
@@ -131,7 +136,7 @@ namespace ARKitect.UI.Page
 
         private IEnumerator ExitRoutine(UIPage partnerPage, bool playAnimation)
         {
-            if(playAnimation)
+            if (playAnimation)
             {
                 switch (_transitionAnimationType)
                 {
