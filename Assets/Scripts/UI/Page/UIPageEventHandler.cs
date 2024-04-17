@@ -16,6 +16,11 @@ namespace ARKitect.UI.Page
         [Tooltip("The new page to push to display")]
         private UIPage _page;
 
+        private void Awake()
+        {
+            if (_container == null) _container = UIPageContainer.Instance;
+        }
+
         /// <summary>
         /// Push the new page to display it
         /// </summary>
