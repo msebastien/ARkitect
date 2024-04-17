@@ -47,6 +47,7 @@ namespace ARKitect.UI
             if (background != null) background.DOFade(alpha, 0.25F);
 
             sidebar.DOAnchorPosX(0.0F, 0.4F)
+                .From(new Vector2(-sidebar.sizeDelta.x, 0.0F))
                 .OnComplete(() =>
                 {
                     isOpen = true;
