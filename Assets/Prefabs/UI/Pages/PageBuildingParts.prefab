@@ -465,7 +465,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2773810354452048579}
+  - component: {fileID: 2848716722486772295}
+  - component: {fileID: 6887926867268499530}
   - component: {fileID: 2295603860658803201}
+  - component: {fileID: 8919744870616538540}
   - component: {fileID: 2402478797393316711}
   m_Layer: 5
   m_Name: PageBuildingParts
@@ -495,6 +498,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2848716722486772295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110826967155227802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e133287cb043cc7479d01f53b0f27f4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _identifier: BuildingParts
+  _renderingOrder: 0
+  _transitionAnimationType: 0
+  _transitions: {fileID: 6887926867268499530}
+--- !u!114 &6887926867268499530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110826967155227802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7ee699a1200e94cac98a94bcd16cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &2295603860658803201
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -502,7 +533,19 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5110826967155227802}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
+--- !u!225 &8919744870616538540
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110826967155227802}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &2402478797393316711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,7 +830,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8305639765315252529
