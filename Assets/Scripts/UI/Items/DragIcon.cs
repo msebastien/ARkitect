@@ -8,6 +8,7 @@ namespace ARKitect.UI.Items
 {
     public class DragIcon : Singleton<DragIcon>
     {
+        [SerializeField]
         private Image icon;
 
         private void Awake()
@@ -15,8 +16,19 @@ namespace ARKitect.UI.Items
             icon = GetComponent<Image>();
         }
 
-        public void SetSprite(Sprite sprite) { icon.sprite = sprite; }
-        public void SetColor(Color color) { icon.color = color; }
+        public void SetIcon(Sprite sprite)
+        {
+            icon.sprite = sprite;
+            icon.color = Color.white;
+            gameObject.SetActive(true);
+        }
+
+        public void Clear()
+        {
+            icon.sprite = null;
+            icon.color = Color.clear;
+            gameObject.SetActive(false);
+        }
     }
 
 }

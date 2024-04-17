@@ -16,9 +16,7 @@ namespace ARKitect.UI.Items
     {
         public void OnBeginDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.SetSprite(icon.sprite);
-            DragIcon.Instance.SetColor(Color.white);
-            DragIcon.Instance.gameObject.SetActive(true);
+            DragIcon.Instance.SetIcon(icon.sprite);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -29,11 +27,11 @@ namespace ARKitect.UI.Items
         public void OnEndDrag(PointerEventData eventData)
         {
             if (DropOnItemSlot(eventData) || DropOnGround())
-            {
-                DragIcon.Instance.SetSprite(null);
-                DragIcon.Instance.SetColor(Color.clear);
-                DragIcon.Instance.gameObject.SetActive(false);
-            }
+                Logger.LogInfo("Item Dropped successfully");
+            else
+                Logger.LogInfo("No item dropped");
+            
+            DragIcon.Instance.Clear();
         }
 
         private bool DropOnGround()
