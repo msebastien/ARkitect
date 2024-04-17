@@ -8,6 +8,7 @@ namespace ARKitect.UI.Items
 {
     public class DragIcon : Singleton<DragIcon>
     {
+        [SerializeField]
         private Image icon;
 
         private void Awake()
