@@ -8,7 +8,7 @@ using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Page
 {
-    public abstract class UIAbstractPageTransitionAnimations : MonoBehaviour, IPageTransitionAnimations
+    public abstract class PageTransitionAnimations : MonoBehaviour, IPageTransitionAnimations
     {
 
         public AsyncProcessHandle AnimatePushEnter(UIPage page)
