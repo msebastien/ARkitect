@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using Sirenix.OdinInspector;
 
 using ARKitect.Coroutine;
 using Logger = ARKitect.Core.Logger;
+
 
 namespace ARKitect.UI.Page
 {
@@ -32,16 +34,17 @@ namespace ARKitect.UI.Page
         ///     If not in transition, return PageTransitionAnimationType.None
         /// </summary>
         [SerializeField]
+        [ReadOnly]
         private PageTransitionAnimationType _transitionAnimationType;
         public PageTransitionAnimationType TransitionAnimationType => _transitionAnimationType;
 
         [SerializeField]
-        private UIAbstractPageTransitionAnimations _transitions;
+        private PageTransitionAnimations _transitions;
 
         private void Awake()
         {
             if(_transitions == null)
-                _transitions = gameObject.GetOrAddComponent<UIAbstractPageTransitionAnimations>();
+                _transitions = gameObject.GetOrAddComponent<PageTransitionAnimations>();
         }
 
         internal void Init(RectTransform parentTransform)
@@ -49,6 +52,7 @@ namespace ARKitect.UI.Page
             _rectTransform = (RectTransform)transform;
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
             _parentTransform = parentTransform;
+            _rectTransform.FillParent(_parentTransform);
 
             // Set order of rendering.
             var siblingIndex = 0;
@@ -73,8 +77,9 @@ namespace ARKitect.UI.Page
             IsTransitioning = true;
             _transitionAnimationType =
                 push ? PageTransitionAnimationType.PushEnter : PageTransitionAnimationType.PopEnter;
-            //gameObject.SetActive(true);
-            _canvasGroup.alpha = 1.0f;
+            gameObject.SetActive(true);
+            _rectTransform.FillParent(_parentTransform);
+            _canvasGroup.alpha = 0.0f; // transparent
         }
 
         internal AsyncProcessHandle Enter(UIPage partnerPage, bool playAnimation = true)
@@ -84,7 +89,9 @@ namespace ARKitect.UI.Page
 
         private IEnumerator EnterRoutine(UIPage partnerPage, bool playAnimation)
         {
-            if(playAnimation)
+            _canvasGroup.alpha = 1.0f; // visible
+
+            if (playAnimation)
             {
                 switch(_transitionAnimationType)
                 {
@@ -99,7 +106,7 @@ namespace ARKitect.UI.Page
                 }
             }
 
-            _canvasGroup.alpha = 1.0f;
+            _rectTransform.FillParent(_parentTransform);
         }
 
         internal void AfterEnter(UIPage partnerPage)
@@ -112,7 +119,8 @@ namespace ARKitect.UI.Page
         {
             IsTransitioning = true;
             _transitionAnimationType = push ? PageTransitionAnimationType.PushExit : PageTransitionAnimationType.PopExit;
-            //gameObject.SetActive(true);
+            gameObject.SetActive(true);
+            _rectTransform.FillParent(_parentTransform);
             _canvasGroup.alpha = 1.0f;
         }
 
@@ -138,12 +146,12 @@ namespace ARKitect.UI.Page
                 }
             }
 
-            _canvasGroup.alpha = 0.0f;
+            _canvasGroup.alpha = 0.0f; // transparent/hidden
         }
 
         internal void AfterExit(UIPage partnerPage)
         {
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
             IsTransitioning = false;
             _transitionAnimationType = PageTransitionAnimationType.None;
         }
