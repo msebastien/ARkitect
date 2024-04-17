@@ -123,9 +123,6 @@ namespace ARKitect.UI.Page
                 yield break;
             }
 
-            // Enable enter page
-            //enterPage.gameObject.SetActive(true);
-
             // Init
             enterPage.Init((RectTransform)transform);
 
@@ -160,9 +157,6 @@ namespace ARKitect.UI.Page
             // Postprocess
             exitPage?.AfterExit(enterPage);
             enterPage.AfterEnter(exitPage);
-
-            // Disable Unused/Exited Page
-            //exitPage?.gameObject.SetActive(false);
 
             if (!_enableInteractionInTransition)
                 Interactable = true;
@@ -200,9 +194,6 @@ namespace ARKitect.UI.Page
             var enterPageIndex = _orderedPageIds.Count - popCount - 1;
             var enterPageId = enterPageIndex < 0 ? null : _orderedPageIds[enterPageIndex];
             var enterPage = enterPageId == null ? null : _pages[enterPageId];
-
-            // Enable enter page
-            //enterPage?.gameObject.SetActive(true);
 
             // Preprocess
             exitPage.BeforeExit(false, enterPage);
