@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using ARKitect.Items;
+using Logger = ARKitect.Core.Logger;
 
 
 namespace ARKitect.UI.Items
@@ -52,17 +53,19 @@ namespace ARKitect.UI.Items
             currNumSlots = numSlots;
         }
 
-        // Start is called before the first frame update
-        void Start()
+        /// <summary>
+        /// Initialize all the slots
+        /// This method is called when all the items have been loaded in the catalog in the PrefabsManager.
+        /// Subscribed to PrefabsManager.OnItemCatalogLoaded() event.
+        /// </summary>
+        public void Init()
         {
             InstantiateSlots();
             BindSlots();
-            
-            itemsController.LoadDefaultItems();    
-            foreach (var slot in slotCache)
-            {
-                slot.RefreshItemVisuals();
-            }     
+
+            itemsController.LoadDefaultItems();
+            RefreshSlots();
+            Logger.LogInfo("Item bar loaded!");
         }
 
         // Update is called once per frame
@@ -99,6 +102,17 @@ namespace ARKitect.UI.Items
                 slot.Bind(itemsController, i);
                 if (i >= numSlots) ToggleSlot(i, false);
                 i++;
+            }
+        }
+
+        /// <summary>
+        /// Refresh slots visual (item icon)
+        /// </summary>
+        private void RefreshSlots()
+        {
+            foreach (var slot in slotCache)
+            {
+                slot.RefreshItemVisuals();
             }
         }
 
