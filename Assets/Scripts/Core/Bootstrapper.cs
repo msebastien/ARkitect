@@ -1,9 +1,10 @@
-using ARKitect.Items.Import;
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+
+using ARKitect.Items.Import;
 
 namespace ARKitect.Core
 {
@@ -52,6 +53,7 @@ namespace ARKitect.Core
         SceneManager.LoadSceneAsync("ARkitectEditor", LoadSceneMode.Additive);
 #endif
         }
+
     }
 
 }
