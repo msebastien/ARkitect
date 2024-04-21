@@ -15,7 +15,6 @@ namespace ARKitect.UI.Items
     /// Instantiate slots and assign slots to items in the building parts library
     /// </summary>
     [AddComponentMenu("ARkitect/UI/Item Library")]
-    [RequireComponent(typeof(ItemsController))]
     public class UIItemLibrary : UISlotContainer
     {
         [Header("Buttons")]
@@ -44,7 +43,7 @@ namespace ARKitect.UI.Items
         /// </summary>
         public override void Init()
         {
-            InstantiateSlots();
+            InstantiateSlots(PrefabsManager.Instance.Items.Count);
             BindSlots();
 
             FillSlots();
@@ -112,18 +111,6 @@ namespace ARKitect.UI.Items
             foreach (var filterButton in filterButtons)
             {
                 filterButton.onClick.RemoveAllListeners();
-            }
-        }
-
-        /// <summary>
-        /// Instantiate specified slot prefab
-        /// </summary>
-        protected override void InstantiateSlots()
-        {
-            for (int i = 0; i < PrefabsManager.Instance.Items.Count; i++)
-            {
-                var slot = Instantiate(slotPrefab, slotsParent);
-                slotCache.Add(slot);
             }
         }
 

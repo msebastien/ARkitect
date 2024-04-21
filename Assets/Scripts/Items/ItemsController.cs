@@ -80,10 +80,7 @@ namespace ARKitect.Items
             }
             else
             {
-                // TODO: If not preallocated, remove completely the item definition from the list and the slot itself.
-                // Then, because a slot is removed, the indices must be updated.
-                //ItemDefinitionsInSlots.RemoveAt(slot);
-                //GetComponent<UIItembar>().
+                itemDefinitions.RemoveAt(slot);
             }
         }
 

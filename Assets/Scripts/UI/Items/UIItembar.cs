@@ -13,7 +13,6 @@ namespace ARKitect.UI.Items
     /// Manage the number of instanciated slots in item bar, and assign slots to default items, if desired
     /// </summary>
     [AddComponentMenu("ARkitect/UI/Item bar")]
-    [RequireComponent(typeof(ItemsController))]
     public class UIItembar : UISlotContainer
     {
         // Total number of slots instantiated
@@ -31,6 +30,9 @@ namespace ARKitect.UI.Items
         }
         private byte currNumSlots;
 
+        [SerializeField]
+        private bool loadDefaultItems = true;
+
         protected override void Awake()
         {
             base.Awake();
@@ -46,10 +48,10 @@ namespace ARKitect.UI.Items
         /// </summary>
         public override void Init()
         {
-            InstantiateSlots();
+            InstantiateSlots(MaxSlotCount);
             BindSlots();
 
-            itemsController.LoadDefaultItems();
+            if(loadDefaultItems) itemsController.LoadDefaultItems();
             RefreshSlots();
             Logger.LogInfo("Item bar loaded!");
         }
@@ -62,18 +64,6 @@ namespace ARKitect.UI.Items
             {
                 UpdateSlots();
                 currNumSlots = numSlots;
-            }
-        }
-
-        /// <summary>
-        /// Instantiate specified slot prefab
-        /// </summary>
-        protected override void InstantiateSlots()
-        {
-            for (byte i = 0; i < MaxSlotCount; i++)
-            {
-                var slot = Instantiate(slotPrefab, slotsParent);
-                slotCache.Add(slot);
             }
         }
 
