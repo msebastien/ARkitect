@@ -16,18 +16,8 @@ namespace ARKitect.UI.Items
     /// </summary>
     [AddComponentMenu("ARkitect/UI/Item Library")]
     [RequireComponent(typeof(ItemsController))]
-    public class UIItemLibrary : MonoBehaviour
+    public class UIItemLibrary : UISlotContainer
     {
-        [Header("Controller")]
-        [SerializeField]
-        private ItemsController itemsController;
-
-        [Header("Slots")]
-        [SerializeField]
-        private Transform slotsParent;
-        [SerializeField]
-        private UIItemLibrarySlot slotPrefab;
-
         [Header("Buttons")]
         [SerializeField]
         [Tooltip("Parent object containing filter buttons as children")]
@@ -39,14 +29,9 @@ namespace ARKitect.UI.Items
         private List<Button> filterButtons = new List<Button>();
         private GameObject selectedFilterButton;
 
-        // Keep references to slots internally to avoid looking for them
-        // with FindObjectOfType<T>(), which is terribly inefficient, or GetComponentsInChildren<T>()
-        private List<UIItemLibrarySlot> slotCache = new List<UIItemLibrarySlot>();
-
-        private void Awake()
+        protected override void Awake()
         {
-            if (itemsController == null)
-                itemsController = GetComponent<ItemsController>();
+            base.Awake();
 
             var buttons = filterButtonsParent.GetComponentsInChildren<Button>();
             filterButtons.AddRange(buttons);
@@ -57,7 +42,7 @@ namespace ARKitect.UI.Items
         /// This method is called when all the items have been loaded in the catalog in the PrefabsManager.
         /// Subscribed to PrefabsManager.OnItemCatalogLoaded() event.
         /// </summary>
-        public void Init()
+        public override void Init()
         {
             InstantiateSlots();
             BindSlots();
@@ -133,25 +118,12 @@ namespace ARKitect.UI.Items
         /// <summary>
         /// Instantiate specified slot prefab
         /// </summary>
-        private void InstantiateSlots()
+        protected override void InstantiateSlots()
         {
             for (int i = 0; i < PrefabsManager.Instance.Items.Count; i++)
             {
                 var slot = Instantiate(slotPrefab, slotsParent);
                 slotCache.Add(slot);
-            }
-        }
-
-        /// <summary>
-        /// Assign the corresponding index for the ItemsController to the slot
-        /// </summary>
-        private void BindSlots()
-        {
-            int i = 0;
-            foreach (var slot in slotCache)
-            {
-                slot.Bind(itemsController, i);
-                i++;
             }
         }
 
@@ -164,27 +136,6 @@ namespace ARKitect.UI.Items
             {
                 itemsController.ItemDefinitionsInSlots.Add(itemId);
             }
-        }
-
-        /// <summary>
-        /// Refresh slots visual (item icon)
-        /// </summary>
-        private void RefreshSlots()
-        {
-            foreach (var slot in slotCache)
-            {
-                slot.RefreshItemVisuals();
-            }
-        }
-
-        /// <summary>
-        /// Enable or disable the slot at the specified index
-        /// </summary>
-        /// <param name="index">Slot index</param>
-        /// <param name="enable">True to enable, false to disable the slot</param>
-        private void ToggleSlot(int index, bool enable)
-        {
-            slotCache[index].gameObject.SetActive(enable);
         }
 
         public void DisplayAll()
@@ -230,7 +181,6 @@ namespace ARKitect.UI.Items
                 i++;
             }
         }
-
 
     }
 
