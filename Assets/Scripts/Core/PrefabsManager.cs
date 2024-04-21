@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using Unity.VisualScripting;
+using Sirenix.OdinInspector;
 
 using ARKitect.Items;
-using Sirenix.OdinInspector;
 using ARKitect.Items.Import;
 
 namespace ARKitect.Core
@@ -27,6 +28,12 @@ namespace ARKitect.Core
         [SerializeField]
         private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
 
+        [Header("Event")]
+        [SerializeField]
+        private UnityEvent _onItemCatalogLoaded;
+        public static UnityEvent OnItemCatalogLoaded => Instance._onItemCatalogLoaded;
+
+        
         private InternalImporter internalImporter;
 
         private void Awake()
@@ -38,6 +45,7 @@ namespace ARKitect.Core
         {
             // Load built-in items
             itemCatalog.AddRange(internalImporter?.Load());
+            _onItemCatalogLoaded.Invoke();
         }
 
         /// <summary>
