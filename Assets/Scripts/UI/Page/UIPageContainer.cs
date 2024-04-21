@@ -49,7 +49,14 @@ namespace ARKitect.UI.Page
         private void Awake()
         {
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
+
+            ToggleAllPages(true); // Show/Enable all pages to init them
             RegisterPages();
+        }
+
+        private void Start()
+        {
+            ToggleAllPages(false); // Hide/Disable all pages
         }
 
         private void OnDestroy()
@@ -72,6 +79,15 @@ namespace ARKitect.UI.Page
                 {
                     Logger.LogError("This page has not been registered as it has the same Id as another page");
                 }
+            }
+        }
+
+        private void ToggleAllPages(bool enable)
+        {
+            var pages = GetComponentsInChildren<UIPage>(true);
+            foreach (var page in pages)
+            {
+                page.gameObject.SetActive(enable);
             }
         }
 
