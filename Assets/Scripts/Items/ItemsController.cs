@@ -15,6 +15,9 @@ namespace ARKitect.Items
     {
         private List<Identifier> itemDefinitions;
 
+        /// <summary>
+        /// Number of item slots
+        /// </summary>
         public int Count => itemDefinitions.Count;
 
         [Header("Config")]
