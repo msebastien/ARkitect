@@ -55,7 +55,6 @@ namespace ARKitect.UI.Items
             {
                 icon.sprite = null;
                 icon.color = Color.clear;
-                Logger.LogWarning("Item Id is undefined");
                 return;
             }
 
