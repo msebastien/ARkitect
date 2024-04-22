@@ -36,7 +36,7 @@ namespace ARKitect.UI.Items
         protected override void Awake()
         {
             base.Awake();
-            
+
             itemsController.capacity = MaxSlotCount;
             currNumSlots = numSlots;
         }
@@ -51,7 +51,7 @@ namespace ARKitect.UI.Items
             InstantiateSlots(MaxSlotCount);
             BindSlots();
 
-            if(loadDefaultItems) itemsController.LoadDefaultItems();
+            if (loadDefaultItems) itemsController.LoadDefaultItems();
             RefreshSlots();
             Logger.LogInfo("Item bar loaded!");
         }

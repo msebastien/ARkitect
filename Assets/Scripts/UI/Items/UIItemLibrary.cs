@@ -43,7 +43,7 @@ namespace ARKitect.UI.Items
         /// </summary>
         public override void Init()
         {
-            InstantiateSlots(PrefabsManager.Instance.Items.Count);
+            InstantiateSlots(PrefabsManager.Items.Count);
             BindSlots();
 
             FillSlots();
@@ -52,7 +52,7 @@ namespace ARKitect.UI.Items
             Logger.LogInfo("Item Library loaded!");
         }
 
-        
+
         private void OnEnable()
         {
             // Set Current Selected button
@@ -98,7 +98,7 @@ namespace ARKitect.UI.Items
                     {
                         FilterByCategory(category);
                     });
-                } 
+                }
                 else
                 {
                     Logger.LogError($"Failed to parse Item Category with name '{filterButton.name}' !");
@@ -119,15 +119,15 @@ namespace ARKitect.UI.Items
         /// </summary>
         private void FillSlots()
         {
-            foreach (var itemId in PrefabsManager.Instance.Items.Keys)
+            foreach (var itemId in PrefabsManager.Items.Keys)
             {
-                itemsController.ItemDefinitionsInSlots.Add(itemId);
+                itemsController.Add(itemId);
             }
         }
 
         public void DisplayAll()
         {
-            for (int i = 0; i < itemsController.ItemDefinitionsInSlots.Count; i++)
+            for (int i = 0; i < itemsController.Count; i++)
             {
                 ToggleSlot(i, true);
             }
@@ -140,15 +140,16 @@ namespace ARKitect.UI.Items
         public void FilterByCategory(ItemCategory category)
         {
             int i = 0;
-            foreach (var itemId in itemsController.ItemDefinitionsInSlots)
+
+            itemsController.ForEach((itemId) =>
             {
-                if (PrefabsManager.Instance.Items[itemId].Category != category)
+                if (PrefabsManager.Items[itemId].Category != category)
                     ToggleSlot(i, false);
                 else
                     ToggleSlot(i, true);
-                
+
                 i++;
-            }
+            });
         }
 
         /// <summary>
@@ -158,15 +159,16 @@ namespace ARKitect.UI.Items
         public void FilterByFavorites()
         {
             int i = 0;
-            foreach (var itemId in itemsController.ItemDefinitionsInSlots)
+
+            itemsController.ForEach((itemId) =>
             {
-                if (!PrefabsManager.Instance.Items[itemId].MarkedAsFavorite)
+                if (!PrefabsManager.Items[itemId].MarkedAsFavorite)
                     ToggleSlot(i, false);
                 else
                     ToggleSlot(i, true);
 
                 i++;
-            }
+            });
         }
 
     }

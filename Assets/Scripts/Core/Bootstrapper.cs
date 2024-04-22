@@ -21,7 +21,7 @@ namespace ARKitect.Core
         {
             Application.runInBackground = true;
 
-            if(internalItemsImporter == null )
+            if (internalItemsImporter == null)
                 internalItemsImporter = FindObjectOfType<InternalImporter>();
 
             // Load assets

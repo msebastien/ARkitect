@@ -33,7 +33,7 @@ namespace ARKitect.UI.Items
         }
 
         /// <summary>
-        /// Initialize all the slots and fill them with items from the catalog.
+        /// Initialize all the slots
         /// </summary>
         public abstract void Init();
 
@@ -116,9 +116,9 @@ namespace ARKitect.UI.Items
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns>true, if it exists, else false.</returns>
-        public bool IsItemExistInSlots(Identifier itemId)
+        public bool Exists(Identifier itemId)
         {
-            return itemsController.ItemDefinitionsInSlots.Find((id) => id == itemId) != null;
+            return itemsController.Exists(itemId);
         }
 
         /// <summary>
@@ -128,11 +128,11 @@ namespace ARKitect.UI.Items
         /// <param name="itemId"></param>
         public void AddSlot(Identifier itemId)
         {
-            itemsController.ItemDefinitionsInSlots.Add(itemId);
+            itemsController.Add(itemId);
             InstantiateSlot();
-            
-            BindSlot(slotCache[slotCache.Count - 1], slotCache.Count - 1);
-            RefreshSlot(slotCache.Count - 1);
+
+            BindSlot(slotCache[itemsController.Count - 1], itemsController.Count - 1);
+            RefreshSlot(itemsController.Count - 1);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace ARKitect.UI.Items
         /// <param name="item">Item Identifier of the first slot containing it to remove</param>
         public void RemoveSlot(Identifier itemId)
         {
-            int index = itemsController.ItemDefinitionsInSlots.FindIndex((id) => id == itemId);
+            int index = itemsController.FindIndex(itemId);
             RemoveSlot(index);
         }
 
@@ -151,13 +151,10 @@ namespace ARKitect.UI.Items
         /// <param name="itemId">Item Identifier of the slots containing it to remove</param>
         public void RemoveSlots(Identifier itemId)
         {
-            for (int i = 0; i < itemsController.ItemDefinitionsInSlots.Count; i++)
+            itemsController.FindAllIndex(itemId).ForEach((index) =>
             {
-                if (itemsController.ItemDefinitionsInSlots[i] == itemId)
-                {
-                    RemoveSlot(i);
-                }
-            }
+                RemoveSlot(index);
+            });
         }
 
         /// <summary>
@@ -167,9 +164,9 @@ namespace ARKitect.UI.Items
         protected void RemoveSlot(int index)
         {
             var slotToRemove = slotCache[index];
-            
+
             itemsController.Remove(index);
-            if(!itemsController.Preallocated)
+            if (!itemsController.Preallocated)
             {
                 slotCache.RemoveAt(index);
                 Destroy(slotToRemove.gameObject);
@@ -179,8 +176,8 @@ namespace ARKitect.UI.Items
             else
             {
                 RefreshSlot(index);
-            }                 
-            
+            }
+
         }
     }
 

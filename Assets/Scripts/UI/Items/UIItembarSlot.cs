@@ -30,7 +30,7 @@ namespace ARKitect.UI.Items
                 Logger.LogInfo("Item Dropped successfully");
             else
                 Logger.LogInfo("No item dropped");
-            
+
             DragIcon.Instance.Clear();
         }
 
@@ -42,7 +42,7 @@ namespace ARKitect.UI.Items
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
 #endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
-            
+
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
@@ -61,7 +61,7 @@ namespace ARKitect.UI.Items
             foreach (var hit in hits)
             {
                 var droppedSlot = hit.gameObject.GetComponent<UIItemBarSlot>();
-                
+
                 if (droppedSlot)
                 {
                     Logger.LogInfo($"Drag End {droppedSlot?.name}");

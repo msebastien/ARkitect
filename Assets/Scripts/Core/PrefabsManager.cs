@@ -18,13 +18,14 @@ namespace ARKitect.Core
     {
         [Header("Item Catalog")]
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
+        [Tooltip("Map of Item identifiers and Items")]
         [SerializeField]
         private Dictionary<Identifier, IItem> itemCatalog = new Dictionary<Identifier, IItem>();
-        public Dictionary<Identifier, IItem> Items => itemCatalog;
+        public static Dictionary<Identifier, IItem> Items => Instance.itemCatalog;
 
-        // Cached object instances
         [Header("Instances")]
         [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
+        [Tooltip("Cached object instances")]
         [SerializeField]
         private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
 
@@ -33,7 +34,7 @@ namespace ARKitect.Core
         private UnityEvent _onItemCatalogLoaded;
         public static UnityEvent OnItemCatalogLoaded => Instance._onItemCatalogLoaded;
 
-        
+
         private InternalImporter internalImporter;
 
         private void Awake()
@@ -55,7 +56,7 @@ namespace ARKitect.Core
         /// <param name="position">Coordinates in World Space</param>
         /// <param name="parent">Parent transform of this newly instanced object</param>
         public void Spawn(Identifier item, Vector3 position, Transform parent = null)
-        {       
+        {
             if (itemCatalog[item].Type == ItemType.Object)
             {
                 var itemObject = itemCatalog[item] as Item<GameObject>;

@@ -28,7 +28,7 @@ namespace ARKitect.UI.Items
         {
             this.index = index;
             this.controller = controller;
-            Identifier itemDefinitionId = controller.ItemDefinitionsInSlots.Count > index ? controller.ItemDefinitionsInSlots[index] : new Identifier();
+            Identifier itemDefinitionId = controller.Count > index ? controller.GetItemId(index) : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
@@ -37,7 +37,7 @@ namespace ARKitect.UI.Items
         /// </summary>
         public void RefreshItemVisuals()
         {
-            Identifier itemDefinitionId = controller.ItemDefinitionsInSlots.Count > index ? controller.ItemDefinitionsInSlots[index] : new Identifier();
+            Identifier itemDefinitionId = controller.Count > index ? controller.GetItemId(index) : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
@@ -55,13 +55,20 @@ namespace ARKitect.UI.Items
             {
                 icon.sprite = null;
                 icon.color = Color.clear;
+                Logger.LogWarning("Item Id is undefined");
                 return;
             }
 
             // Get the item matching the identifier from the item database/catalog
-            var itemDefinition = PrefabsManager.Instance.Items[itemDefinitionId];
+            var itemDefinition = PrefabsManager.Items[itemDefinitionId];
 
-            if (itemDefinition == null) { Logger.LogError($"Item {itemDefinitionId} not found in catalog."); }
+            if (itemDefinition == null)
+            {
+                icon.sprite = null;
+                icon.color = Color.clear;
+                Logger.LogError($"Item {itemDefinitionId} not found in catalog.");
+                return;
+            }
 
             icon.sprite = itemDefinition.Icon;
             icon.color = Color.white;
