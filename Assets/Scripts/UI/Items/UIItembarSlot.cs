@@ -74,13 +74,12 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        public void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
+        private void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
         {
             controller.Swap(slot1.index, slot2.index);
             slot1.RefreshItemVisuals();
             slot2.RefreshItemVisuals();
         }
-
 
     }
 

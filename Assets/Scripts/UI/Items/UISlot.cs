@@ -73,11 +73,6 @@ namespace ARKitect.UI.Items
             icon.color = Color.white;
         }
 
-        public void RemoveItemDefinition()
-        {
-            controller.Remove(index);
-            RefreshItemVisuals();
-        }
     }
 
 }
