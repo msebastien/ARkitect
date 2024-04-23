@@ -4,7 +4,6 @@ using UnityEngine;
 
 using ARKitect.Items;
 using Logger = ARKitect.Core.Logger;
-using Unity.VisualScripting;
 
 namespace ARKitect.UI.Items
 {
