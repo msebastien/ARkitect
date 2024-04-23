@@ -145,12 +145,12 @@ namespace ARKitect.UI.Items
             if (itemId == null) { Logger.LogError("ItemId is null."); return; }
 
             int index = itemsController.Add(itemId);
-            if(!itemsController.Preallocated)
+            if (!itemsController.Preallocated)
             {
                 InstantiateSlot();
                 BindSlot(slotCache[index], index);
             }
-            
+
             RefreshSlot(index);
         }
 
