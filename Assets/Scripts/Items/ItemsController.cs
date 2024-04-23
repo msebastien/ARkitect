@@ -148,11 +148,12 @@ namespace ARKitect.Items
         {
             if (itemId == null) { Logger.LogError("ItemId is null."); return -1; }
 
-            int index = UsedCapacity - 1;
+            int index = Count - 1;
             if (preallocated)
             {
-                int firstEmptySlot = FindIndex(new Identifier());
+                index = UsedCapacity - 1;
 
+                int firstEmptySlot = FindIndex(new Identifier());
                 if (firstEmptySlot != -1)
                     index = firstEmptySlot;
 
