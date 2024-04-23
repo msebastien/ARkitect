@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using ARKitect.Items;
+using Logger = ARKitect.Core.Logger;
+using Unity.VisualScripting;
 
 namespace ARKitect.UI.Items
 {
@@ -52,6 +54,7 @@ namespace ARKitect.UI.Items
         /// <param name="count">The number of slots to instantiate</param>
         protected void InstantiateSlots(int count)
         {
+            if (count < 0) { Logger.LogError("Count is negative."); return; }
             for (int i = 0; i < count; i++)
             {
                 InstantiateSlot();
@@ -78,6 +81,9 @@ namespace ARKitect.UI.Items
         /// <param name="index"></param>
         protected void BindSlot(UISlot slot, int index)
         {
+            if (index < 0) { Logger.LogError("Index is negative."); return; }
+            if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
+
             slot.Bind(itemsController, index);
         }
 
@@ -87,6 +93,9 @@ namespace ARKitect.UI.Items
         /// <param name="index">Slot index</param>
         public void RefreshSlot(int index)
         {
+            if (index < 0) { Logger.LogError("Index is negative."); return; }
+            if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
+
             slotCache[index].RefreshItemVisuals();
         }
 
@@ -108,6 +117,9 @@ namespace ARKitect.UI.Items
         /// <param name="enable">True to enable, false to disable the slot</param>
         protected void ToggleSlot(int index, bool enable)
         {
+            if (index < 0) { Logger.LogError("Index is negative."); return; }
+            if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
+
             slotCache[index].gameObject.SetActive(enable);
         }
 
@@ -124,15 +136,22 @@ namespace ARKitect.UI.Items
         /// <summary>
         /// Add slot containing the specified item Id.
         /// If an empty or invalid identifier is specified, the slot will be empty.
+        /// If the Items Controller is preallocated, the item will be added
+        /// to the first empty slot or the last one.
         /// </summary>
         /// <param name="itemId"></param>
         public void AddSlot(Identifier itemId)
         {
-            itemsController.Add(itemId);
-            InstantiateSlot();
+            if (itemId == null) { Logger.LogError("ItemId is null."); return; }
 
-            BindSlot(slotCache[itemsController.Count - 1], itemsController.Count - 1);
-            RefreshSlot(itemsController.Count - 1);
+            int index = itemsController.Add(itemId);
+            if(!itemsController.Preallocated)
+            {
+                InstantiateSlot();
+                BindSlot(slotCache[index], index);
+            }
+            
+            RefreshSlot(index);
         }
 
         /// <summary>
@@ -141,6 +160,8 @@ namespace ARKitect.UI.Items
         /// <param name="item">Item Identifier of the first slot containing it to remove</param>
         public void RemoveSlot(Identifier itemId)
         {
+            if (itemId == null) { Logger.LogError("ItemId is null."); return; }
+
             int index = itemsController.FindIndex(itemId);
             RemoveSlot(index);
         }
@@ -151,6 +172,8 @@ namespace ARKitect.UI.Items
         /// <param name="itemId">Item Identifier of the slots containing it to remove</param>
         public void RemoveSlots(Identifier itemId)
         {
+            if (itemId == null) { Logger.LogError("ItemId is null."); return; }
+
             itemsController.FindAllIndex(itemId).ForEach((index) =>
             {
                 RemoveSlot(index);
@@ -163,6 +186,9 @@ namespace ARKitect.UI.Items
         /// <param name="index"></param>
         protected void RemoveSlot(int index)
         {
+            if (index < 0) { Logger.LogError("Index is negative."); return; }
+            if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
+
             var slotToRemove = slotCache[index];
 
             itemsController.Remove(index);

@@ -91,19 +91,27 @@ namespace ARKitect.Items
             }
         }
 
+        /// <summary>
+        /// Find the index of the first slot containing the specified Item Id.
+        /// </summary>
+        /// <param name="itemId">Identifier of the item to find</param>
+        /// <returns>Index of the first slot containing the specified Item Id, else -1.</returns>
         public int FindIndex(Identifier itemId)
         {
+            if (itemId == null) { Logger.LogError("ItemId is null."); return -1; }
+
             return itemDefinitions.FindIndex((id) => id == itemId);
         }
 
         /// <summary>
-        /// Find all the item occurences
+        /// Find indices of all the item occurrences
         /// </summary>
-        /// <param name="itemId">Item Identifier</param>
-        /// <returns>Indices of matching Item Ids</returns>
+        /// <param name="itemId">Identifier of the item to find</param>
+        /// <returns>Indices of matching Item Ids. If Item Id is null, an empty list.</returns>
         public List<int> FindAllIndex(Identifier itemId)
         {
             List<int> result = new List<int>();
+            if (itemId == null) { Logger.LogError("ItemId is null."); return result; }
 
             int i = 0;
             ForEach((id) =>
@@ -116,21 +124,50 @@ namespace ARKitect.Items
 
         public bool Exists(Identifier itemId)
         {
+            if (itemId == null) { Logger.LogError("ItemId is null."); return false; }
+
             return itemDefinitions.Exists((id) => id == itemId);
         }
 
-        public void Add(Identifier itemId)
+        /// <summary>
+        /// Add an item in an empty slot or in a new slot.
+        /// If slots are preallocated, the item will be added to an existing empty slot or the last one.
+        /// Else, it will be added to a new slot.
+        /// </summary>
+        /// <param name="itemId">Identifier of the Item to add</param>
+        /// <returns>Index of the slot containing the added item. If Item Id is null, -1.</returns>
+        public int Add(Identifier itemId)
         {
-            itemDefinitions.Add(itemId);
+            if (itemId == null) { Logger.LogError("ItemId is null."); return -1; }
+
+            int index = Count - 1;      
+            if(preallocated)
+            {
+                int firstEmptySlot = FindIndex(new Identifier());
+                
+                if (firstEmptySlot != -1)
+                    index = firstEmptySlot;
+
+                itemDefinitions[index] = itemId;
+            }
+            else
+            {
+                itemDefinitions.Add(itemId);
+            }
+
+            return index;
         }
 
         /// <summary>
-        /// Remove an element matching a slot index.
+        /// Remove the slot matching the specified index.
         /// If slots are preallocated, the slot is only emptied, matching with no valid item.
         /// </summary>
-        /// <param name="slot">Index of the slot</param>
+        /// <param name="slot">Index of the slot.</param>
         public void Remove(int slot)
         {
+            if (slot < 0) { Logger.LogError("Slot index is negative."); return; }
+            if (slot > Count - 1) { Logger.LogError("Slot index is too big."); return; }
+
             if (preallocated)
             {
                 itemDefinitions[slot] = new Identifier();
@@ -141,9 +178,18 @@ namespace ARKitect.Items
             }
         }
 
+        /// <summary>
+        /// Remove all slots containing the specified Item Id.
+        /// If slots are preallocated, the slots are emptied, matching with no valid item.
+        /// Else, the slot containing this Item Id is completely removed.
+        /// </summary>
+        /// <param name="itemId">Identifier of the Item to remove</param>
+        /// <returns>Number of slots emptied or removed. If Item Id is null, 0.</returns>
         public int RemoveAll(Identifier itemId)
         {
             int removed = 0;
+            if (itemId == null) { Logger.LogError("ItemId is null."); return removed; }
+
             if (preallocated)
             {
                 FindAllIndex(itemId).ForEach((index) =>
