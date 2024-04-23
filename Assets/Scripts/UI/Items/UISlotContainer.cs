@@ -188,11 +188,11 @@ namespace ARKitect.UI.Items
             if (index < 0) { Logger.LogError("Index is negative."); return; }
             if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
 
-            var slotToRemove = slotCache[index];
-
             itemsController.Remove(index);
             if (!itemsController.Preallocated)
             {
+                var slotToRemove = slotCache[index];
+
                 slotCache.RemoveAt(index);
                 Destroy(slotToRemove.gameObject);
                 BindSlots();
