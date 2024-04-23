@@ -26,8 +26,15 @@ namespace ARKitect.Items
         private bool preallocated = false;
         public bool Preallocated => preallocated;
 
-        [Tooltip("Capacity to preallocate for the item definitions list")]
-        public int capacity = 7;
+        /// <summary>
+        /// Total Capacity to preallocate for the item definitions list
+        /// </summary>
+        public int Capacity { get; set; } = 7;
+
+        /// <summary>
+        /// Actually used capacity for displayed slots
+        /// </summary>
+        public int UsedCapacity { get; set; } = 5;
 
         [SerializeField]
         [Tooltip("Parent of the spawned objects")]
@@ -55,8 +62,8 @@ namespace ARKitect.Items
 
         private void Preallocate()
         {
-            itemDefinitions = new List<Identifier>(capacity);
-            for (int i = 0; i < capacity; i++)
+            itemDefinitions = new List<Identifier>(Capacity);
+            for (int i = 0; i < Capacity; i++)
             {
                 itemDefinitions.Add(new Identifier());
             }
@@ -69,6 +76,7 @@ namespace ARKitect.Items
                 var item = new Identifier(defaultItems[i]);
                 if (preallocated)
                 {
+                    if (i > Count - 1) break;
                     itemDefinitions[i] = item;
                 }
                 else
@@ -140,7 +148,7 @@ namespace ARKitect.Items
         {
             if (itemId == null) { Logger.LogError("ItemId is null."); return -1; }
 
-            int index = Count - 1;
+            int index = UsedCapacity - 1;
             if (preallocated)
             {
                 int firstEmptySlot = FindIndex(new Identifier());

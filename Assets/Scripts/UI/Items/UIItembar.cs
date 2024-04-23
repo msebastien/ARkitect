@@ -37,7 +37,8 @@ namespace ARKitect.UI.Items
         {
             base.Awake();
 
-            itemsController.capacity = MaxSlotCount;
+            itemsController.Capacity = MaxSlotCount;
+            itemsController.UsedCapacity = numSlots;
             currNumSlots = numSlots;
         }
 
@@ -63,6 +64,7 @@ namespace ARKitect.UI.Items
             if (numSlots != currNumSlots)
             {
                 UpdateSlots();
+                itemsController.UsedCapacity = numSlots;
                 currNumSlots = numSlots;
             }
         }
