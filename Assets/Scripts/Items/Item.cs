@@ -19,7 +19,7 @@ namespace ARKitect.Items
         Material
     }
 
-    public interface IItem 
+    public interface IItem
     {
         public Sprite Icon { get; }
         public string Name { get; }
@@ -63,10 +63,10 @@ namespace ARKitect.Items
 
         [SerializeField]
         private bool markedAsFavorite = false;
-        public bool MarkedAsFavorite 
-        { 
-            get => markedAsFavorite; 
-            set => markedAsFavorite = value; 
+        public bool MarkedAsFavorite
+        {
+            get => markedAsFavorite;
+            set => markedAsFavorite = value;
         }
 
         [SerializeField]
