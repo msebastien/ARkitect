@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-using Logger = ARKitect.Core.Logger;
-
 namespace ARKitect.UI
 {
     [AddComponentMenu("ARkitect/UI/Sidebar")]
@@ -21,7 +19,7 @@ namespace ARKitect.UI
         [Tooltip("Delay, in seconds, after which the sidebar panel closes automatically")]
         public float autoCloseDelay = 7.0f;
 
-        [Tooltip("UI Background alpha when the sidebar is opened")]
+        [Tooltip("UI Background alpha when the sidebar is open")]
         public float alpha = 0.8F;
 
         private bool isOpen = false;
