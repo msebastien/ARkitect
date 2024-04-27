@@ -1,15 +1,14 @@
 using ARKitect.Coroutine;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
-using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Page
 {
     public abstract class PageTransitionAnimations : MonoBehaviour, IPageTransitionAnimations
     {
+        [SerializeField]
+        [Tooltip("Animation duration in seconds")]
+        protected float duration = 1.0F;
 
         public AsyncProcessHandle AnimatePushEnter(UIPage page)
         {

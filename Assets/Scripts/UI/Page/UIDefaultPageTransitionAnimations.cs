@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
-using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Page
 {
@@ -16,7 +13,7 @@ namespace ARKitect.UI.Page
 
             var rectTransform = (RectTransform)page.transform;
             yield return rectTransform
-                .DOAnchorPosX(0.0F, 1.0F)
+                .DOAnchorPosX(0.0F, duration)
                 .From(new Vector2(Screen.width, 0.0F))
                 .WaitForCompletion();
         }
@@ -27,7 +24,7 @@ namespace ARKitect.UI.Page
 
             var rectTransform = (RectTransform)page.transform;
             yield return rectTransform
-                .DOAnchorPosX(-Screen.width, 1.0F)
+                .DOAnchorPosX(-Screen.width, duration)
                 .From(Vector2.zero)
                 .WaitForCompletion();
         }
@@ -40,7 +37,7 @@ namespace ARKitect.UI.Page
 
             var rectTransform = (RectTransform)page.transform;
             yield return rectTransform
-                .DOAnchorPosX(0.0F, 1.0F)
+                .DOAnchorPosX(0.0F, duration)
                 .From(new Vector2(-Screen.width, 0.0F))
                 .WaitForCompletion();
         }
@@ -51,7 +48,7 @@ namespace ARKitect.UI.Page
 
             var rectTransform = (RectTransform)page.transform;
             yield return rectTransform
-                .DOAnchorPosX(Screen.width, 1.0F)
+                .DOAnchorPosX(Screen.width, duration)
                 .From(Vector2.zero)
                 .WaitForCompletion();
         }

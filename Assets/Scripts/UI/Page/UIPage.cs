@@ -14,11 +14,11 @@ namespace ARKitect.UI.Page
     public class UIPage : MonoBehaviour
     {
         [SerializeField]
+        private bool _useObjectNameAsIdentifier = true;
+
+        [SerializeField]
         private string _identifier;
-        public string Id
-        {
-            get => _identifier;
-        }
+        public string Id => _identifier;
 
         [SerializeField]
         private int _renderingOrder;
@@ -26,6 +26,8 @@ namespace ARKitect.UI.Page
         private CanvasGroup _canvasGroup;
         private RectTransform _parentTransform;
         private RectTransform _rectTransform;
+
+        private Vector2 _pivot = new Vector2(0.0F, 1.0F);
 
         public bool IsTransitioning { get; private set; }
 
@@ -43,21 +45,20 @@ namespace ARKitect.UI.Page
 
         private void Awake()
         {
+            if (_useObjectNameAsIdentifier) _identifier = gameObject.name;
+
             if (_transitions == null)
-            {
-                _transitions = GetComponent<PageTransitionAnimations>();
-                if (_transitions == null)
-                    _transitions = gameObject.AddComponent<UIDefaultPageTransitionAnimations>();
-            }
+                _transitions = gameObject.GetOrAddComponent<UIDefaultPageTransitionAnimations>();
 
         }
 
         internal void Init(RectTransform parentTransform)
         {
             _rectTransform = (RectTransform)transform;
+            _pivot = _rectTransform.pivot;
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
             _parentTransform = parentTransform;
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
 
             // Set order of rendering.
             var siblingIndex = 0;
@@ -83,7 +84,7 @@ namespace ARKitect.UI.Page
             _transitionAnimationType =
                 push ? PageTransitionAnimationType.PushEnter : PageTransitionAnimationType.PopEnter;
             gameObject.SetActive(true);
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
             _canvasGroup.alpha = 0.0f; // transparent
         }
 
@@ -111,7 +112,7 @@ namespace ARKitect.UI.Page
                 }
             }
 
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
         }
 
         internal void AfterEnter(UIPage partnerPage)
@@ -125,7 +126,7 @@ namespace ARKitect.UI.Page
             IsTransitioning = true;
             _transitionAnimationType = push ? PageTransitionAnimationType.PushExit : PageTransitionAnimationType.PopExit;
             gameObject.SetActive(true);
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
             _canvasGroup.alpha = 1.0f;
         }
 

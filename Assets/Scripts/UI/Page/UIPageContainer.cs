@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using Unity.VisualScripting;
+using UnityEngine.Assertions;
 
 using ARKitect.Coroutine;
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
-using UnityEngine.Assertions;
+
 
 namespace ARKitect.UI.Page
 {
     [AddComponentMenu("ARkitect/UI/Page/Page Container")]
+    [RequireComponent(typeof(CanvasGroup))]
     public class UIPageContainer : Core.Singleton<UIPageContainer>
     {
         private readonly List<string> _orderedPageIds = new List<string>();
@@ -24,6 +26,9 @@ namespace ARKitect.UI.Page
 
         [SerializeField]
         private bool _enableInteractionInTransition;
+
+        [SerializeField]
+        private bool _enableControlInteractionsOfAllContainers;
 
         /// <summary>
         ///     True if in transition.
@@ -91,9 +96,9 @@ namespace ARKitect.UI.Page
             }
         }
 
-        public AsyncProcessHandle Push(string pageId, bool playAnimation = true)
+        public AsyncProcessHandle Push(string pageId, bool playAnimation = true, Action<UIPage> onLoad = null)
         {
-            return CoroutineManager.Instance.Run(PushRoutine(pageId, playAnimation));
+            return CoroutineManager.Instance.Run(PushRoutine(pageId, playAnimation, onLoad));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true, int popCount = 1)
@@ -119,7 +124,7 @@ namespace ARKitect.UI.Page
             return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
         }
 
-        private IEnumerator PushRoutine(string pageId, bool playAnimation)
+        private IEnumerator PushRoutine(string pageId, bool playAnimation, Action<UIPage> onLoad = null)
         {
             if (IsInTransition)
                 throw new InvalidOperationException(
@@ -128,7 +133,17 @@ namespace ARKitect.UI.Page
             IsInTransition = true;
 
             if (!_enableInteractionInTransition)
-                Interactable = false;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    Interactable = false;
+                    UIModalContainer.Instance.Interactable = false;
+                }
+                else
+                {
+                    Interactable = false;
+                }
+            }
 
             // Get the enter page reference
             if (String.IsNullOrWhiteSpace(pageId)) yield break;
@@ -140,6 +155,7 @@ namespace ARKitect.UI.Page
             }
 
             // Init
+            onLoad?.Invoke(enterPage);
             enterPage.Init((RectTransform)transform);
 
             // Retrieve Exit page
@@ -154,12 +170,12 @@ namespace ARKitect.UI.Page
             var animationHandles = new List<AsyncProcessHandle>();
             if (exitPage != null)
             {
-                animationHandles.Add(exitPage.Exit(enterPage));
-                animationHandles.Add(enterPage.Enter(exitPage));
+                animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
+                animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
             }
             else
             {
-                animationHandles.Add(enterPage.Enter(enterPage));
+                animationHandles.Add(enterPage.Enter(enterPage, playAnimation));
             }
 
             foreach (var coroutineHandle in animationHandles)
@@ -175,7 +191,23 @@ namespace ARKitect.UI.Page
             enterPage.AfterEnter(exitPage);
 
             if (!_enableInteractionInTransition)
-                Interactable = true;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    // If there's a container in transition, it should restore Interactive to true when the transition is finished.
+                    // So, do nothing here if there's a transitioning container.
+                    if (!IsInTransition
+                        && !UIModalContainer.Instance.IsInTransition)
+                    {
+                        Interactable = true;
+                        UIModalContainer.Instance.Interactable = true;
+                    }
+                }
+                else
+                {
+                    Interactable = true;
+                }
+            }
         }
 
         private IEnumerator PopRoutine(bool playAnimation, int popCount = 1)
@@ -193,7 +225,17 @@ namespace ARKitect.UI.Page
             IsInTransition = true;
 
             if (!_enableInteractionInTransition)
-                Interactable = false;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    UIModalContainer.Instance.Interactable = false;
+                    Interactable = false;
+                }
+                else
+                {
+                    Interactable = false;
+                }
+            }
 
             var exitPageId = _orderedPageIds[_orderedPageIds.Count - 1];
             var exitPage = _pages[exitPageId];
@@ -250,7 +292,23 @@ namespace ARKitect.UI.Page
             }
 
             if (!_enableInteractionInTransition)
-                Interactable = true;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    // If there's a container in transition, it should restore Interactive to true when the transition is finished.
+                    // So, do nothing here if there's a transitioning container.
+                    if (!IsInTransition
+                        && !UIModalContainer.Instance.IsInTransition)
+                    {
+                        Interactable = true;
+                        UIModalContainer.Instance.Interactable = true;
+                    }
+                }
+                else
+                {
+                    Interactable = true;
+                }
+            }
         }
     }
 
