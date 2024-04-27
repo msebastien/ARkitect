@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.InputSystem.UI;
-using UnityEngine.UI;
 
-using ARKitect.Items;
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
 
 
@@ -19,9 +13,27 @@ namespace ARKitect.UI.Items
     [AddComponentMenu("ARkitect/UI/Slots/Item library slot")]
     public class UIItemLibrarySlot : UISlot, IPointerDownHandler
     {
+        [SerializeField]
+        [Tooltip("Id of the Modal window displaying info about items")]
+        private string _modalId;
+        public string ModalId
+        {
+            get => _modalId;
+            set => _modalId = value;
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
-            throw new System.NotImplementedException();
+            UIModalContainer.Instance.Push(_modalId, true, (modal) =>
+            {
+                var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
+                if (itemInfo != null)
+                {
+                    itemInfo.ItemId = controller.GetItemId(index).ToString();
+                }
+            });
+
+            Logger.LogInfo($"Item '{controller.GetItemId(index)}' clicked");
         }
     }
 

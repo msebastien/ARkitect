@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using ARKitect.Core;
 using ARKitect.Items;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.UI.Modal;
 
 namespace ARKitect.UI.Items
 {
@@ -27,6 +28,10 @@ namespace ARKitect.UI.Items
         private GameObject defaultSelectedButton;
         private List<Button> filterButtons = new List<Button>();
         private GameObject selectedFilterButton;
+
+        [SerializeField]
+        [Tooltip("Modal window displaying info about items")]
+        private UIModal itemInfoModal;
 
         protected override void Awake()
         {
@@ -48,6 +53,8 @@ namespace ARKitect.UI.Items
 
             FillSlots();
             RefreshSlots();
+
+            AddModalIdToSlots();
 
             Logger.LogInfo("Item Library loaded!");
         }
@@ -122,6 +129,15 @@ namespace ARKitect.UI.Items
             foreach (var itemId in PrefabsManager.Items.Keys)
             {
                 itemsController.Add(itemId);
+            }
+        }
+
+        private void AddModalIdToSlots()
+        {
+            foreach (var slot in slotCache)
+            {
+                var itemLibrarySlot = (UIItemLibrarySlot)slot;
+                itemLibrarySlot.ModalId = itemInfoModal.Id;
             }
         }
 
