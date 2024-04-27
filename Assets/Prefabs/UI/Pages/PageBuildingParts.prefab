@@ -91,8 +91,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preallocated: 0
-  capacity: 7
   instancesParent: {fileID: 0}
+  defaultItems:
+  - arkitect:foundation_wall
+  - arkitect:wall
+  - arkitect:wall_corner
+  - arkitect:wall_frontdoor
+  - arkitect:wall_interior
 --- !u!114 &3037545605111543064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +116,7 @@ MonoBehaviour:
     type: 3}
   filterButtonsParent: {fileID: 8436420004784692589}
   defaultSelectedButton: {fileID: 4197222642359943543}
+  itemInfoModal: {fileID: 0}
 --- !u!222 &6309307781992511104
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -502,9 +508,7 @@ GameObject:
   - component: {fileID: 2773810354452048579}
   - component: {fileID: 2848716722486772295}
   - component: {fileID: 6887926867268499530}
-  - component: {fileID: 2295603860658803201}
   - component: {fileID: 8919744870616538540}
-  - component: {fileID: 2402478797393316711}
   m_Layer: 5
   m_Name: PageBuildingParts
   m_TagString: Untagged
@@ -545,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e133287cb043cc7479d01f53b0f27f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _useObjectNameAsIdentifier: 1
   _identifier: BuildingParts
   _renderingOrder: 0
   _transitionAnimationType: 0
@@ -561,14 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee7ee699a1200e94cac98a94bcd16cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!222 &2295603860658803201
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110826967155227802}
-  m_CullTransparentMesh: 1
+  duration: 1
 --- !u!225 &8919744870616538540
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -581,36 +579,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2402478797393316711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110826967155227802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5299799050772095163
 GameObject:
   m_ObjectHideFlags: 0
