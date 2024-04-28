@@ -8,7 +8,7 @@ namespace ARKitect.Items
     {
         Misc,
         Prop,
-        Texture,
+        Material,
         Foundation,
         Wall
     }

@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 using ARKitect.Core;
 using ARKitect.Items;
-using Logger = ARKitect.Core.Logger;
 using ARKitect.UI.Modal;
+using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
 {
@@ -29,6 +29,7 @@ namespace ARKitect.UI.Items
         private List<Button> filterButtons = new List<Button>();
         private GameObject selectedFilterButton;
 
+        [Header("Modal")]
         [SerializeField]
         [Tooltip("Modal window displaying info about items")]
         private UIModal itemInfoModal;

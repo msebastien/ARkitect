@@ -593,7 +593,7 @@ PrefabInstance:
     - target: {fileID: 3928734528989139462, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
         type: 3}
       propertyPath: m_Name
-      value: ButtonSidebarMenu
+      value: SidebarButton_Settings
       objectReference: {fileID: 0}
     - target: {fileID: 9018053349788483907, guid: 9bcafa54ba8905f4688d5e3e18fa419e,
         type: 3}
