@@ -11,8 +11,14 @@ PrefabInstance:
     - target: {fileID: 1867375984222256326, guid: 4fb9360b308ce32499059ee529548f87,
         type: 3}
       propertyPath: m_text
-      value: <sprite index=5> Add a shortcut
+      value: <sprite index=18> Add a shortcut
       objectReference: {fileID: 0}
+    - target: {fileID: 1867375984222256326, guid: 4fb9360b308ce32499059ee529548f87,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
     - target: {fileID: 4486834588571558695, guid: 4fb9360b308ce32499059ee529548f87,
         type: 3}
       propertyPath: m_Pivot.x

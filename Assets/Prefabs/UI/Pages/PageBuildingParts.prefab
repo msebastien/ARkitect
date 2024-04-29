@@ -1040,7 +1040,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: Foundation
+      value: <sprite index=23> Foundation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1174,7 +1190,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: Props
+      value: <sprite index=4> Props
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1308,7 +1340,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: Wall
+      value: <sprite index=23> Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1453,6 +1501,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_text
+      value: <sprite index=2> All
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1612,7 +1681,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: <sprite index=6> Favorites
+      value: <sprite index=20> Favorites
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1892,7 +1977,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: Misc
+      value: <sprite index=5> Misc
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2026,7 +2127,23 @@ PrefabInstance:
     - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
         type: 3}
       propertyPath: m_text
-      value: Materials
+      value: <sprite index=17> Materials
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_spriteAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f544b72a42d51747a9fbe0ef2e94263,
+        type: 2}
+    - target: {fileID: 8832603579509131713, guid: 13b7c3f96666b4f4e8f272d2093373d8,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
