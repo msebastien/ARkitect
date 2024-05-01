@@ -35,7 +35,7 @@ namespace ARKitect.UI.Items
         /// <summary>
         /// Refresh the slot visual (the icon of the assigned item)
         /// </summary>
-        public void RefreshItemVisuals()
+        public virtual void RefreshItemVisuals()
         {
             Identifier itemDefinitionId = controller.Count > index ? controller.GetItemId(index) : new Identifier();
             ShowItemDefinition(itemDefinitionId);
