@@ -10,13 +10,16 @@ using ARKitect.Items;
 
 namespace ARKitect.UI.Items
 {
+    /// <summary>
+    /// Allows to display Item metadata in the UI 
+    /// </summary>
     [AddComponentMenu("ARkitect/UI/Item Info")]
     public class UIItemInfo : MonoBehaviour
     {
         [Header("Item")]
         [SerializeField]
         [ReadOnly]
-        private string _itemId;
+        private string _itemId = "";
         public string ItemId
         {
             get
@@ -25,11 +28,14 @@ namespace ARKitect.UI.Items
             }
             set
             {
-                _itemIdChanged = true;
-                _itemId = value;
+                if (_itemId != value)
+                {
+                    _itemId = value;
+                    Reset();
+                    UpdateItemInfo();
+                }
             }
         }
-        private bool _itemIdChanged = false;
 
         [Header("UI Fields")]
         [SerializeField]
@@ -64,17 +70,6 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private string _placeholderType = "[Type]";
 
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (_itemIdChanged)
-            {
-                Reset();
-                UpdateItemInfo();
-                _itemIdChanged = false;
-            }
-        }
 
         private void UpdateItemInfo()
         {
