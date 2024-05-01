@@ -28,6 +28,7 @@ namespace ARKitect.UI.Items
         private GameObject defaultSelectedButton;
         private List<Button> filterButtons = new List<Button>();
         private GameObject selectedFilterButton;
+        private string selectedFilterButtonName;
 
         [Header("Modal")]
         [SerializeField]
@@ -40,6 +41,7 @@ namespace ARKitect.UI.Items
 
             var buttons = filterButtonsParent.GetComponentsInChildren<Button>();
             filterButtons.AddRange(buttons);
+            selectedFilterButtonName = defaultSelectedButton.name;
         }
 
         /// <summary>
@@ -79,7 +81,8 @@ namespace ARKitect.UI.Items
                 filterButton.onClick.AddListener(() =>
                 {
                     selectedFilterButton = filterButton.gameObject;
-                    Logger.LogInfo($"Set selected Button to {selectedFilterButton.name}");
+                    selectedFilterButtonName = filterButton.name;
+                    Logger.LogInfo($"Set selected Button to {selectedFilterButtonName}");
                 });
 
                 // All
@@ -140,6 +143,29 @@ namespace ARKitect.UI.Items
                 var itemLibrarySlot = (UIItemLibrarySlot)slot;
                 itemLibrarySlot.ModalId = itemInfoModal.Id;
             }
+        }
+
+        public void FilterRefresh()
+        {
+            if(selectedFilterButtonName.Contains("All"))
+            {
+                DisplayAll();
+            }
+            else if(selectedFilterButtonName.Contains("Favorite"))
+            {
+                FilterByFavorites();
+            }
+            else
+            {
+                var splitName = selectedFilterButtonName.Split('_');
+
+                if (splitName.Length > 1 && Enum.TryParse(splitName[1], out ItemCategory category))
+                    FilterByCategory(category);
+                else
+                    Logger.LogError($"Failed to parse Item Category with name '{selectedFilterButtonName}' !");
+            }
+
+            RefreshSlots();
         }
 
         public void DisplayAll()
