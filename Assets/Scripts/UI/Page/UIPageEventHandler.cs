@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ARKitect.UI.Page
 {
@@ -9,6 +10,10 @@ namespace ARKitect.UI.Page
     public class UIPageEventHandler : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("Enable the automatic subscribe to the OnClick() event of a button")]
+        private bool _autoSubscribeToButtonClickEvent = false;
+
+        [SerializeField]
         [Tooltip("Reference to the page container managing all the pages")]
         private UIPageContainer _container;
 
@@ -16,9 +21,39 @@ namespace ARKitect.UI.Page
         [Tooltip("The new page to push to display")]
         private UIPage _page;
 
+        private Button _button;
+
         private void Awake()
         {
             if (_container == null) _container = UIPageContainer.Instance;
+
+            if (_autoSubscribeToButtonClickEvent) _button = GetComponent<Button>();
+        }
+
+        private void OnEnable()
+        {
+            if (_autoSubscribeToButtonClickEvent)
+            {
+                if (_button == null) return;
+
+                if (_page != null)
+                    _button.onClick.AddListener(Push);
+                else
+                    _button.onClick.AddListener(Pop);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_autoSubscribeToButtonClickEvent)
+            {
+                if (_button == null) return;
+
+                if (_page != null)
+                    _button.onClick.RemoveListener(Push);
+                else
+                    _button.onClick.RemoveListener(Pop);
+            }
         }
 
         /// <summary>
