@@ -95,6 +95,8 @@ namespace ARKitect.UI.Items
             if (index < 0) { Logger.LogError("Index is negative."); return; }
             if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
 
+            if (slotCache[index] is UIItemLibrarySlot) { (slotCache[index] as UIItemLibrarySlot).RefreshItemVisuals(); return; }
+
             slotCache[index].RefreshItemVisuals();
         }
 
@@ -105,6 +107,8 @@ namespace ARKitect.UI.Items
         {
             foreach (var slot in slotCache)
             {
+                if (slot is UIItemLibrarySlot) { (slot as UIItemLibrarySlot).RefreshItemVisuals(); continue; }
+
                 slot.RefreshItemVisuals();
             }
         }
@@ -183,7 +187,7 @@ namespace ARKitect.UI.Items
         /// Remove a slot and update slot indices accordingly
         /// </summary>
         /// <param name="index"></param>
-        protected void RemoveSlot(int index)
+        public void RemoveSlot(int index)
         {
             if (index < 0) { Logger.LogError("Index is negative."); return; }
             if (index > slotCache.Count - 1) { Logger.LogError("Index is too big."); return; }
