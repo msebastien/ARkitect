@@ -32,7 +32,7 @@ namespace ARKitect.Core
         [Header("Event")]
         [SerializeField]
         private UnityEvent _onItemCatalogLoaded;
-        public static UnityEvent OnItemCatalogLoaded => Instance._onItemCatalogLoaded;
+        public UnityEvent OnItemCatalogLoaded => _onItemCatalogLoaded;
 
 
         private InternalImporter internalImporter;
