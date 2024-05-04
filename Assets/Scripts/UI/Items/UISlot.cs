@@ -13,11 +13,17 @@ namespace ARKitect.UI.Items
     public abstract class UISlot : MonoBehaviour
     {
         [SerializeField]
-        protected Image icon;
+        protected Image _icon;
 
-        protected ItemsController controller;
+        protected ItemsController _controller;
 
-        public int index;
+        [SerializeField]
+        protected int _index;
+        public int Index
+        {
+            get => _index;
+            set => _index = value;
+        }
 
         /// <summary>
         /// Assign an item from an item controller to this slot
@@ -26,9 +32,9 @@ namespace ARKitect.UI.Items
         /// <param name="index">Slot index</param>
         public void Bind(ItemsController controller, int index)
         {
-            this.index = index;
-            this.controller = controller;
-            Identifier itemDefinitionId = controller.Count > index ? controller.GetItemId(index) : new Identifier();
+            _index = index;
+            _controller = controller;
+            Identifier itemDefinitionId = controller.Count > _index ? controller.GetItemId(_index) : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
@@ -37,7 +43,7 @@ namespace ARKitect.UI.Items
         /// </summary>
         public virtual void RefreshItemVisuals()
         {
-            Identifier itemDefinitionId = controller.Count > index ? controller.GetItemId(index) : new Identifier();
+            Identifier itemDefinitionId = _controller.Count > _index ? _controller.GetItemId(_index) : new Identifier();
             ShowItemDefinition(itemDefinitionId);
         }
 
@@ -48,13 +54,13 @@ namespace ARKitect.UI.Items
         public void ShowItemDefinition(Identifier itemDefinitionId)
         {
             // If no Image component is referenced
-            if (icon == null) { Logger.LogError("Icon is null"); return; }
+            if (_icon == null) { Logger.LogError("Icon is null"); return; }
 
             // If the identifier is undefined, it means the slot is empty : there is no valid item assigned to it
             if (itemDefinitionId.IsUndefined)
             {
-                icon.sprite = null;
-                icon.color = Color.clear;
+                _icon.sprite = null;
+                _icon.color = Color.clear;
                 return;
             }
 
@@ -63,14 +69,26 @@ namespace ARKitect.UI.Items
 
             if (itemDefinition == null)
             {
-                icon.sprite = null;
-                icon.color = Color.clear;
+                _icon.sprite = null;
+                _icon.color = Color.clear;
                 Logger.LogError($"Item {itemDefinitionId} not found in catalog.");
                 return;
             }
 
-            icon.sprite = itemDefinition.Icon;
-            icon.color = Color.white;
+            _icon.sprite = itemDefinition.Icon;
+            _icon.color = Color.white;
+        }
+
+        /// <summary>
+        /// Swap the items in slot1 and slot2
+        /// </summary>
+        /// <param name="slot1"></param>
+        /// <param name="slot2"></param>
+        protected void Swap(UISlot slot1, UISlot slot2)
+        {
+            _controller.Swap(slot1._index, slot2._index);
+            slot1.RefreshItemVisuals();
+            slot2.RefreshItemVisuals();
         }
 
     }

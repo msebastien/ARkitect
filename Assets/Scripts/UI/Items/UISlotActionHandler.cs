@@ -42,7 +42,7 @@ namespace ARKitect.UI.Items
         {
             if (_toggleButton != null)
             {
-                var initialActionState = _slotActions.GetActionInitialState(_action);
+                var initialActionState = _slotActions.GetActionState(_action);
                 _toggleButton.Init(initialActionState);
             }
         }

@@ -202,8 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f169e580f252db24baaf5def4fa103e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 4184964355354111595}
-  index: 0
+  _icon: {fileID: 4184964355354111595}
+  _index: 0
   _modalId: 
   _iconFavorite: {fileID: 5751351477863443855}
   _iconFavoriteColor: {fileID: 11400000, guid: f493c532c537d2842b445f4d6e4a863c, type: 2}

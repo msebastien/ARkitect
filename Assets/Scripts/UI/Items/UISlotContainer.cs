@@ -8,7 +8,7 @@ using Logger = ARKitect.Core.Logger;
 namespace ARKitect.UI.Items
 {
     /// <summary>
-    /// Instantiate slots and assign slots to items
+    /// Instantiate slots and bind slots to indices
     /// </summary>
     [RequireComponent(typeof(ItemsController))]
     public abstract class UISlotContainer : MonoBehaviour

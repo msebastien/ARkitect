@@ -41,7 +41,7 @@ namespace ARKitect.UI.Items
 
             if (_iconFavorite != null)
             {
-                if (PrefabsManager.Items[controller.GetItemId(index)].MarkedAsFavorite)
+                if (PrefabsManager.Items[_controller.GetItemId(_index)].MarkedAsFavorite)
                     _iconFavorite.color = _iconFavoriteColor._color;
                 else
                     _iconFavorite.color = Color.clear;
@@ -52,7 +52,7 @@ namespace ARKitect.UI.Items
         {
             UIModalContainer.Instance.Push(_modalId, true, (modal) =>
             {
-                var itemId = controller.GetItemId(index);
+                var itemId = _controller.GetItemId(_index);
 
                 var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
                 if (itemInfo != null)
@@ -63,7 +63,7 @@ namespace ARKitect.UI.Items
                     itemSlotActions.SetItemSlot(this, itemId);
             });
 
-            Logger.LogInfo($"Item '{controller.GetItemId(index)}' clicked");
+            Logger.LogInfo($"Item '{_controller.GetItemId(_index)}' clicked");
         }
     }
 

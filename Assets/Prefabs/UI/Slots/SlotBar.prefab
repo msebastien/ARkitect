@@ -217,8 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93fde1a8d8426e645989212843298f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 2574877463475307416}
-  index: 0
+  _icon: {fileID: 2574877463475307416}
+  _index: 0
 --- !u!222 &7929356499841276853
 CanvasRenderer:
   m_ObjectHideFlags: 0

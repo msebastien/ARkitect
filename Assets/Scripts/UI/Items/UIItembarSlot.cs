@@ -16,7 +16,7 @@ namespace ARKitect.UI.Items
     {
         public void OnBeginDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.SetIcon(icon.sprite);
+            DragIcon.Instance.SetIcon(_icon.sprite);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -47,7 +47,7 @@ namespace ARKitect.UI.Items
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
                 // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                controller.Spawn(index, hit.point);
+                _controller.Spawn(_index, hit.point);
                 return true;
             }
             return false;
@@ -72,13 +72,6 @@ namespace ARKitect.UI.Items
             }
 
             return false;
-        }
-
-        private void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
-        {
-            controller.Swap(slot1.index, slot2.index);
-            slot1.RefreshItemVisuals();
-            slot2.RefreshItemVisuals();
         }
 
     }

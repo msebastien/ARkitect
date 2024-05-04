@@ -61,8 +61,8 @@ namespace ARKitect.UI.Items
                 _container = _slot.gameObject.GetComponentInParent<UISlotContainer>();
             }
 
-            if (_slotIndex != slot.index)
-                _slotIndex = slot.index;
+            if (_slotIndex != slot.Index)
+                _slotIndex = slot.Index;
 
             if (_itemId != itemId)
                 _itemId = itemId;
@@ -75,7 +75,7 @@ namespace ARKitect.UI.Items
             slotActionHandlerCache.ForEach((slotActionHandler) => slotActionHandler.Init());
         }
 
-        public bool GetActionInitialState(SlotActionType slotAction)
+        public bool GetActionState(SlotActionType slotAction)
         {
             bool state = false;
 
