@@ -127,7 +127,7 @@ namespace ARKitect.UI
             _button.onClick.RemoveListener(Toggle);
         }
 
-        public void Init(bool toggle)
+        public void SetToggle(bool toggle)
         {
             if (!_enableToggleEvent && !_enableToggleAppearance)
                 _toggle = false;
