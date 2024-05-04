@@ -9,7 +9,7 @@ using Logger = ARKitect.Core.Logger;
 namespace ARKitect.Items
 {
     /// <summary>
-    /// Assign items to slots
+    /// Assign item identifiers to slot indices
     /// </summary>
     public class ItemsController : MonoBehaviour
     {
