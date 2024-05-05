@@ -161,7 +161,7 @@ namespace ARKitect.UI.Page
             enterPage.Init((RectTransform)transform);
 
             // Retrieve Exit page
-            var exitPageId = _orderedPageIds.Count == 0 ? null : _orderedPageIds[_pages.Count - 1];
+            var exitPageId = _orderedPageIds.Count == 0 ? null : _orderedPageIds[_orderedPageIds.Count - 1];
             var exitPage = exitPageId == null ? null : _pages[exitPageId];
 
             // Preprocess
