@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 6530352696896452674}
   - component: {fileID: 7110246301024198262}
   - component: {fileID: 363700968665981238}
+  - component: {fileID: 5700650222121130761}
   - component: {fileID: 1111303262731847277}
   - component: {fileID: 1703908258611384790}
   m_Layer: 5
@@ -374,9 +375,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slot: {fileID: 0}
+  _container: {fileID: 0}
   _slotIndex: 0
   _itemShortcutBar: {fileID: 0}
   _itemInfoPage: {fileID: 0}
+  _onNonToggleableActionExecuteEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5700650222121130761}
+        m_TargetAssemblyTypeName: ARKitect.UI.Modal.UIModalEventHandler, Assembly-CSharp
+        m_MethodName: Pop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5700650222121130761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4870042077701839593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f6b2f2eb8d52b48af072a1097935b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoSubscribeToButtonClickEvent: 0
+  _container: {fileID: 0}
+  _modal: {fileID: 0}
 --- !u!114 &1111303262731847277
 MonoBehaviour:
   m_ObjectHideFlags: 0

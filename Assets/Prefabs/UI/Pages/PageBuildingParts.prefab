@@ -114,9 +114,9 @@ MonoBehaviour:
   slotsParent: {fileID: 5760252610777474482}
   slotPrefab: {fileID: 6710314028526160557, guid: ba095530addaa94448517584b35ecdaf,
     type: 3}
+  itemModalWindow: {fileID: 0}
   filterButtonsParent: {fileID: 8436420004784692589}
   defaultSelectedButton: {fileID: 4197222642359943543}
-  itemInfoModal: {fileID: 0}
 --- !u!222 &6309307781992511104
 CanvasRenderer:
   m_ObjectHideFlags: 0

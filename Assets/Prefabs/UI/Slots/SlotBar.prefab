@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.75, g: 0.9090909, b: 1, a: 1}
+  m_Color: {r: 0.95, g: 0.95, b: 0.95, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -217,8 +217,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93fde1a8d8426e645989212843298f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _icon: {fileID: 2574877463475307416}
+  _itemIcon: {fileID: 2574877463475307416}
   _index: 0
+  _isSlotPressable: 1
+  _slotImage: {fileID: 1630286578268249014}
+  _defaultColor: {fileID: 0}
+  _pressedColor: {fileID: 0}
+  _clickedColor: {fileID: 0}
+  _modalId: 
 --- !u!222 &7929356499841276853
 CanvasRenderer:
   m_ObjectHideFlags: 0
