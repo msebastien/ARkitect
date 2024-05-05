@@ -695,7 +695,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -765,7 +765,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 200, y: -100}
-  m_SizeDelta: {x: 550, y: 64}
+  m_SizeDelta: {x: 650, y: 64}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7581359058294419371
 CanvasRenderer:
@@ -1554,7 +1554,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7077264234185865637}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2284,12 +2284,12 @@ PrefabInstance:
     - target: {fileID: 1478051712821761669, guid: 21a57874f253f284a880d0a8415cea41,
         type: 3}
       propertyPath: m_Size
-      value: 0.7423574
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1478051712821761669, guid: 21a57874f253f284a880d0a8415cea41,
         type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4906781814759695744, guid: 21a57874f253f284a880d0a8415cea41,
         type: 3}

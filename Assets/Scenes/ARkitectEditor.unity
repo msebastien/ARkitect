@@ -3345,11 +3345,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1869646192330574078, guid: 1ee52d9f894f8d84abaff0535d892718,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2179240330784769504, guid: 1ee52d9f894f8d84abaff0535d892718,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3530,16 +3525,6 @@ PrefabInstance:
       propertyPath: _container
       value: 
       objectReference: {fileID: 1413565736}
-    - target: {fileID: 6807585675752517167, guid: 1ee52d9f894f8d84abaff0535d892718,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6807585675752517167, guid: 1ee52d9f894f8d84abaff0535d892718,
-        type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7077264234185865637, guid: 1ee52d9f894f8d84abaff0535d892718,
         type: 3}
       propertyPath: m_Name
