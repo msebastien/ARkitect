@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
-using ARKitect.Items;
 using ARKitect.Core;
-using Logger = ARKitect.Core.Logger;
+using ARKitect.Items;
 using ARKitect.UI.Page;
+using Logger = ARKitect.Core.Logger;
 
 
 namespace ARKitect.UI.Items
@@ -27,6 +28,8 @@ namespace ARKitect.UI.Items
         private UISlot _slot;
         public UISlot Slot => _slot;
 
+        [SerializeField]
+        [ReadOnly]
         private UISlotContainer _container;
 
         [SerializeField]
@@ -41,6 +44,8 @@ namespace ARKitect.UI.Items
         private UIItembar _itemShortcutBar;
         [SerializeField]
         private UIPage _itemInfoPage;
+
+        public UnityEvent _onNonToggleableActionExecuteEvent;
 
         private List<UISlotActionHandler> slotActionHandlerCache = new List<UISlotActionHandler>();
 
@@ -125,7 +130,10 @@ namespace ARKitect.UI.Items
         private void RemoveOrClearSlot()
         {
             if (_container != null)
+            {
                 _container.RemoveSlot(_slotIndex);
+                _onNonToggleableActionExecuteEvent.Invoke();
+            }    
         }
 
         private void ToggleFavorite(bool toggle)
@@ -144,12 +152,18 @@ namespace ARKitect.UI.Items
         private void AddShortcut()
         {
             if (_itemShortcutBar != null)
+            {
                 _itemShortcutBar.AddSlot(_itemId);
+                _onNonToggleableActionExecuteEvent.Invoke();
+            }
         }
 
         private void DisplayInfo()
         {
             if (_itemInfoPage == null) return;
+
+            _onNonToggleableActionExecuteEvent.Invoke();
+
             UIPageContainer.Instance.Push(_itemInfoPage.Id, true, (page) =>
             {
                 var itemInfo = page.gameObject.GetComponent<UIItemInfo>();
