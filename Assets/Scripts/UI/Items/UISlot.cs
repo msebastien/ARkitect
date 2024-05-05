@@ -1,19 +1,25 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using ARKitect.Core;
+using ARKitect.Coroutine;
 using ARKitect.Items;
+using ARKitect.UI.Colors;
 using Logger = ARKitect.Core.Logger;
+
 
 namespace ARKitect.UI.Items
 {
     /// <summary>
     /// Base class for creating item slots for various purposes
     /// </summary>
-    public abstract class UISlot : MonoBehaviour
+    public abstract class UISlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
+        [Header("Slot")]
         [SerializeField]
-        protected Image _icon;
+        protected Image _itemIcon;
 
         protected ItemsController _controller;
 
@@ -24,6 +30,96 @@ namespace ARKitect.UI.Items
             get => _index;
             set => _index = value;
         }
+
+        [Header("Config")]
+        [SerializeField]
+        protected bool _isSlotPressable = true;
+
+        [Header("Pressable Slot: States")]
+        [SerializeField]
+        protected Image _slotImage;
+        [SerializeField]
+        protected UIColor _defaultColor;
+        [SerializeField]
+        protected UIColor _pressedColor;
+        [SerializeField]
+        protected UIColor _clickedColor;
+        protected bool _isPressed = false;
+
+        [Header("Modal window")]
+        [SerializeField]
+        [Tooltip("Id of the Modal window to open when clicking this slot")]
+        protected string _modalId = "";
+        public string ModalId
+        {
+            get => _modalId;
+            set => _modalId = value;
+        }
+
+        protected virtual void Start()
+        {
+            // Slot states
+            if (_defaultColor == null)
+            {
+                _defaultColor = (UIColor)ScriptableObject.CreateInstance(typeof(UIColor));
+                _defaultColor.color = UIColors.White2;
+            }
+
+            if (_pressedColor == null)
+            {
+                _pressedColor = (UIColor)ScriptableObject.CreateInstance(typeof(UIColor));
+                _pressedColor.color = UIColors.Blue;
+            }
+
+            if (_clickedColor == null)
+            {
+                _clickedColor = (UIColor)ScriptableObject.CreateInstance(typeof(UIColor));
+                _clickedColor.color = UIColors.Green;
+            }
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (_isSlotPressable && !_isPressed)
+            {
+                _isPressed = true;
+                _slotImage.color = _pressedColor.color;
+                CoroutineManager.Instance.Run(LongPressToClickRoutine());
+            }
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            if (_isSlotPressable && _isPressed)
+                Reset();
+        }
+
+        public IEnumerator LongPressToClickRoutine()
+        {
+            if (!_isPressed) yield break;
+
+            yield return new WaitForSecondsRealtime(0.5F);
+            if (!_isPressed) yield break;
+            _slotImage.color = _clickedColor.color;
+
+            yield return new WaitForSecondsRealtime(0.15F);
+            if (!_isPressed) yield break;
+            OpenModalWindow();
+
+            yield return new WaitForSecondsRealtime(0.15F);
+            Reset();
+        }
+
+        /// <summary>
+        /// Set the slot in its default state (not pressed) and color
+        /// </summary>
+        public void Reset()
+        {
+            _isPressed = false;
+            _slotImage.color = _defaultColor.color;
+        }
+
+        protected abstract void OpenModalWindow();
 
         /// <summary>
         /// Assign an item from an item controller to this slot
@@ -54,13 +150,13 @@ namespace ARKitect.UI.Items
         public void ShowItemDefinition(Identifier itemDefinitionId)
         {
             // If no Image component is referenced
-            if (_icon == null) { Logger.LogError("Icon is null"); return; }
+            if (_itemIcon == null) { Logger.LogError("Icon is null"); return; }
 
             // If the identifier is undefined, it means the slot is empty : there is no valid item assigned to it
             if (itemDefinitionId.IsUndefined)
             {
-                _icon.sprite = null;
-                _icon.color = Color.clear;
+                _itemIcon.sprite = null;
+                _itemIcon.color = Color.clear;
                 return;
             }
 
@@ -69,14 +165,14 @@ namespace ARKitect.UI.Items
 
             if (itemDefinition == null)
             {
-                _icon.sprite = null;
-                _icon.color = Color.clear;
+                _itemIcon.sprite = null;
+                _itemIcon.color = Color.clear;
                 Logger.LogError($"Item {itemDefinitionId} not found in catalog.");
                 return;
             }
 
-            _icon.sprite = itemDefinition.Icon;
-            _icon.color = Color.white;
+            _itemIcon.sprite = itemDefinition.Icon;
+            _itemIcon.color = Color.white;
         }
 
         /// <summary>

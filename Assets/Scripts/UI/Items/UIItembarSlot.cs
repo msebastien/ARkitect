@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
@@ -16,7 +16,8 @@ namespace ARKitect.UI.Items
     {
         public void OnBeginDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.SetIcon(_icon.sprite);
+            if (_isSlotPressable) _isPressed = false; // slot is not pressed but its item is dragged
+            DragIcon.Instance.SetIcon(_itemIcon.sprite);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -31,7 +32,12 @@ namespace ARKitect.UI.Items
             else
                 Logger.LogInfo("No item dropped");
 
+            // Reset drag icon
             DragIcon.Instance.Clear();
+
+            // Reset slot
+            if (_isSlotPressable)
+                Reset();
         }
 
         private bool DropOnGround()
@@ -72,6 +78,24 @@ namespace ARKitect.UI.Items
             }
 
             return false;
+        }
+
+        protected override void OpenModalWindow()
+        {
+            UIModalContainer.Instance.Push(_modalId, true, (modal) =>
+            {
+                var itemId = _controller.GetItemId(_index);
+
+                var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
+                if (itemInfo != null)
+                    itemInfo.ItemId = itemId.ToString();
+
+                var itemSlotActions = modal.gameObject.GetComponent<UISlotActions>();
+                if (itemSlotActions != null)
+                    itemSlotActions.SetItemSlot(this, itemId);
+            });
+
+            Logger.LogInfo($"Item '{_controller.GetItemId(_index)}' clicked");
         }
 
     }

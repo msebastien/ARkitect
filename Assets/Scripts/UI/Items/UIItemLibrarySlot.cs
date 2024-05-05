@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 using ARKitect.Core;
 using ARKitect.UI.Modal;
@@ -13,26 +12,21 @@ namespace ARKitect.UI.Items
     /// Manage a item slot in library
     /// </summary>
     [AddComponentMenu("ARkitect/UI/Slots/Item library slot")]
-    public class UIItemLibrarySlot : UISlot, IPointerDownHandler
+    public class UIItemLibrarySlot : UISlot
     {
-        [SerializeField]
-        [Tooltip("Id of the Modal window displaying info about items")]
-        private string _modalId;
-        public string ModalId
-        {
-            get => _modalId;
-            set => _modalId = value;
-        }
-
         [Header("Favorite")]
         [SerializeField]
         private Image _iconFavorite;
         [SerializeField]
         private UIColor _iconFavoriteColor;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             _iconFavorite.color = Color.clear;
+            if (_iconFavoriteColor == null)
+                _iconFavoriteColor.color = UIColors.Yellow;
         }
 
         public override void RefreshItemVisuals()
@@ -42,13 +36,13 @@ namespace ARKitect.UI.Items
             if (_iconFavorite != null)
             {
                 if (PrefabsManager.Items[_controller.GetItemId(_index)].MarkedAsFavorite)
-                    _iconFavorite.color = _iconFavoriteColor._color;
+                    _iconFavorite.color = _iconFavoriteColor.color;
                 else
                     _iconFavorite.color = Color.clear;
             }
         }
 
-        public void OnPointerDown(PointerEventData eventData)
+        protected override void OpenModalWindow()
         {
             UIModalContainer.Instance.Push(_modalId, true, (modal) =>
             {
@@ -65,6 +59,7 @@ namespace ARKitect.UI.Items
 
             Logger.LogInfo($"Item '{_controller.GetItemId(_index)}' clicked");
         }
+
     }
 
 }
