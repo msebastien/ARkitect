@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -154,7 +153,7 @@ namespace ARKitect.Items
                 index = UsedCapacity - 1;
 
                 int firstEmptySlot = FindIndex(new Identifier());
-                if (firstEmptySlot != -1)
+                if (firstEmptySlot != -1 && firstEmptySlot <= index)
                     index = firstEmptySlot;
 
                 itemDefinitions[index] = itemId;
