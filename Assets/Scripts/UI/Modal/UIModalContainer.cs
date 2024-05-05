@@ -129,6 +129,8 @@ namespace ARKitect.UI.Modal
 
         private IEnumerator PushRoutine(string modalId, bool playAnimation, Action<UIModal> onLoad = null)
         {
+            if (String.IsNullOrEmpty(modalId)) { Logger.LogInfo("Modal Id is null or empty!"); yield break; }
+
             if (IsInTransition)
                 throw new InvalidOperationException(
                     "Cannot transition because the screen is already in transition.");

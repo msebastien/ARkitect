@@ -126,6 +126,8 @@ namespace ARKitect.UI.Page
 
         private IEnumerator PushRoutine(string pageId, bool playAnimation, Action<UIPage> onLoad = null)
         {
+            if (String.IsNullOrEmpty(pageId)) { Logger.LogInfo("Page Id is null or empty!"); yield break; }
+
             if (IsInTransition)
                 throw new InvalidOperationException(
                     "Cannot transition because the screen is already in transition.");
