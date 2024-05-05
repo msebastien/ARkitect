@@ -8,6 +8,30 @@ namespace ARKitect.UI.Colors
     /// </summary>
     public static class UIColors
     {
+        /// <summary>
+        /// 100% White
+        /// </summary>
+        public static Color White
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return new Color(1.0F, 1.0F, 1.0F);
+            }
+        }
+
+        /// <summary>
+        /// 95% White
+        /// </summary>
+        public static Color White2
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return new Color(0.95F, 0.95F, 0.95F);
+            }
+        }
+
         public static Color Blue
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -31,7 +55,7 @@ namespace ARKitect.UI.Colors
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                return new Color(1.0F, 0.2138811F, 0.1921569F);
+                return new Color(1.0F, 0.21568628F, 0.19215687F);
             }
         }
 

@@ -98,10 +98,10 @@ namespace ARKitect.UI
             if (_useColorScriptableObject)
             {
                 if (_defaultColorScriptableObject != null)
-                    _defaultColor = _defaultColorScriptableObject._color;
+                    _defaultColor = _defaultColorScriptableObject.color;
 
                 if (_toggleColorScriptableObject != null)
-                    _toggleColor = _toggleColorScriptableObject._color;
+                    _toggleColor = _toggleColorScriptableObject.color;
             }
 
             // Override button default color

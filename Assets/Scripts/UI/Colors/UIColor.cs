@@ -7,7 +7,7 @@ namespace ARKitect.UI.Colors
     [CreateAssetMenu(fileName = "ARkitect_Color", menuName = "ARkitect/Color Scriptable Object")]
     public class UIColor : ScriptableObject
     {
-        public Color _color;
+        public Color color;
     }
 
 }
