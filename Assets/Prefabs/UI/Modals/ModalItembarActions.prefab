@@ -171,12 +171,21 @@ MonoBehaviour:
   _authorText: {fileID: 0}
   _typeText: {fileID: 0}
   _iconImage: {fileID: 0}
+  _categoryText: {fileID: 0}
+  _builtinText: {fileID: 0}
+  _descriptionText: {fileID: 0}
   _defaultNameText: 'Item: [Name]'
   _defaultAuthorText: By <i>[Author]</i>
   _defaultTypeText: '[Type]'
+  _defaultCategoryText: '[Category]'
+  _defaultBuiltinText: '[Builtin]'
+  _defaultDescriptionText: '[Description]'
   _placeholderName: '[Name]'
   _placeholderAuthor: '[Author]'
   _placeholderType: '[Type]'
+  _placeholderCategory: '[Category]'
+  _placeholderBuiltin: '[Builtin]'
+  _placeholderDescription: '[Description]'
 --- !u!225 &1572547893697924681
 CanvasGroup:
   m_ObjectHideFlags: 0
