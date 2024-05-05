@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-using ARKitect.Items;
 using Logger = ARKitect.Core.Logger;
 
 
@@ -16,7 +13,7 @@ namespace ARKitect.UI.Items
     public class UIItembar : UISlotContainer
     {
         // Total number of slots instantiated
-        public const byte MaxSlotCount = 7;
+        public const byte MaxSlotCount = 8;
 
         [Header("Config")]
         [Range(1, MaxSlotCount)]
@@ -54,6 +51,9 @@ namespace ARKitect.UI.Items
 
             if (loadDefaultItems) itemsController.LoadDefaultItems();
             RefreshSlots();
+
+            AddModalIdToSlots();
+
             Logger.LogInfo("Item bar loaded!");
         }
 
@@ -63,7 +63,7 @@ namespace ARKitect.UI.Items
             // Check if the number of active slots has changed
             if (numSlots != currNumSlots)
             {
-                UpdateSlots();
+                UpdateActiveSlots();
                 itemsController.UsedCapacity = numSlots;
                 currNumSlots = numSlots;
             }
@@ -86,7 +86,7 @@ namespace ARKitect.UI.Items
         /// <summary>
         /// Toggle slots based on the number of active slots
         /// </summary>
-        private void UpdateSlots()
+        private void UpdateActiveSlots()
         {
             for (byte i = 0; i < MaxSlotCount; i++)
             {

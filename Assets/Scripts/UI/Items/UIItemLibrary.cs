@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using ARKitect.Core;
 using ARKitect.Items;
-using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
@@ -30,10 +28,6 @@ namespace ARKitect.UI.Items
         private GameObject selectedFilterButton;
         private string selectedFilterButtonName;
 
-        [Header("Modal")]
-        [SerializeField]
-        [Tooltip("Modal window displaying info about items")]
-        private UIModal itemInfoModal;
 
         protected override void Awake()
         {
@@ -54,7 +48,7 @@ namespace ARKitect.UI.Items
             InstantiateSlots(PrefabsManager.Items.Count);
             BindSlots();
 
-            FillSlots();
+            FillSlots(PrefabsManager.Items.Keys);
             RefreshSlots();
 
             AddModalIdToSlots();
@@ -122,26 +116,6 @@ namespace ARKitect.UI.Items
             foreach (var filterButton in filterButtons)
             {
                 filterButton.onClick.RemoveAllListeners();
-            }
-        }
-
-        /// <summary>
-        /// Fill slots with items from the item catalog
-        /// </summary>
-        private void FillSlots()
-        {
-            foreach (var itemId in PrefabsManager.Items.Keys)
-            {
-                itemsController.Add(itemId);
-            }
-        }
-
-        private void AddModalIdToSlots()
-        {
-            foreach (var slot in slotCache)
-            {
-                var itemLibrarySlot = (UIItemLibrarySlot)slot;
-                itemLibrarySlot.ModalId = itemInfoModal.Id;
             }
         }
 

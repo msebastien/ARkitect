@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using ARKitect.Items;
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
@@ -22,6 +22,11 @@ namespace ARKitect.UI.Items
         protected Transform slotsParent;
         [SerializeField]
         protected UISlot slotPrefab;
+
+        [Header("Modal")]
+        [SerializeField]
+        [Tooltip("Modal window displayed when the slot is pressed")]
+        private UIModal itemModalWindow;
 
         // Keep references to slots internally to avoid looking for them
         // with FindObjectOfType<T>(), which is terribly inefficient, or GetComponentsInChildren<T>()
@@ -110,6 +115,29 @@ namespace ARKitect.UI.Items
                 if (slot is UIItemLibrarySlot) { (slot as UIItemLibrarySlot).RefreshItemVisuals(); continue; }
 
                 slot.RefreshItemVisuals();
+            }
+        }
+
+        /// <summary>
+        /// Fill slots with items from a collection (ex: list)
+        /// </summary>
+        protected void FillSlots(IEnumerable<Identifier> collection)
+        {
+            foreach (var itemId in collection)
+            {
+                itemsController.Add(itemId);
+            }
+        }
+
+        /// <summary>
+        /// Add the Id of the modal window to open
+        /// </summary>
+        protected void AddModalIdToSlots()
+        {
+            foreach (var slot in slotCache)
+            {
+                var itemSlot = slot;
+                itemSlot.ModalId = itemModalWindow.Id;
             }
         }
 
