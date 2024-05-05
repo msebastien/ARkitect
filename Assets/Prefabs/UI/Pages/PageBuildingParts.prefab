@@ -706,8 +706,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 20
-    m_Right: 15
+    m_Left: 40
+    m_Right: 40
     m_Top: 20
     m_Bottom: 20
   m_ChildAlignment: 0
@@ -2331,6 +2331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3661421f7780a334e8869efe6c5f14d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _autoSubscribeToButtonClickEvent: 0
   _container: {fileID: 0}
   _page: {fileID: 0}
 --- !u!224 &3260026680268186719 stripped
