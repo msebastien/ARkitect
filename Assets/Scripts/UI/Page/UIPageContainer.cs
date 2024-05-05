@@ -30,6 +30,9 @@ namespace ARKitect.UI.Page
         [SerializeField]
         private bool _enableControlInteractionsOfAllContainers;
 
+        [SerializeField]
+        private GameObject _background;
+
         /// <summary>
         ///     True if in transition.
         /// </summary>
@@ -165,19 +168,28 @@ namespace ARKitect.UI.Page
             var exitPage = exitPageId == null ? null : _pages[exitPageId];
 
             // Preprocess
-            exitPage?.BeforeExit(true, enterPage);
-            enterPage.BeforeEnter(true, exitPage);
+            //exitPage?.BeforeExit(true, enterPage);
+            //enterPage.BeforeEnter(true, exitPage);
+            exitPage?.BeforeExit(true);
+            enterPage.BeforeEnter(true);
+
+            // Enable Background, if there is already a page displayed
+            // which is going to exit the screen for the new entering page
+            if(exitPage != null)
+                _background?.SetActive(true);
 
             // Play Animations
             var animationHandles = new List<AsyncProcessHandle>();
             if (exitPage != null)
             {
-                animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
-                animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                //animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
+                //animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
             else
             {
-                animationHandles.Add(enterPage.Enter(enterPage, playAnimation));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
 
             foreach (var coroutineHandle in animationHandles)
@@ -189,8 +201,10 @@ namespace ARKitect.UI.Page
             IsInTransition = false;
 
             // Postprocess
-            exitPage?.AfterExit(enterPage);
-            enterPage.AfterEnter(exitPage);
+            //exitPage?.AfterExit(enterPage);
+            //enterPage.AfterEnter(exitPage);
+            exitPage?.AfterExit();
+            enterPage.AfterEnter();
 
             if (!_enableInteractionInTransition)
             {
@@ -256,19 +270,27 @@ namespace ARKitect.UI.Page
             var enterPage = enterPageId == null ? null : _pages[enterPageId];
 
             // Preprocess
-            exitPage.BeforeExit(false, enterPage);
-            enterPage?.BeforeEnter(false, exitPage);
+            //exitPage.BeforeExit(false, enterPage);
+            //enterPage?.BeforeEnter(false, exitPage);
+            exitPage.BeforeExit(false);
+            enterPage?.BeforeEnter(false);
+
+            // Disable Background, if there is no entering page as the current exiting page is the last one
+            if (enterPage == null)
+                _background?.SetActive(false);
 
             // Play Animations
             var animationHandles = new List<AsyncProcessHandle>();
             if (enterPage != null)
             {
-                animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
-                animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                //animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
+                //animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
             else
             {
-                animationHandles.Add(exitPage.Exit(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
             }
 
             foreach (var coroutineHandle in animationHandles)
@@ -283,8 +305,10 @@ namespace ARKitect.UI.Page
             IsInTransition = false;
 
             // Postprocess
-            exitPage?.AfterExit(enterPage);
-            enterPage?.AfterEnter(exitPage);
+            //exitPage?.AfterExit(enterPage);
+            //enterPage?.AfterEnter(exitPage);
+            exitPage?.AfterExit();
+            enterPage?.AfterEnter();
 
             // Disable Unused/Exited Pages
             for (var i = 0; i < unusedPageIds.Count; i++)
