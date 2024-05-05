@@ -48,6 +48,16 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private Image _iconImage;
 
+        [SerializeField]
+        private TextMeshProUGUI _categoryText;
+
+        [SerializeField]
+        private TextMeshProUGUI _builtinText;
+
+        [SerializeField]
+        private TextMeshProUGUI _descriptionText;
+
+
         [Header("Defaults")]
         [SerializeField]
         private string _defaultNameText = "[Name]";
@@ -58,6 +68,16 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private string _defaultTypeText = "[Type]";
 
+        [SerializeField]
+        private string _defaultCategoryText = "[Category]";
+
+        [SerializeField]
+        private string _defaultBuiltinText = "[Builtin]";
+
+        [SerializeField]
+        private string _defaultDescriptionText = "[Description]";
+
+
         [Header("Placeholders")]
         [SerializeField]
         private string _placeholderName = "[Name]";
@@ -67,6 +87,15 @@ namespace ARKitect.UI.Items
 
         [SerializeField]
         private string _placeholderType = "[Type]";
+
+        [SerializeField]
+        private string _placeholderCategory = "[Category]";
+
+        [SerializeField]
+        private string _placeholderBuiltin = "[Builtin]";
+
+        [SerializeField]
+        private string _placeholderDescription = "[Description]";
 
 
         private void UpdateItemInfo()
@@ -87,6 +116,15 @@ namespace ARKitect.UI.Items
                 _iconImage.color = Color.white;
                 _iconImage.sprite = item.Icon;
             }
+
+            if (_categoryText != null)
+                _categoryText.text = _categoryText.text.Replace(_placeholderCategory, item.Category.ToString());
+
+            if (_builtinText != null)
+                _builtinText.text = _builtinText.text.Replace(_placeholderBuiltin, item.IsBuiltIn ? "Yes" : "No");
+
+            if (_descriptionText != null)
+                _descriptionText.text = _descriptionText.text.Replace(_placeholderDescription, item.Description);
         }
 
         private void Reset()
@@ -105,6 +143,15 @@ namespace ARKitect.UI.Items
                 _iconImage.color = Color.clear;
                 _iconImage.sprite = null;
             }
+
+            if (_categoryText != null)
+                _categoryText.text = _defaultCategoryText;
+
+            if (_builtinText != null)
+                _builtinText.text = _defaultBuiltinText;
+
+            if (_descriptionText != null)
+                _descriptionText.text = _defaultDescriptionText;
         }
     }
 
