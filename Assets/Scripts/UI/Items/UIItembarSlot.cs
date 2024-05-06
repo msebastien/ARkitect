@@ -17,23 +17,32 @@ namespace ARKitect.UI.Items
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_isSlotPressable) _isPressed = false; // slot is not pressed but its item is dragged
-            DragIcon.Instance.SetIcon(_itemIcon.sprite);
+
+            // Item icon sprite is null when the Item Id is undefined, which means the slot is empty,
+            // so disable drag and drop
+            if (_itemIcon.sprite != null)
+                DragIcon.Instance.SetIcon(_itemIcon.sprite);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.transform.position = eventData.position;
+            if (_itemIcon.sprite != null)
+                DragIcon.Instance.transform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (DropOnItemSlot(eventData) || DropOnGround())
-                Logger.LogInfo("Item Dropped successfully");
-            else
-                Logger.LogInfo("No item dropped");
+            if (_itemIcon.sprite != null)
+            {
+                // Check if item dropped
+                if (DropOnItemSlot(eventData) || DropOnGround())
+                    Logger.LogInfo("Item Dropped successfully");
+                else
+                    Logger.LogInfo("No item dropped");
 
-            // Reset drag icon
-            DragIcon.Instance.Clear();
+                // Reset drag icon
+                DragIcon.Instance.Clear();
+            }
 
             // Reset slot
             if (_isSlotPressable)
@@ -82,10 +91,12 @@ namespace ARKitect.UI.Items
 
         protected override void OpenModalWindow()
         {
+            var itemId = _controller.GetItemId(_index);
+
+            if (itemId.IsUndefined) return; // If the slot is empty, don't open a modal window
+
             UIModalContainer.Instance.Push(_modalId, true, (modal) =>
             {
-                var itemId = _controller.GetItemId(_index);
-
                 var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
                 if (itemInfo != null)
                     itemInfo.ItemId = itemId.ToString();
@@ -95,7 +106,7 @@ namespace ARKitect.UI.Items
                     itemSlotActions.SetItemSlot(this, itemId);
             });
 
-            Logger.LogInfo($"Item '{_controller.GetItemId(_index)}' clicked");
+            Logger.LogInfo($"Item '{itemId}' clicked");
         }
 
     }
