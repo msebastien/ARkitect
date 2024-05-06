@@ -44,10 +44,12 @@ namespace ARKitect.UI.Items
 
         protected override void OpenModalWindow()
         {
+            var itemId = _controller.GetItemId(_index);
+
+            if (itemId.IsUndefined) return; // If the slot is empty, don't open a modal window
+
             UIModalContainer.Instance.Push(_modalId, true, (modal) =>
             {
-                var itemId = _controller.GetItemId(_index);
-
                 var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
                 if (itemInfo != null)
                     itemInfo.ItemId = itemId.ToString();
@@ -57,7 +59,7 @@ namespace ARKitect.UI.Items
                     itemSlotActions.SetItemSlot(this, itemId);
             });
 
-            Logger.LogInfo($"Item '{_controller.GetItemId(_index)}' clicked");
+            Logger.LogInfo($"Item '{itemId}' clicked");
         }
 
     }
