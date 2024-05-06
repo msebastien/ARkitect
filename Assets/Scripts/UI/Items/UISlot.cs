@@ -99,7 +99,7 @@ namespace ARKitect.UI.Items
             if (!_isPressed) yield break;
 
             yield return new WaitForSecondsRealtime(0.5F);
-            if (!_isPressed) yield break;
+            if (!_isPressed || _itemIcon.sprite == null) yield break; // no "clicked" state when the slot is empty
             _slotImage.color = _clickedColor.color;
 
             yield return new WaitForSecondsRealtime(0.15F);
