@@ -8,7 +8,7 @@ namespace ARKitect.Items
     {
         Misc,
         Prop,
-        Texture,
+        Material,
         Foundation,
         Wall
     }
@@ -19,7 +19,7 @@ namespace ARKitect.Items
         Material
     }
 
-    public interface IItem 
+    public interface IItem
     {
         public Sprite Icon { get; }
         public string Name { get; }
@@ -27,6 +27,7 @@ namespace ARKitect.Items
         public ItemCategory Category { get; }
         public string Description { get; }
         public string Author { get; }
+        public bool MarkedAsFavorite { get; set; }
         public bool IsBuiltIn { get; }
     }
 
@@ -61,7 +62,15 @@ namespace ARKitect.Items
         public string Author => author;
 
         [SerializeField]
-        private bool builtin;
+        private bool markedAsFavorite = false;
+        public bool MarkedAsFavorite
+        {
+            get => markedAsFavorite;
+            set => markedAsFavorite = value;
+        }
+
+        [SerializeField]
+        private bool builtin = false;
         public bool IsBuiltIn => builtin;
 
         [SerializeField]

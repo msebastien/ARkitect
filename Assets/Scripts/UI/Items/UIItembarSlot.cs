@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
@@ -16,22 +16,37 @@ namespace ARKitect.UI.Items
     {
         public void OnBeginDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.SetIcon(icon.sprite);
+            if (_isSlotPressable) _isPressed = false; // slot is not pressed but its item is dragged
+
+            // Item icon sprite is null when the Item Id is undefined, which means the slot is empty,
+            // so disable drag and drop
+            if (_itemIcon.sprite != null)
+                DragIcon.Instance.SetIcon(_itemIcon.sprite);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            DragIcon.Instance.transform.position = eventData.position;
+            if (_itemIcon.sprite != null)
+                DragIcon.Instance.transform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (DropOnItemSlot(eventData) || DropOnGround())
-                Logger.LogInfo("Item Dropped successfully");
-            else
-                Logger.LogInfo("No item dropped");
-            
-            DragIcon.Instance.Clear();
+            if (_itemIcon.sprite != null)
+            {
+                // Check if item dropped
+                if (DropOnItemSlot(eventData) || DropOnGround())
+                    Logger.LogInfo("Item Dropped successfully");
+                else
+                    Logger.LogInfo("No item dropped");
+
+                // Reset drag icon
+                DragIcon.Instance.Clear();
+            }
+
+            // Reset slot
+            if (_isSlotPressable)
+                Reset();
         }
 
         private bool DropOnGround()
@@ -42,12 +57,12 @@ namespace ARKitect.UI.Items
             var ray = UnityEngine.Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
 #endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
-            
+
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
                 // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                controller.Spawn(index, hit.point);
+                _controller.Spawn(_index, hit.point);
                 return true;
             }
             return false;
@@ -61,7 +76,7 @@ namespace ARKitect.UI.Items
             foreach (var hit in hits)
             {
                 var droppedSlot = hit.gameObject.GetComponent<UIItemBarSlot>();
-                
+
                 if (droppedSlot)
                 {
                     Logger.LogInfo($"Drag End {droppedSlot?.name}");
@@ -74,13 +89,25 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        public void Swap(UIItemBarSlot slot1, UIItemBarSlot slot2)
+        protected override void OpenModalWindow()
         {
-            controller.Swap(slot1.index, slot2.index);
-            slot1.RefreshItemVisuals();
-            slot2.RefreshItemVisuals();
-        }
+            var itemId = _controller.GetItemId(_index);
 
+            if (itemId.IsUndefined) return; // If the slot is empty, don't open a modal window
+
+            UIModalContainer.Instance.Push(_modalId, true, (modal) =>
+            {
+                var itemInfo = modal.gameObject.GetComponent<UIItemInfo>();
+                if (itemInfo != null)
+                    itemInfo.ItemId = itemId.ToString();
+
+                var itemSlotActions = modal.gameObject.GetComponent<UISlotActions>();
+                if (itemSlotActions != null)
+                    itemSlotActions.SetItemSlot(this, itemId);
+            });
+
+            Logger.LogInfo($"Item '{itemId}' clicked");
+        }
 
     }
 

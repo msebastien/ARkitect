@@ -1,7 +1,4 @@
 using ARKitect.Coroutine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace ARKitect.UI.Page
 {

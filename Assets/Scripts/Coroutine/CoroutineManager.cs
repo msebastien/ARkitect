@@ -9,8 +9,6 @@ namespace ARKitect.Coroutine
 {
     internal class CoroutineManager : Singleton<CoroutineManager>
     {
-        private static CoroutineManager _instance;
-
         private readonly Dictionary<int, UnityEngine.Coroutine> _runningCoroutines =
             new Dictionary<int, UnityEngine.Coroutine>();
 

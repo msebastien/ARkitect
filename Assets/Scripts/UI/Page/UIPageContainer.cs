@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using Unity.VisualScripting;
+using UnityEngine.Assertions;
 
 using ARKitect.Coroutine;
+using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
-using UnityEngine.Assertions;
+
 
 namespace ARKitect.UI.Page
 {
     [AddComponentMenu("ARkitect/UI/Page/Page Container")]
+    [RequireComponent(typeof(CanvasGroup))]
     public class UIPageContainer : Core.Singleton<UIPageContainer>
     {
         private readonly List<string> _orderedPageIds = new List<string>();
@@ -24,6 +26,12 @@ namespace ARKitect.UI.Page
 
         [SerializeField]
         private bool _enableInteractionInTransition;
+
+        [SerializeField]
+        private bool _enableControlInteractionsOfAllContainers;
+
+        [SerializeField]
+        private GameObject _background;
 
         /// <summary>
         ///     True if in transition.
@@ -49,7 +57,14 @@ namespace ARKitect.UI.Page
         private void Awake()
         {
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
+
+            ToggleAllPages(true); // Show/Enable all pages to init them
             RegisterPages();
+        }
+
+        private void Start()
+        {
+            ToggleAllPages(false); // Hide/Disable all pages
         }
 
         private void OnDestroy()
@@ -75,9 +90,18 @@ namespace ARKitect.UI.Page
             }
         }
 
-        public AsyncProcessHandle Push(string pageId, bool playAnimation = true)
+        private void ToggleAllPages(bool enable)
         {
-            return CoroutineManager.Instance.Run(PushRoutine(pageId, playAnimation));
+            var pages = GetComponentsInChildren<UIPage>(true);
+            foreach (var page in pages)
+            {
+                page.gameObject.SetActive(enable);
+            }
+        }
+
+        public AsyncProcessHandle Push(string pageId, bool playAnimation = true, Action<UIPage> onLoad = null)
+        {
+            return CoroutineManager.Instance.Run(PushRoutine(pageId, playAnimation, onLoad));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true, int popCount = 1)
@@ -103,8 +127,10 @@ namespace ARKitect.UI.Page
             return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
         }
 
-        private IEnumerator PushRoutine(string pageId, bool playAnimation)
+        private IEnumerator PushRoutine(string pageId, bool playAnimation, Action<UIPage> onLoad = null)
         {
+            if (String.IsNullOrEmpty(pageId)) { Logger.LogInfo("Page Id is null or empty!"); yield break; }
+
             if (IsInTransition)
                 throw new InvalidOperationException(
                     "Cannot transition because the screen is already in transition.");
@@ -112,7 +138,17 @@ namespace ARKitect.UI.Page
             IsInTransition = true;
 
             if (!_enableInteractionInTransition)
-                Interactable = false;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    Interactable = false;
+                    UIModalContainer.Instance.Interactable = false;
+                }
+                else
+                {
+                    Interactable = false;
+                }
+            }
 
             // Get the enter page reference
             if (String.IsNullOrWhiteSpace(pageId)) yield break;
@@ -124,26 +160,36 @@ namespace ARKitect.UI.Page
             }
 
             // Init
+            onLoad?.Invoke(enterPage);
             enterPage.Init((RectTransform)transform);
 
             // Retrieve Exit page
-            var exitPageId = _orderedPageIds.Count == 0 ? null : _orderedPageIds[_pages.Count - 1];
+            var exitPageId = _orderedPageIds.Count == 0 ? null : _orderedPageIds[_orderedPageIds.Count - 1];
             var exitPage = exitPageId == null ? null : _pages[exitPageId];
 
             // Preprocess
-            exitPage?.BeforeExit(true, enterPage);
-            enterPage.BeforeEnter(true, exitPage);
+            //exitPage?.BeforeExit(true, enterPage);
+            //enterPage.BeforeEnter(true, exitPage);
+            exitPage?.BeforeExit(true);
+            enterPage.BeforeEnter(true);
+
+            // Enable Background, if there is already a page displayed
+            // which is going to exit the screen for the new entering page
+            if(exitPage != null)
+                _background?.SetActive(true);
 
             // Play Animations
             var animationHandles = new List<AsyncProcessHandle>();
             if (exitPage != null)
             {
-                animationHandles.Add(exitPage.Exit(enterPage));
-                animationHandles.Add(enterPage.Enter(exitPage));
+                //animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
+                //animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
             else
             {
-                animationHandles.Add(enterPage.Enter(enterPage));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
 
             foreach (var coroutineHandle in animationHandles)
@@ -155,11 +201,29 @@ namespace ARKitect.UI.Page
             IsInTransition = false;
 
             // Postprocess
-            exitPage?.AfterExit(enterPage);
-            enterPage.AfterEnter(exitPage);
+            //exitPage?.AfterExit(enterPage);
+            //enterPage.AfterEnter(exitPage);
+            exitPage?.AfterExit();
+            enterPage.AfterEnter();
 
             if (!_enableInteractionInTransition)
-                Interactable = true;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    // If there's a container in transition, it should restore Interactive to true when the transition is finished.
+                    // So, do nothing here if there's a transitioning container.
+                    if (!IsInTransition
+                        && !UIModalContainer.Instance.IsInTransition)
+                    {
+                        Interactable = true;
+                        UIModalContainer.Instance.Interactable = true;
+                    }
+                }
+                else
+                {
+                    Interactable = true;
+                }
+            }
         }
 
         private IEnumerator PopRoutine(bool playAnimation, int popCount = 1)
@@ -177,7 +241,17 @@ namespace ARKitect.UI.Page
             IsInTransition = true;
 
             if (!_enableInteractionInTransition)
-                Interactable = false;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    UIModalContainer.Instance.Interactable = false;
+                    Interactable = false;
+                }
+                else
+                {
+                    Interactable = false;
+                }
+            }
 
             var exitPageId = _orderedPageIds[_orderedPageIds.Count - 1];
             var exitPage = _pages[exitPageId];
@@ -196,19 +270,27 @@ namespace ARKitect.UI.Page
             var enterPage = enterPageId == null ? null : _pages[enterPageId];
 
             // Preprocess
-            exitPage.BeforeExit(false, enterPage);
-            enterPage?.BeforeEnter(false, exitPage);
+            //exitPage.BeforeExit(false, enterPage);
+            //enterPage?.BeforeEnter(false, exitPage);
+            exitPage.BeforeExit(false);
+            enterPage?.BeforeEnter(false);
+
+            // Disable Background, if there is no entering page as the current exiting page is the last one
+            if (enterPage == null)
+                _background?.SetActive(false);
 
             // Play Animations
             var animationHandles = new List<AsyncProcessHandle>();
             if (enterPage != null)
             {
-                animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
-                animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                //animationHandles.Add(exitPage.Exit(enterPage, playAnimation));
+                //animationHandles.Add(enterPage.Enter(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
+                animationHandles.Add(enterPage.Enter(playAnimation));
             }
             else
             {
-                animationHandles.Add(exitPage.Exit(exitPage, playAnimation));
+                animationHandles.Add(exitPage.Exit(playAnimation));
             }
 
             foreach (var coroutineHandle in animationHandles)
@@ -223,8 +305,10 @@ namespace ARKitect.UI.Page
             IsInTransition = false;
 
             // Postprocess
-            exitPage?.AfterExit(enterPage);
-            enterPage?.AfterEnter(exitPage);
+            //exitPage?.AfterExit(enterPage);
+            //enterPage?.AfterEnter(exitPage);
+            exitPage?.AfterExit();
+            enterPage?.AfterEnter();
 
             // Disable Unused/Exited Pages
             for (var i = 0; i < unusedPageIds.Count; i++)
@@ -234,7 +318,23 @@ namespace ARKitect.UI.Page
             }
 
             if (!_enableInteractionInTransition)
-                Interactable = true;
+            {
+                if (_enableControlInteractionsOfAllContainers)
+                {
+                    // If there's a container in transition, it should restore Interactive to true when the transition is finished.
+                    // So, do nothing here if there's a transitioning container.
+                    if (!IsInTransition
+                        && !UIModalContainer.Instance.IsInTransition)
+                    {
+                        Interactable = true;
+                        UIModalContainer.Instance.Interactable = true;
+                    }
+                }
+                else
+                {
+                    Interactable = true;
+                }
+            }
         }
     }
 

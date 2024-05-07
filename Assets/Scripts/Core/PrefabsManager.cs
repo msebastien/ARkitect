@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using Unity.VisualScripting;
+using Sirenix.OdinInspector;
 
 using ARKitect.Items;
-using Sirenix.OdinInspector;
 using ARKitect.Items.Import;
 
 namespace ARKitect.Core
@@ -17,15 +18,22 @@ namespace ARKitect.Core
     {
         [Header("Item Catalog")]
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
+        [Tooltip("Map of Item identifiers and Items")]
         [SerializeField]
         private Dictionary<Identifier, IItem> itemCatalog = new Dictionary<Identifier, IItem>();
-        public Dictionary<Identifier, IItem> Items => itemCatalog;
+        public static Dictionary<Identifier, IItem> Items => Instance.itemCatalog;
 
-        // Cached object instances
         [Header("Instances")]
         [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
+        [Tooltip("Cached object instances")]
         [SerializeField]
         private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
+
+        [Header("Event")]
+        [SerializeField]
+        private UnityEvent _onItemCatalogLoaded;
+        public UnityEvent OnItemCatalogLoaded => _onItemCatalogLoaded;
+
 
         private InternalImporter internalImporter;
 
@@ -38,6 +46,7 @@ namespace ARKitect.Core
         {
             // Load built-in items
             itemCatalog.AddRange(internalImporter?.Load());
+            _onItemCatalogLoaded.Invoke();
         }
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace ARKitect.Core
         /// <param name="position">Coordinates in World Space</param>
         /// <param name="parent">Parent transform of this newly instanced object</param>
         public void Spawn(Identifier item, Vector3 position, Transform parent = null)
-        {       
+        {
             if (itemCatalog[item].Type == ItemType.Object)
             {
                 var itemObject = itemCatalog[item] as Item<GameObject>;

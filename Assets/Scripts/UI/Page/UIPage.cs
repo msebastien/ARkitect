@@ -14,11 +14,11 @@ namespace ARKitect.UI.Page
     public class UIPage : MonoBehaviour
     {
         [SerializeField]
+        private bool _useObjectNameAsIdentifier = true;
+
+        [SerializeField]
         private string _identifier;
-        public string Id
-        {
-            get => _identifier;
-        }
+        public string Id => _identifier;
 
         [SerializeField]
         private int _renderingOrder;
@@ -26,6 +26,8 @@ namespace ARKitect.UI.Page
         private CanvasGroup _canvasGroup;
         private RectTransform _parentTransform;
         private RectTransform _rectTransform;
+
+        private Vector2 _pivot = new Vector2(0.0F, 1.0F);
 
         public bool IsTransitioning { get; private set; }
 
@@ -43,21 +45,20 @@ namespace ARKitect.UI.Page
 
         private void Awake()
         {
+            if (_useObjectNameAsIdentifier) _identifier = gameObject.name;
+
             if (_transitions == null)
-            {
-                _transitions = GetComponent<PageTransitionAnimations>();
-                if (_transitions == null)
-                    _transitions = gameObject.AddComponent<UIDefaultPageTransitionAnimations>();
-            }
+                _transitions = gameObject.GetOrAddComponent<UIDefaultPageTransitionAnimations>();
 
         }
 
         internal void Init(RectTransform parentTransform)
         {
             _rectTransform = (RectTransform)transform;
+            _pivot = _rectTransform.pivot;
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
             _parentTransform = parentTransform;
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
 
             // Set order of rendering.
             var siblingIndex = 0;
@@ -66,6 +67,8 @@ namespace ARKitect.UI.Page
                 var child = _parentTransform.GetChild(i);
                 var childPage = child.GetComponent<UIPage>();
                 siblingIndex = i;
+                
+                if (childPage == null) continue;
                 if (_renderingOrder >= childPage._renderingOrder)
                     continue;
 
@@ -77,22 +80,22 @@ namespace ARKitect.UI.Page
             _canvasGroup.alpha = 0.0f;
         }
 
-        internal void BeforeEnter(bool push, UIPage partnerPage)
+        internal void BeforeEnter(bool push)
         {
             IsTransitioning = true;
             _transitionAnimationType =
                 push ? PageTransitionAnimationType.PushEnter : PageTransitionAnimationType.PopEnter;
             gameObject.SetActive(true);
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
             _canvasGroup.alpha = 0.0f; // transparent
         }
 
-        internal AsyncProcessHandle Enter(UIPage partnerPage, bool playAnimation = true)
+        internal AsyncProcessHandle Enter(bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(EnterRoutine(partnerPage, playAnimation));
+            return CoroutineManager.Instance.Run(EnterRoutine(playAnimation));
         }
 
-        private IEnumerator EnterRoutine(UIPage partnerPage, bool playAnimation)
+        private IEnumerator EnterRoutine(bool playAnimation)
         {
             _canvasGroup.alpha = 1.0f; // visible
 
@@ -101,50 +104,50 @@ namespace ARKitect.UI.Page
                 switch (_transitionAnimationType)
                 {
                     case PageTransitionAnimationType.PushEnter:
-                        yield return _transitions.AnimatePushEnter(partnerPage);
+                        yield return _transitions.AnimatePushEnter(this);
                         break;
                     case PageTransitionAnimationType.PopEnter:
-                        yield return _transitions.AnimatePopEnter(partnerPage);
+                        yield return _transitions.AnimatePopEnter(this);
                         break;
                     default:
                         break;
                 }
             }
 
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
         }
 
-        internal void AfterEnter(UIPage partnerPage)
+        internal void AfterEnter()
         {
             IsTransitioning = false;
             _transitionAnimationType = PageTransitionAnimationType.None;
         }
 
-        internal void BeforeExit(bool push, UIPage partnerPage)
+        internal void BeforeExit(bool push)
         {
             IsTransitioning = true;
             _transitionAnimationType = push ? PageTransitionAnimationType.PushExit : PageTransitionAnimationType.PopExit;
             gameObject.SetActive(true);
-            _rectTransform.FillParent(_parentTransform);
+            _rectTransform.FillParent(_parentTransform, _pivot);
             _canvasGroup.alpha = 1.0f;
         }
 
-        internal AsyncProcessHandle Exit(UIPage partnerPage, bool playAnimation = true)
+        internal AsyncProcessHandle Exit(bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(ExitRoutine(partnerPage, playAnimation));
+            return CoroutineManager.Instance.Run(ExitRoutine(playAnimation));
         }
 
-        private IEnumerator ExitRoutine(UIPage partnerPage, bool playAnimation)
+        private IEnumerator ExitRoutine(bool playAnimation)
         {
             if (playAnimation)
             {
                 switch (_transitionAnimationType)
                 {
                     case PageTransitionAnimationType.PushExit:
-                        yield return _transitions.AnimatePushExit(partnerPage);
+                        yield return _transitions.AnimatePushExit(this);
                         break;
                     case PageTransitionAnimationType.PopExit:
-                        yield return _transitions.AnimatePopExit(partnerPage);
+                        yield return _transitions.AnimatePopExit(this);
                         break;
                     default:
                         break;
@@ -154,7 +157,7 @@ namespace ARKitect.UI.Page
             _canvasGroup.alpha = 0.0f; // transparent/hidden
         }
 
-        internal void AfterExit(UIPage partnerPage)
+        internal void AfterExit()
         {
             gameObject.SetActive(false);
             IsTransitioning = false;

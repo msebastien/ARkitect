@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-using ARKitect.Items;
+using Logger = ARKitect.Core.Logger;
 
 
 namespace ARKitect.UI.Items
@@ -12,15 +10,10 @@ namespace ARKitect.UI.Items
     /// Manage the number of instanciated slots in item bar, and assign slots to default items, if desired
     /// </summary>
     [AddComponentMenu("ARkitect/UI/Item bar")]
-    [RequireComponent(typeof(ItemsController))]
-    public class UIItembar : MonoBehaviour
+    public class UIItembar : UISlotContainer
     {
-        [Header("Controller")]
-        [SerializeField]
-        private ItemsController itemsController;
-
         // Total number of slots instantiated
-        public const byte MaxSlotCount = 7;
+        public const byte MaxSlotCount = 8;
 
         [Header("Config")]
         [Range(1, MaxSlotCount)]
@@ -35,63 +28,51 @@ namespace ARKitect.UI.Items
         private byte currNumSlots;
 
         [SerializeField]
-        private Transform slotsParent;
-        [SerializeField]
-        private UIItemBarSlot slotPrefab;
+        private bool loadDefaultItems = true;
 
-        // Keep references to slots internally to avoid looking for them
-        // with FindObjectOfType<T>(), which is terribly inefficient, or GetComponentsInChildren<T>()
-        private List<UIItemBarSlot> slotCache = new List<UIItemBarSlot>();
-
-        private void Awake()
+        protected override void Awake()
         {
-            if (itemsController == null) 
-                itemsController = GetComponent<ItemsController>();
-            
-            itemsController.capacity = MaxSlotCount;
+            base.Awake();
+
+            itemsController.Capacity = MaxSlotCount;
+            itemsController.UsedCapacity = numSlots;
             currNumSlots = numSlots;
         }
 
-        // Start is called before the first frame update
-        void Start()
+        /// <summary>
+        /// Initialize all the slots
+        /// This method is called when all the items have been loaded in the catalog in the PrefabsManager.
+        /// Subscribed to PrefabsManager.OnItemCatalogLoaded() event.
+        /// </summary>
+        public override void Init()
         {
-            InstantiateSlots();
+            InstantiateSlots(MaxSlotCount);
             BindSlots();
-            
-            itemsController.LoadDefaultItems();    
-            foreach (var slot in slotCache)
-            {
-                slot.RefreshItemVisuals();
-            }     
+
+            if (loadDefaultItems) itemsController.LoadDefaultItems();
+            RefreshSlots();
+
+            AddModalIdToSlots();
+
+            Logger.LogInfo("Item bar loaded!");
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             // Check if the number of active slots has changed
             if (numSlots != currNumSlots)
             {
-                UpdateSlots();
+                UpdateActiveSlots();
+                itemsController.UsedCapacity = numSlots;
                 currNumSlots = numSlots;
-            }
-        }
-
-        /// <summary>
-        /// Instantiate specified slot prefab
-        /// </summary>
-        private void InstantiateSlots()
-        {
-            for (byte i = 0; i < MaxSlotCount; i++)
-            {
-                var slot = Instantiate(slotPrefab, slotsParent);
-                slotCache.Add(slot);
             }
         }
 
         /// <summary>
         /// Assign the corresponding index for the ItemsController to the slot
         /// </summary>
-        private void BindSlots()
+        protected override void BindSlots()
         {
             byte i = 0;
             foreach (var slot in slotCache)
@@ -105,7 +86,7 @@ namespace ARKitect.UI.Items
         /// <summary>
         /// Toggle slots based on the number of active slots
         /// </summary>
-        private void UpdateSlots()
+        private void UpdateActiveSlots()
         {
             for (byte i = 0; i < MaxSlotCount; i++)
             {
@@ -120,15 +101,6 @@ namespace ARKitect.UI.Items
             }
         }
 
-        /// <summary>
-        /// Enable or disable the slot at the specified index
-        /// </summary>
-        /// <param name="index">Slot index</param>
-        /// <param name="enable">True to enable, false to disable the slot</param>
-        private void ToggleSlot(byte index, bool enable)
-        {
-            slotCache[index].gameObject.SetActive(enable);
-        }
     }
 
 }

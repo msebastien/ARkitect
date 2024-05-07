@@ -36,10 +36,10 @@ namespace ARKitect.Items
             else
             {
                 Init("", identifierStr);
-            }        
+            }
         }
 
-        private void Init(string namespaceId, string nameId) 
+        private void Init(string namespaceId, string nameId)
         {
             if (!String.IsNullOrWhiteSpace(namespaceId))
                 this.namespaceId = namespaceId.ToLower().Replace(" ", "_");
@@ -50,6 +50,20 @@ namespace ARKitect.Items
         public override string ToString()
         {
             return namespaceId + ":" + nameId;
+        }
+
+        public static bool operator ==(Identifier id1, Identifier id2)
+        {
+            if (id1 is null) { return id2 is null; }
+
+            return id1.Equals(id2);
+        }
+
+        public static bool operator !=(Identifier id1, Identifier id2)
+        {
+            if (id1 is null) { return id2 is not null; }
+
+            return !id1.Equals(id2);
         }
 
         public int CompareTo(Identifier other)
