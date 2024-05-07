@@ -3,6 +3,17 @@ Some rough ideas/plans about what to do next and potentially how to do it:
 - ~~Load Item definitions from json files at runtime~~
 - ~~Move items and building parts' materials, models and icons to the "Resources" folder~~
 - ~~**Implement a StateManager for browsing UI pages.** It will use a "stack" data structure. Push a state to go to a new page, pop the current state to close the page. It is possible to add transition animations when pusing/popping a state. It will be easier than a State Machine as there won't be custom classes for each state. Only a StateManager and State classes are enough. Each page will have a "State" component. Pushing/Popping will be done using UI events, like clicking on a button.~~
-- Implement Item library
-- Implement Command Pattern to undo/redo actions
-- **Use System.IO.Compression to uncompress ZIP archives** containing custom assets and items for the app. This is easier than using Unity's Asset Bundles as it does not require users to use the Unity Editor.
+- ~~Implement Item library~~
+- **Search functionality** in item library
+- **Implement Command Pattern** to undo/redo actions
+- **Select object**
+- **Translate** and **rotate** object
+- **Extrude/Resize** object
+- **Outline shader** for selected object(s)
+- **Show the overlay of physical dimensions** for the selected object such as width, length and height
+- **Select multiple objects** (selection rectangle)
+- **Manage app settings**
+- **AR mode**: show a scale model of the virtual build on a physical surface like a table.
+- **"Immersive" AR mode**: show the virtual build at 1:1 real scale
+- **Save** and **load projects** as well as app settings
+- **Import custom assets** such as objects and materials **using System.IO.Compression to uncompress ZIP archives** for the app. This is easier than using Unity's Asset Bundles as it does not require users to use the Unity Editor.
