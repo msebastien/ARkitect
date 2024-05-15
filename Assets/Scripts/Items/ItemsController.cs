@@ -4,6 +4,7 @@ using UnityEngine;
 
 using ARKitect.Core;
 using Logger = ARKitect.Core.Logger;
+using Sirenix.Utilities;
 
 namespace ARKitect.Items
 {
@@ -239,6 +240,58 @@ namespace ARKitect.Items
         {
             var itemDefinitionId = itemDefinitions[slot];
             PrefabsManager.Instance.Spawn(itemDefinitionId, position, instancesParent);
+        }
+
+        public Dictionary<Identifier, float> Search(string query)
+        {
+            Dictionary<Identifier, float> resultsByItem = new Dictionary<Identifier, float>();
+            if (String.IsNullOrWhiteSpace(query)) return resultsByItem;
+
+            string trimmedQuery = query.Trim();
+            string[] searchTerms = trimmedQuery.Split(' ');
+
+            foreach (var itemId in itemDefinitions)
+            {
+                if (itemId.IsUndefined) continue;
+                var item = PrefabsManager.Items[itemId];
+
+                float weight = 0;
+                float totalWeight = 0;
+                foreach (var term in searchTerms)
+                {
+                    weight += item.Name.CountOccurrences(term) * 1.8F;
+                    weight += item.Author.CountOccurrences(term) * 1.4F;
+                    weight += item.Category.ToString().CountOccurrences(term) * 1.4F;
+                    weight += item.Type.ToString().CountOccurrences(term) * 1.4F;
+                    weight += item.Description.CountOccurrences(term);
+                    weight += string.Join(",", item.Tags).CountOccurrences(term) * 1.4F;
+
+                    if (totalWeight > 0 && weight > 0)
+                    {
+                        weight *= 3.0F;
+                    }
+
+                    if (weight > 0)
+                    {
+                        totalWeight += weight;
+                        weight = 0;
+                    }
+                }
+
+                resultsByItem.Add(itemId, totalWeight);
+            }
+
+            return resultsByItem;
+        }
+
+        public void Sort(Comparison<Identifier> comparison)
+        {
+            itemDefinitions.Sort(comparison);
+        }
+
+        public void SortInAlphabeticalOrder()
+        {
+            itemDefinitions.Sort();
         }
     }
 
