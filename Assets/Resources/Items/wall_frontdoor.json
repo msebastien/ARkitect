@@ -7,6 +7,7 @@
     "category": "Wall",
     "description": "A magnificent wall opening (L=2m,l=30cm,h=3m) for a front door (h=2.15m,l=90cm)",
     "author": "ARKitect",
+    "tags": ["exterior", "front", "opening", "door", "thick", "insulated", "customizable"],
     "resources": [
       {
         "type": "prefab",

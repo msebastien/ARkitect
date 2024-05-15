@@ -1,5 +1,5 @@
 using Sirenix.OdinInspector;
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ARKitect.Items
@@ -28,6 +28,7 @@ namespace ARKitect.Items
         public string Description { get; }
         public string Author { get; }
         public bool MarkedAsFavorite { get; set; }
+        public List<string> Tags { get; }
         public bool IsBuiltIn { get; }
     }
 
@@ -69,6 +70,9 @@ namespace ARKitect.Items
             set => markedAsFavorite = value;
         }
 
+        private List<string> tags = new List<string>();
+        public List<string> Tags => tags;
+
         [SerializeField]
         private bool builtin = false;
         public bool IsBuiltIn => builtin;
@@ -78,7 +82,8 @@ namespace ARKitect.Items
         // Link an item to a command (Command Pattern) ?    
         public T Resource => resource;
 
-        public Item(string name, Sprite icon, ItemType type, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", bool builtin = false)
+        // TODO: Refactor to avoid this extremely big constructor using an ItemBuilder
+        public Item(string name, Sprite icon, ItemType type, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", IEnumerable<string> tags = default, bool builtin = false)
         {
             this.name = name;
             this.icon = icon;
@@ -87,6 +92,7 @@ namespace ARKitect.Items
             this.resource = resource;
             this.description = description;
             this.author = author;
+            this.tags.AddRange(tags);
             this.builtin = builtin;
         }
 

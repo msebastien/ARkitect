@@ -57,6 +57,9 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private TextMeshProUGUI _descriptionText;
 
+        [SerializeField]
+        private TextMeshProUGUI _tagsText;
+
 
         [Header("Defaults")]
         [SerializeField]
@@ -77,6 +80,9 @@ namespace ARKitect.UI.Items
         [SerializeField]
         private string _defaultDescriptionText = "[Description]";
 
+        [SerializeField]
+        private string _defaultTagsText = "[Tags]";
+
 
         [Header("Placeholders")]
         [SerializeField]
@@ -96,6 +102,9 @@ namespace ARKitect.UI.Items
 
         [SerializeField]
         private string _placeholderDescription = "[Description]";
+
+        [SerializeField]
+        private string _placeholderTags = "[Tags]";
 
 
         private void UpdateItemInfo()
@@ -125,6 +134,9 @@ namespace ARKitect.UI.Items
 
             if (_descriptionText != null)
                 _descriptionText.text = _descriptionText.text.Replace(_placeholderDescription, item.Description);
+
+            if (_tagsText != null)
+                _tagsText.text = _tagsText.text.Replace(_placeholderTags, string.Join(", ", item.Tags));
         }
 
         private void Reset()
@@ -152,6 +164,9 @@ namespace ARKitect.UI.Items
 
             if (_descriptionText != null)
                 _descriptionText.text = _defaultDescriptionText;
+
+            if (_tagsText != null)
+                _tagsText.text = _defaultTagsText;
         }
     }
 

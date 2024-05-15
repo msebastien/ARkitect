@@ -7,6 +7,7 @@
     "category": "Foundation",
     "description": "You need this to lay the walls of your house on top of it.",
     "author": "ARKitect",
+    "tags": ["base", "start", "concrete", "stable", "necessary"],
     "resources": [
       {
         "type": "prefab",
