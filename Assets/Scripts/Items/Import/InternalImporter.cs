@@ -40,6 +40,23 @@ namespace ARKitect.Items.Import
         [JsonProperty("author")]
         public string Author { get; set; }
 
+        private List<string> _tags = new List<string>();
+
+        [JsonProperty("tags")]
+        public List<string> Tags
+        {
+            get
+            {
+                if(_tags == null)
+                {
+                    Logger.LogError("InternalImporter: List of Item Tags is null");
+                    _tags = new List<string>();
+                }
+                return _tags;
+            }
+            set { _tags = value; }
+        }
+
         private List<ItemResourceData> _resources = new List<ItemResourceData>();
 
         [JsonProperty("resources")]
@@ -151,6 +168,7 @@ namespace ARKitect.Items.Import
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
+                                                                parsedItemData.Tags,
                                                                 true);
                     parsedItems.Add(parsedItemData.Id, item);
                 }
@@ -162,6 +180,7 @@ namespace ARKitect.Items.Import
                                                                 parsedItemData.Category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
+                                                                parsedItemData.Tags,
                                                                 true);
                     parsedItems.Add(parsedItemData.Id, item);
                 }
