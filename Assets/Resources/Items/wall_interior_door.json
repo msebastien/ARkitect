@@ -7,6 +7,7 @@
     "category": "Wall",
     "description": "A magnificent interior wall opening (L=2m,l=10cm,h=3m) for an interior door (h=2.04m,l=83cm)",
     "author": "ARKitect",
+    "tags": ["interior", "opening", "door", "thin", "customizable", "non-insulated", "angled"],
     "resources": [
       {
         "type": "prefab",

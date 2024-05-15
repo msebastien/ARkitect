@@ -7,6 +7,7 @@
     "category": "Wall",
     "description": "A magnificent wall corner (L=1m,l=30cm,h=3m)",
     "author": "ARKitect",
+    "tags": ["exterior", "thick", "insulated", "customizable", "angled"],
     "resources": [
       {
         "type": "prefab",

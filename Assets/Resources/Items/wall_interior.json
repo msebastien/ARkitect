@@ -7,6 +7,7 @@
     "category": "Wall",
     "description": "A magnificent interior wall (L=1m,l=10cm,h=3m)",
     "author": "ARKitect",
+    "tags": ["interior", "thin", "customizable", "non-insulated","straight"],
     "resources": [
       {
         "type": "prefab",
