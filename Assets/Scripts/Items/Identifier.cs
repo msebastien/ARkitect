@@ -68,6 +68,10 @@ namespace ARKitect.Items
 
         public int CompareTo(Identifier other)
         {
+            if (!IsUndefined && other.IsUndefined) return -1;
+            if (IsUndefined && !other.IsUndefined) return 1;
+            if (IsUndefined && other.IsUndefined) return 0;
+
             return ToString().CompareTo(other?.ToString());
         }
 
