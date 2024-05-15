@@ -121,11 +121,11 @@ namespace ARKitect.UI.Items
 
         public void FilterRefresh()
         {
-            if(selectedFilterButtonName.Contains("All"))
+            if (selectedFilterButtonName.Contains("All"))
             {
                 DisplayAll();
             }
-            else if(selectedFilterButtonName.Contains("Favorite"))
+            else if (selectedFilterButtonName.Contains("Favorite"))
             {
                 FilterByFavorites();
             }
@@ -187,6 +187,59 @@ namespace ARKitect.UI.Items
                 i++;
             });
         }
+
+        public void FilterBySearch(string query)
+        {
+            var results = itemsController.Search(query);
+
+            if (results.Count == 0) return;
+
+            // Sort items by number of occurrences
+            itemsController.Sort((id1, id2) =>
+            {
+                if (!id1.IsUndefined && id2.IsUndefined) return -1;
+                if (id1.IsUndefined && !id2.IsUndefined) return 1;
+                if (id1.IsUndefined && id2.IsUndefined) return 0;
+
+                if (results[id1] > results[id2])
+                    return -1; // Put the item with the bigger weight before
+                else if (results[id1] < results[id2])
+                    return 1; // Put the item with the lower weight after
+                else
+                    return 0;
+            });
+
+            RefreshSlots();
+
+            // Display only items with occurrences greater than zero, else it is not relevant
+            int i = 0;
+            itemsController.ForEach((itemId) =>
+            {
+                if (!itemId.IsUndefined)
+                {
+                    if (results[itemId] > 0)
+                        ToggleSlot(i, true);
+                    else
+                        ToggleSlot(i, false);
+                }
+
+                i++;
+            });
+        }
+
+        public void Reset()
+        {
+            itemsController.SortInAlphabeticalOrder();
+            DisplayAll();
+            RefreshSlots();
+            if (defaultSelectedButton != null)
+            {
+                EventSystem.current.SetSelectedGameObject(defaultSelectedButton);
+                selectedFilterButton = defaultSelectedButton.gameObject;
+                selectedFilterButtonName = defaultSelectedButton.name;
+            }
+        }
+
 
     }
 
