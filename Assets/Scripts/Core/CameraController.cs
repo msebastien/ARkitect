@@ -15,17 +15,17 @@ namespace ARKitect.Core
         private Camera mainCamera;
         [SerializeField]
         [Tooltip("Defines the 3D scene point around which the camera will move and rotate")]
-        private Transform target;      
+        private Transform target;
 
         [Header("Config")]
         [SerializeField]
         private bool enableCameraControls = true;
         [SerializeField]
         private InputActionAsset actionMap;
-        public bool EnableCameraControls 
-        { 
-            get { return enableCameraControls; } 
-            set { enableCameraControls = value; } 
+        public bool EnableCameraControls
+        {
+            get { return enableCameraControls; }
+            set { enableCameraControls = value; }
         }
 
         [Header("Rotation")]
@@ -57,7 +57,7 @@ namespace ARKitect.Core
 
         // Mouse rotation related
         private Vector2 mouseRot;
-        
+
         [Header("Zoom")]
         [SerializeField]
         private float mouseZoomSpeed = 0.05f;
@@ -82,7 +82,7 @@ namespace ARKitect.Core
         private bool moveCamera = false;
 
         private UIDetectBackgroundClick uiDetectBackgroundClick;
-        
+
 
         private void Awake()
         {
@@ -123,10 +123,7 @@ namespace ARKitect.Core
         {
             if (enableCameraControls && moveCamera)
             {
-                if(rotateMethod == RotateMethod.Mouse)
-                    RotateCameraMouse();
-                else
-                    RotateCameraTouch();
+                RotateCamera();
             }
         }
 
@@ -150,7 +147,7 @@ namespace ARKitect.Core
             catch (ArgumentException e)
             {
                 Logger.LogError($"CameraController: Input Action not found (Exception:{e.Message})");
-            }         
+            }
         }
 
         private void ProcessInputActions()
@@ -158,8 +155,10 @@ namespace ARKitect.Core
             RotateCameraAction();
 
             ScrollToZoomActions();
-            PinchToZoomActions();
+            PinchToZoomGestureActions();
         }
+
+        #region Zoom
 
         private void ScrollToZoomActions()
         {
@@ -167,7 +166,7 @@ namespace ARKitect.Core
             mouseScrollAction.performed += ctx => ZoomCamera(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
         }
 
-        private void PinchToZoomActions()
+        private void PinchToZoomGestureActions()
         {
             touch0ContactAction.Enable();
             touch1ContactAction.Enable();
@@ -187,23 +186,29 @@ namespace ARKitect.Core
 
             touch0PosAction.Enable();
             touch1PosAction.Enable();
-            touch1PosAction.performed += _ =>
-            {
-                if (!enableCameraControls && !moveCamera) return;
-                if (touchCount < 2) return;
+            touch1PosAction.performed += PinchToZoomCamera;
+        }
 
-                var magnitude = (touch0PosAction.ReadValue<Vector2>() - touch1PosAction.ReadValue<Vector2>()).magnitude;
+        private void PinchToZoomCamera(InputAction.CallbackContext ctx)
+        {
+            if (!enableCameraControls && !moveCamera) return;
+            if (touchCount < 2) return;
 
-                if (prevMagnitude == 0) prevMagnitude = magnitude;
+            var magnitude = (touch0PosAction.ReadValue<Vector2>() - touch1PosAction.ReadValue<Vector2>()).magnitude;
 
-                var difference = magnitude - prevMagnitude;
-                prevMagnitude = magnitude;
+            if (prevMagnitude == 0) prevMagnitude = magnitude;
 
-                ZoomCamera(difference * touchZoomSpeed);
-            };
+            var difference = magnitude - prevMagnitude;
+            prevMagnitude = magnitude;
+
+            ZoomCamera(difference * touchZoomSpeed);
         }
 
         private void ZoomCamera(float increment) => mainCamera.fieldOfView = Mathf.Clamp(mainCamera.fieldOfView + increment, minFOV, maxFOV);
+
+        #endregion
+
+        #region Rotation        
 
         private void RotateCameraAction()
         {
@@ -217,7 +222,15 @@ namespace ARKitect.Core
                     rotateMethod = RotateMethod.Mouse;
                 else if (ctx.control.device is Touchscreen)
                     rotateMethod = RotateMethod.Touch;
-             };
+            };
+        }
+
+        private void RotateCamera()
+        {
+            if (rotateMethod == RotateMethod.Mouse)
+                RotateCameraMouse();
+            else
+                RotateCameraTouch();
         }
 
         private void RotateCameraMouse()
@@ -230,7 +243,7 @@ namespace ARKitect.Core
         }
 
         private void RotateCameraTouch()
-        {;
+        {
             inputDelta = rotateAction.ReadValue<Vector2>();
 
             if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
@@ -262,12 +275,13 @@ namespace ARKitect.Core
                 // Value equal to the delta change of our touch position
                 newQ = Quaternion.Euler(swipeDirection.y, -swipeDirection.x, 0);
             }
-            
+
             cameraRot = Quaternion.Slerp(cameraRot, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
             mainCamera.transform.position = target.position + cameraRot * (mainCamera.transform.position - target.position);
             mainCamera.transform.LookAt(target.position);
         }
-        
+        #endregion
+
     }
 
 }
