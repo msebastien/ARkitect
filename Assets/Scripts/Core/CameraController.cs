@@ -55,7 +55,6 @@ namespace ARKitect.Core
         // Touch rotation
         private Vector2 swipeDirection; // swipe delta vector2
         private Quaternion cameraRot; // store the quaternion after the slerp operation
-        //private TouchState touch; //OLD  
 
         // Mouse rotation related
         private Vector2 mouseRot;
@@ -84,7 +83,6 @@ namespace ARKitect.Core
         private bool moveCamera = false;
 
         private UIDetectBackgroundClick uiDetectBackgroundClick;
-
         
 
         private void Awake()
@@ -126,12 +124,6 @@ namespace ARKitect.Core
         {
             if (enableCameraControls && moveCamera)
             {
-/*#if UNITY_EDITOR
-                RotateCameraMouse();
-#elif UNITY_ANDROID
-                RotateCameraTouch();
-#endif
-*/
                 if(rotateMethod == RotateMethod.Mouse)
                     RotateCameraMouse();
                 else
@@ -141,12 +133,6 @@ namespace ARKitect.Core
 
         private void LateUpdate()
         {
-/*#if UNITY_EDITOR
-            RotationUpdateMouse();
-#elif UNITY_ANDROID
-            RotationUpdateTouch();
-#endif
-*/
             RotationUpdate();
         }
 
@@ -170,7 +156,6 @@ namespace ARKitect.Core
 
         private void ProcessInputActions()
         {
-            //rotateAction.Enable();
             RotateCameraAction();
 
             ScrollToZoomActions();
@@ -233,23 +218,11 @@ namespace ARKitect.Core
                     rotateMethod = RotateMethod.Mouse;
                 else if (ctx.control.device is Touchscreen)
                     rotateMethod = RotateMethod.Touch;
- 
-                //inputDelta = ctx.ReadValue<Vector2>();
-                /*if(ctx.control.device is Mouse)
-                {
-                    mouseRot.x = -inputDelta.y * mouseRotateSpeed; // around X
-                    mouseRot.y = inputDelta.x * mouseRotateSpeed;
-                }
-                else if(ctx.control.device is Touchscreen)
-                {
-                    swipeDirection += inputDelta * Time.deltaTime * touchRotateSpeed;
-                }*/
-            };
+             };
         }
 
         private void RotateCameraMouse()
         {
-            //Vector2 mouseDelta = Mouse.current.delta.ReadValue();
             inputDelta = rotateAction.ReadValue<Vector2>();
             mouseRot.x = -inputDelta.y * mouseRotateSpeed; // around X
             mouseRot.y = inputDelta.x * mouseRotateSpeed;
@@ -258,8 +231,7 @@ namespace ARKitect.Core
         }
 
         private void RotateCameraTouch()
-        {
-            //touch = Touchscreen.current.primaryTouch.ReadValue();
+        {;
             inputDelta = rotateAction.ReadValue<Vector2>();
 
             if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
@@ -277,26 +249,6 @@ namespace ARKitect.Core
 
             Mathf.Clamp(swipeDirection.y, minXRotAngle, maxXRotAngle);
         }
-
-        /*private void RotationUpdateMouse()
-        {
-            // Value equal to the delta change of our mouse position
-            Quaternion newQ = Quaternion.Euler(mouseRot.x, mouseRot.y, 0); // We are setting the rotation around X, Y, Z axis respectively
-
-            cameraRot = Quaternion.Slerp(cameraRot, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
-            mainCamera.transform.position = target.position + cameraRot * (mainCamera.transform.position - target.position);
-            mainCamera.transform.LookAt(target.position);
-        }
-
-        private void RotationUpdateTouch()
-        {
-            // Value equal to the delta change of our touch position
-            Quaternion newQ = Quaternion.Euler(swipeDirection.y, -swipeDirection.x, 0);
-
-            cameraRot = Quaternion.Slerp(cameraRot, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
-            mainCamera.transform.position = target.position + cameraRot * (mainCamera.transform.position - target.position);
-            mainCamera.transform.LookAt(target.position);
-        }*/
 
         private void RotationUpdate()
         {
