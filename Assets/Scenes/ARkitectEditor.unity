@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -501,6 +502,29 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 272bd73686e1b0949a5de60dd72739e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 330585545}
+  target: {fileID: 1669005730}
+  enableCameraControls: 1
+  mouseRotateSpeed: 0.8
+  touchRotateSpeed: 17.5
+  slerpValue: 0.25
+  minXRotAngle: -90
+  maxXRotAngle: 90
+  actionMap: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
+    type: 3}
+  mouseZoomSpeed: 0.01
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,6 +732,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  backgroundPressEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  backgroundReleaseEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &635136428
@@ -2886,6 +2916,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3807854314585686572, guid: 8966e0f0cc688cb49acf55efa59eaadc,
+        type: 3}
+      propertyPath: _cameraController
+      value: 
+      objectReference: {fileID: 330585548}
     - target: {fileID: 5820713430312295975, guid: 8966e0f0cc688cb49acf55efa59eaadc,
         type: 3}
       propertyPath: m_Pivot.x
