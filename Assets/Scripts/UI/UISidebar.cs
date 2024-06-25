@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using DG.Tweening;
 
 namespace ARKitect.UI
@@ -24,6 +25,11 @@ namespace ARKitect.UI
 
         private bool isOpen = false;
 
+        [Header("Events")]
+        [SerializeField]
+        private UnityEvent<bool> _onToggleSidebarEvent;
+        public UnityEvent<bool> OnToggleSidebar => _onToggleSidebarEvent;
+
         private void Awake()
         {
             if (sidebar == null) sidebar = GetComponent<RectTransform>();
@@ -31,12 +37,12 @@ namespace ARKitect.UI
 
         private void OnEnable()
         {
-            UIDetectBackgroundClick.OnBackgroundClick.AddListener(OnUIBackgroundClick);
+            UIDetectBackgroundClick.Instance.OnBackgroundClick.AddListener(OnUIBackgroundClick);
         }
 
         private void OnDisable()
         {
-            UIDetectBackgroundClick.OnBackgroundClick.RemoveListener(OnUIBackgroundClick);
+            UIDetectBackgroundClick.Instance.OnBackgroundClick.RemoveListener(OnUIBackgroundClick);
         }
 
         public void Open()
@@ -49,6 +55,7 @@ namespace ARKitect.UI
                 .OnComplete(() =>
                 {
                     isOpen = true;
+                    _onToggleSidebarEvent.Invoke(isOpen);
                     StartCoroutine(WaitForAutoClose());
                 });
         }
@@ -62,6 +69,7 @@ namespace ARKitect.UI
                 .OnComplete(() =>
                 {
                     isOpen = false;
+                    _onToggleSidebarEvent.Invoke(isOpen);
                     gameObject.SetActive(false); // also stop coroutines
                 });
         }
