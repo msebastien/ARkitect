@@ -32,11 +32,11 @@ namespace ARKitect.Core
         [Range(0.1f, 5f)]
         [SerializeField]
         [Tooltip("How sensitive the mouse drag to camera rotation")]
-        private float mouseRotateSpeed = 0.8f;
+        private float mouseRotateSpeed = 0.7f;
         [Range(0.01f, 100)]
         [SerializeField]
         [Tooltip("How sensitive the touch drag to camera rotation")]
-        private float touchRotateSpeed = 17.5f;
+        private float touchRotateSpeed = 0.7f;
         [SerializeField]
         [Tooltip("Smaller positive value means smoother rotation, 1 means no smooth apply")]
         private float slerpValue = 0.25f;
@@ -117,6 +117,9 @@ namespace ARKitect.Core
         private void StopMovingCamera()
         {
             moveCamera = false;
+            inputDelta = Vector2.zero;
+            swipeDirection = Vector2.zero;
+            mouseRot = Vector2.zero;
         }
 
         private void Update()
@@ -216,8 +219,6 @@ namespace ARKitect.Core
 
             rotateAction.performed += ctx =>
             {
-                if (!enableCameraControls && !moveCamera) return;
-
                 if (ctx.control.device is Mouse)
                     rotateMethod = RotateMethod.Mouse;
                 else if (ctx.control.device is Touchscreen)
@@ -244,6 +245,8 @@ namespace ARKitect.Core
 
         private void RotateCameraTouch()
         {
+            if (touchCount > 1) return;
+            
             inputDelta = rotateAction.ReadValue<Vector2>();
 
             if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
@@ -252,7 +255,8 @@ namespace ARKitect.Core
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
             {
-                swipeDirection += inputDelta * Time.deltaTime * touchRotateSpeed;
+                //swipeDirection = inputDelta * Time.deltaTime * touchRotateSpeed;
+                swipeDirection = inputDelta * touchRotateSpeed;
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
             {
