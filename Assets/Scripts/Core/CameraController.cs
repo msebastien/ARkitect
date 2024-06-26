@@ -194,7 +194,7 @@ namespace ARKitect.Core
 
         private void PinchToZoomCamera(InputAction.CallbackContext ctx)
         {
-            if (!enableCameraControls && !moveCamera) return;
+            if (!enableCameraControls || !moveCamera) return;
             if (touchCount < 2) return;
 
             var magnitude = (touch0PosAction.ReadValue<Vector2>() - touch1PosAction.ReadValue<Vector2>()).magnitude;
