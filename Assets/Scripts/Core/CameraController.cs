@@ -439,7 +439,7 @@ namespace ARKitect.Core
         private void RotationUpdate()
         {
             // Camera look direction vector towards the target
-            Vector3 direction = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
+            Vector3 direction = Vector3.forward * -distanceBetweenCameraAndTarget;
 
             // Value equal to the delta change of our input (mouse or touch) position
             Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
