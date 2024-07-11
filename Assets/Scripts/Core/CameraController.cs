@@ -15,8 +15,107 @@ namespace ARKitect.Core
         [SerializeField]
         private Camera mainCamera;
         [SerializeField]
+        [Tooltip("Root object of the scene")]
+        private Transform sceneParent;
+        [SerializeField]
         [Tooltip("Defines the 3D scene point around which the camera will move and rotate")]
         private Transform target;
+        public Transform Target
+        {
+            get
+            {
+                if (target != null)
+                {
+                    return target;
+                }
+                else if (defaultTarget != null)
+                {
+                    return defaultTarget;
+                }
+                else
+                {
+                    var newTarget = new GameObject("Camera Controller Target");
+                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
+                    targetPos = newTarget.transform.position;
+                    target = newTarget.transform;
+                    defaultTarget = newTarget.transform;
+
+                    return newTarget.transform;
+                }
+            }
+
+            set
+            {
+                target = value;
+                if (target != null)
+                {
+                    targetPos = target.position;
+                }
+                else if (defaultTarget != null)
+                {
+                    targetPos = defaultTarget.position;
+                }
+                else
+                {
+                    var newTarget = new GameObject("Camera Controller Target");
+                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
+                    targetPos = newTarget.transform.position;
+                    target = newTarget.transform;
+                    defaultTarget = newTarget.transform;
+                }
+            }
+        }
+        [SerializeField]
+        [Tooltip("Defines the 3D scene point around which the camera will move and rotate by default")]
+        private Transform defaultTarget;
+        private Vector3 targetPos = Vector3.zero;
+        public Vector3 TargetPosition
+        {
+            get
+            {
+                if (target != null)
+                {
+                    targetPos = target.position;
+                }
+                else if (defaultTarget != null)
+                {
+                    targetPos = defaultTarget.position;
+                    target = defaultTarget;
+                }
+                else
+                {
+                    var newTarget = new GameObject("Camera Controller Target");
+                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
+                    targetPos = newTarget.transform.position;
+                    target = newTarget.transform;
+                    defaultTarget = newTarget.transform;
+                }
+
+                return targetPos;
+            }
+
+            set
+            {
+                targetPos = value;
+                if (target != null)
+                {
+                    target.transform.position = targetPos;
+                }
+                else if (defaultTarget != null)
+                {
+                    target = defaultTarget.transform;
+                    target.transform.position = targetPos;
+                }
+                else
+                {
+                    var newTarget = new GameObject("Camera Controller Target");
+                    newTarget.transform.position = targetPos;
+                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
+                    target = newTarget.transform;
+                    defaultTarget = newTarget.transform;
+                }
+            }
+        }
 
         [Header("Config")]
         [SerializeField]
@@ -74,8 +173,10 @@ namespace ARKitect.Core
         [Tooltip("Specifies whether the camera's FOV should be changed or the camera should move physically back and forth")]
         private bool moveCameraBackAndForth = false;
         [SerializeField]
+        [Range(0.01f, 1f)]
         private float mouseZoomSpeed = 0.05f;
         [SerializeField]
+        [Range(0.01f, 1f)]
         private float touchZoomSpeed = 0.05f;
         [SerializeField]
         [HideIf("moveCameraBackAndForth")]
@@ -89,11 +190,12 @@ namespace ARKitect.Core
         [SerializeField]
         [ShowIf("moveCameraBackAndForth")]
         [Range(0.0f, 50f)]
-        private float minTargetDistance = 0.5f;
+        private float minTargetDistance = 2.0f;
         [SerializeField]
         [ShowIf("moveCameraBackAndForth")]
         [Range(0.0f, 50f)]
         private float maxTargetDistance = 30.0f;
+        private float defaultTargetDistance;
 
 
         // Zoom using mouse scroll wheel
@@ -121,7 +223,7 @@ namespace ARKitect.Core
 
         private void Start()
         {
-            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, TargetPosition);
             defaultFOV = mainCamera.fieldOfView;
 
             // Set camera initial rotation
@@ -142,11 +244,18 @@ namespace ARKitect.Core
 
             // Set camera initial position
             Vector3 targetDirection = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
-
             if (specifyCustomInitialTargetDistance)
+            {
                 targetDirection = new Vector3(0.0f, 0.0f, -initialTargetDistance);
+                defaultTargetDistance = initialTargetDistance;
+            }
+            else
+            {
+                defaultTargetDistance = distanceBetweenCameraAndTarget;
+            }
 
-            cameraPos = cameraRotation * targetDirection + target.position;
+
+            cameraPos = cameraRotation * targetDirection + TargetPosition;
             mainCamera.transform.position = cameraPos;
 
             // Input Actions
@@ -162,6 +271,7 @@ namespace ARKitect.Core
         {
             uiDetectBackgroundClick.OnBackgroundPress.RemoveListener(MoveCamera);
             uiDetectBackgroundClick.OnBackgroundRelease.RemoveListener(StopMovingCamera);
+            if (defaultTarget != null) Destroy(defaultTarget.gameObject);
         }
 
         private void MoveCamera()
@@ -207,10 +317,10 @@ namespace ARKitect.Core
 
         private float ClampAngle(float angle, float min, float max)
         {
-            if (angle < -360F)
-                angle += 360F;
-            if (angle > 360F)
-                angle -= 360F;
+            if (angle < -360f)
+                angle += 360f;
+            if (angle > 360f)
+                angle -= 360f;
             return Mathf.Clamp(angle, min, max);
         }
 
@@ -223,6 +333,7 @@ namespace ARKitect.Core
             {
                 if (!moveCameraBackAndForth)
                 {
+                    if (distanceBetweenCameraAndTarget != defaultTargetDistance) distanceBetweenCameraAndTarget = defaultTargetDistance;
                     ZoomCamera(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
                 }
                 else
@@ -270,6 +381,7 @@ namespace ARKitect.Core
 
             if (!moveCameraBackAndForth)
             {
+                if (distanceBetweenCameraAndTarget != defaultTargetDistance) distanceBetweenCameraAndTarget = defaultTargetDistance;
                 ZoomCamera(difference * touchZoomSpeed);
             }
             else
@@ -335,7 +447,7 @@ namespace ARKitect.Core
             Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
 
             cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
-            cameraPos = cameraRotation * direction + target.position;
+            cameraPos = cameraRotation * direction + TargetPosition;
 
             mainCamera.transform.rotation = cameraRotation;
             mainCamera.transform.position = cameraPos;

@@ -515,7 +515,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 330585545}
-  target: {fileID: 1669005730}
+  sceneParent: {fileID: 1669005730}
+  target: {fileID: 0}
+  defaultTarget: {fileID: 0}
   enableCameraControls: 1
   actionMap: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
     type: 3}
@@ -528,12 +530,12 @@ MonoBehaviour:
   slerpValue: 0.25
   minXRotAngle: -90
   maxXRotAngle: 90
-  moveCameraBackAndForth: 0
+  moveCameraBackAndForth: 1
   mouseZoomSpeed: 0.05
   touchZoomSpeed: 0.05
   minFOV: 20
   maxFOV: 70
-  minTargetDistance: 1
+  minTargetDistance: 2
   maxTargetDistance: 30
 --- !u!1 &410087039
 GameObject:
