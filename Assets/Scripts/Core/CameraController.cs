@@ -5,8 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using ARKitect.UI;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 namespace ARKitect.Core
 {
@@ -53,14 +51,10 @@ namespace ARKitect.Core
 
         private InputAction rotateAction;
         private Vector2 inputDelta;
+        private Vector2 inputRotation;
         enum RotateMethod { Mouse, Touch };
         private RotateMethod rotateMethod = RotateMethod.Mouse;
 
-        // Touch rotation
-        private Vector2 swipeDirection; // swipe delta vector2   
-
-        // Mouse rotation related
-        private Vector2 mouseRot;
 
         [Header("Zoom")]
         [SerializeField]
@@ -227,6 +221,7 @@ namespace ARKitect.Core
             };
         }
 
+        // TODO: Use a unique Rotation() method for rotateAction.performed
         private void RotateCamera()
         {
             if (rotateMethod == RotateMethod.Mouse)
@@ -238,10 +233,10 @@ namespace ARKitect.Core
         private void RotateCameraMouse()
         {
             inputDelta = rotateAction.ReadValue<Vector2>();
-            mouseRot.x += -inputDelta.y * mouseRotateSpeed; // around X
-            mouseRot.y += inputDelta.x * mouseRotateSpeed;
+            inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
+            inputRotation.y += inputDelta.x * mouseRotateSpeed;
 
-            mouseRot.x = Mathf.Clamp(mouseRot.x, minXRotAngle, maxXRotAngle);
+            inputRotation.x = Mathf.Clamp(inputRotation.x, minXRotAngle, maxXRotAngle);
         }
 
         private void RotateCameraTouch()
@@ -256,32 +251,24 @@ namespace ARKitect.Core
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
             {
-                swipeDirection += inputDelta * touchRotateSpeed;
+                inputRotation.x += inputDelta.y * touchRotateSpeed;
+                inputRotation.y += -inputDelta.x * touchRotateSpeed;
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
             {
                 Logger.LogInfo("Camera Controller: Touch Ended");
             }
 
-            swipeDirection.y = Mathf.Clamp(swipeDirection.y, minXRotAngle, maxXRotAngle);
+            inputRotation.y = Mathf.Clamp(inputRotation.y, minXRotAngle, maxXRotAngle);
         }
 
         private void RotationUpdate()
         {
-            Quaternion newQ;
-            if (rotateMethod == RotateMethod.Mouse)
-            {
-                // Value equal to the delta change of our mouse position
-                newQ = Quaternion.Euler(mouseRot.x, mouseRot.y, 0); // We are setting the rotation around X, Y, Z axis respectively
-            }
-            else
-            {
-                // Value equal to the delta change of our touch position
-                newQ = Quaternion.Euler(swipeDirection.y, -swipeDirection.x, 0);
-            }
+            // Value equal to the delta change of our input (mouse or touch) position
+            Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
 
             cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
-            Vector3 cameraPos = cameraRotation * new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget) + target.position;
+            cameraPos = cameraRotation * new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget) + target.position;
 
             mainCamera.transform.rotation = cameraRotation;
             mainCamera.transform.position = cameraPos;
