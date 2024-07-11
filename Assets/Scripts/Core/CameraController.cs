@@ -30,7 +30,7 @@ namespace ARKitect.Core
         [Tooltip("Initial distance between camera and target")]
         private float initialTargetDistance = 0.0f;
         [SerializeField]
-        private bool specifyCustomInitialRotation = false;  
+        private bool specifyCustomInitialRotation = false;
         [SerializeField]
         [ShowIf("specifyCustomInitialRotation")]
         private Vector3 customStartRotation = Vector3.zero;
@@ -44,7 +44,7 @@ namespace ARKitect.Core
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("How sensitive the mouse drag to camera rotation")]
-        private float mouseRotateSpeed = 0.7f;  
+        private float mouseRotateSpeed = 0.7f;
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("How sensitive the touch drag to camera rotation")]
@@ -71,15 +71,30 @@ namespace ARKitect.Core
 
         [Header("Zoom")]
         [SerializeField]
+        [Tooltip("Specifies whether the camera's FOV should be changed or the camera should move physically back and forth")]
+        private bool moveCameraBackAndForth = false;
+        [SerializeField]
         private float mouseZoomSpeed = 0.05f;
         [SerializeField]
         private float touchZoomSpeed = 0.05f;
         [SerializeField]
+        [HideIf("moveCameraBackAndForth")]
         [Range(0.0f, 180f)]
         private float minFOV = 20.0f;
         [SerializeField]
+        [HideIf("moveCameraBackAndForth")]
         [Range(0.0f, 180f)]
         private float maxFOV = 70.0f;
+        private float defaultFOV;
+        [SerializeField]
+        [ShowIf("moveCameraBackAndForth")]
+        [Range(0.0f, 50f)]
+        private float minTargetDistance = 0.5f;
+        [SerializeField]
+        [ShowIf("moveCameraBackAndForth")]
+        [Range(0.0f, 50f)]
+        private float maxTargetDistance = 30.0f;
+
 
         // Zoom using mouse scroll wheel
         private InputAction mouseScrollAction;
@@ -106,7 +121,8 @@ namespace ARKitect.Core
 
         private void Start()
         {
-            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);          
+            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+            defaultFOV = mainCamera.fieldOfView;
 
             // Set camera initial rotation
             if (specifyCustomInitialRotation)
@@ -126,7 +142,7 @@ namespace ARKitect.Core
 
             // Set camera initial position
             Vector3 targetDirection = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
-            
+
             if (specifyCustomInitialTargetDistance)
                 targetDirection = new Vector3(0.0f, 0.0f, -initialTargetDistance);
 
@@ -203,7 +219,18 @@ namespace ARKitect.Core
         private void ScrollToZoomActions()
         {
             mouseScrollAction.Enable();
-            mouseScrollAction.performed += ctx => ZoomCamera(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
+            mouseScrollAction.performed += ctx =>
+            {
+                if (!moveCameraBackAndForth)
+                {
+                    ZoomCamera(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
+                }
+                else
+                {
+                    if (mainCamera.fieldOfView != defaultFOV) mainCamera.fieldOfView = defaultFOV;
+                    MoveCameraBackAndForth(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
+                }
+            };
         }
 
         private void PinchToZoomGestureActions()
@@ -241,10 +268,21 @@ namespace ARKitect.Core
             var difference = magnitude - prevMagnitude;
             prevMagnitude = magnitude;
 
-            ZoomCamera(difference * touchZoomSpeed);
+            if (!moveCameraBackAndForth)
+            {
+                ZoomCamera(difference * touchZoomSpeed);
+            }
+            else
+            {
+                if (mainCamera.fieldOfView != defaultFOV) mainCamera.fieldOfView = defaultFOV;
+                MoveCameraBackAndForth(difference * touchZoomSpeed);
+            }
+
         }
 
         private void ZoomCamera(float increment) => mainCamera.fieldOfView = ClampAngle(mainCamera.fieldOfView + increment, minFOV, maxFOV);
+
+        private void MoveCameraBackAndForth(float increment) => distanceBetweenCameraAndTarget = Mathf.Clamp(distanceBetweenCameraAndTarget + increment, minTargetDistance, maxTargetDistance);
 
         #endregion
 
@@ -261,7 +299,7 @@ namespace ARKitect.Core
                 Logger.LogInfo($"Camera Controller: Rotation Began ({ctx.control.device.displayName})");
             };
 
-            rotateAction.performed += RotateCamera;           
+            rotateAction.performed += RotateCamera;
         }
 
         private void RotateCamera(InputAction.CallbackContext ctx)
@@ -270,14 +308,14 @@ namespace ARKitect.Core
 
             inputDelta = rotateAction.ReadValue<Vector2>();
             if (ctx.control.device is Mouse)
-            {          
+            {
                 inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
                 inputRotation.y += inputDelta.x * mouseRotateSpeed;
 
                 inputRotation.x = ClampAngle(inputRotation.x, minXRotAngle, maxXRotAngle);
             }
-       
-            else if(ctx.control.device is Touchscreen)
+
+            else if (ctx.control.device is Touchscreen)
             {
                 if (touchCount > 1) return;
 
@@ -285,7 +323,7 @@ namespace ARKitect.Core
                 inputRotation.y += -inputDelta.x * touchRotateSpeed;
 
                 inputRotation.y = ClampAngle(inputRotation.y, minXRotAngle, maxXRotAngle);
-            }       
+            }
         }
 
         private void RotationUpdate()

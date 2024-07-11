@@ -528,10 +528,13 @@ MonoBehaviour:
   slerpValue: 0.25
   minXRotAngle: -90
   maxXRotAngle: 90
+  moveCameraBackAndForth: 0
   mouseZoomSpeed: 0.05
   touchZoomSpeed: 0.05
   minFOV: 20
   maxFOV: 70
+  minTargetDistance: 1
+  maxTargetDistance: 30
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
