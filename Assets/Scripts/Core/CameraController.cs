@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using ARKitect.UI;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace ARKitect.Core
 {
@@ -45,15 +47,17 @@ namespace ARKitect.Core
         [SerializeField]
         private float maxXRotAngle = 90; // max angle around x axis
 
-        //private float distanceBetweenCameraAndTarget;
+        private float distanceBetweenCameraAndTarget;
+        private Quaternion cameraRotation; // store the quaternion after the slerp operation
+        private Vector3 cameraPos;
+
         private InputAction rotateAction;
         private Vector2 inputDelta;
         enum RotateMethod { Mouse, Touch };
         private RotateMethod rotateMethod = RotateMethod.Mouse;
 
         // Touch rotation
-        private Vector2 swipeDirection; // swipe delta vector2
-        private Quaternion cameraRot; // store the quaternion after the slerp operation
+        private Vector2 swipeDirection; // swipe delta vector2   
 
         // Mouse rotation related
         private Vector2 mouseRot;
@@ -94,7 +98,7 @@ namespace ARKitect.Core
         private void Start()
         {
             mainCamera.transform.LookAt(target);
-            //distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
 
             SetupInputActions();
             ProcessInputActions();
@@ -117,9 +121,6 @@ namespace ARKitect.Core
         private void StopMovingCamera()
         {
             moveCamera = false;
-            inputDelta = Vector2.zero;
-            swipeDirection = Vector2.zero;
-            mouseRot = Vector2.zero;
         }
 
         private void Update()
@@ -237,10 +238,10 @@ namespace ARKitect.Core
         private void RotateCameraMouse()
         {
             inputDelta = rotateAction.ReadValue<Vector2>();
-            mouseRot.x = -inputDelta.y * mouseRotateSpeed; // around X
-            mouseRot.y = inputDelta.x * mouseRotateSpeed;
+            mouseRot.x += -inputDelta.y * mouseRotateSpeed; // around X
+            mouseRot.y += inputDelta.x * mouseRotateSpeed;
 
-            Mathf.Clamp(mouseRot.x, minXRotAngle, maxXRotAngle);
+            mouseRot.x = Mathf.Clamp(mouseRot.x, minXRotAngle, maxXRotAngle);
         }
 
         private void RotateCameraTouch()
@@ -255,15 +256,14 @@ namespace ARKitect.Core
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
             {
-                //swipeDirection = inputDelta * Time.deltaTime * touchRotateSpeed;
-                swipeDirection = inputDelta * touchRotateSpeed;
+                swipeDirection += inputDelta * touchRotateSpeed;
             }
             else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
             {
                 Logger.LogInfo("Camera Controller: Touch Ended");
             }
 
-            Mathf.Clamp(swipeDirection.y, minXRotAngle, maxXRotAngle);
+            swipeDirection.y = Mathf.Clamp(swipeDirection.y, minXRotAngle, maxXRotAngle);
         }
 
         private void RotationUpdate()
@@ -280,9 +280,11 @@ namespace ARKitect.Core
                 newQ = Quaternion.Euler(swipeDirection.y, -swipeDirection.x, 0);
             }
 
-            cameraRot = Quaternion.Slerp(cameraRot, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
-            mainCamera.transform.position = target.position + cameraRot * (mainCamera.transform.position - target.position);
-            mainCamera.transform.LookAt(target.position);
+            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
+            Vector3 cameraPos = cameraRotation * new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget) + target.position;
+
+            mainCamera.transform.rotation = cameraRotation;
+            mainCamera.transform.position = cameraPos;
         }
         #endregion
 
