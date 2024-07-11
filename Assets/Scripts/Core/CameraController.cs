@@ -253,8 +253,6 @@ namespace ARKitect.Core
             {
                 defaultTargetDistance = distanceBetweenCameraAndTarget;
             }
-
-
             cameraPos = cameraRotation * targetDirection + TargetPosition;
             mainCamera.transform.position = cameraPos;
 
