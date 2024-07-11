@@ -519,6 +519,10 @@ MonoBehaviour:
   enableCameraControls: 1
   actionMap: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
     type: 3}
+  specifyCustomInitialTargetDistance: 0
+  initialTargetDistance: 0
+  specifyCustomInitialRotation: 0
+  customStartRotation: {x: 0, y: 0, z: 0}
   mouseRotateSpeed: 0.7
   touchRotateSpeed: 0.7
   slerpValue: 0.25

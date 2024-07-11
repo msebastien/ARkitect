@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Sirenix.OdinInspector;
 
 using ARKitect.UI;
 
@@ -22,6 +23,17 @@ namespace ARKitect.Core
         private bool enableCameraControls = true;
         [SerializeField]
         private InputActionAsset actionMap;
+        [SerializeField]
+        private bool specifyCustomInitialTargetDistance = false;
+        [SerializeField]
+        [ShowIf("specifyCustomInitialTargetDistance")]
+        [Tooltip("Initial distance between camera and target")]
+        private float initialTargetDistance = 0.0f;
+        [SerializeField]
+        private bool specifyCustomInitialRotation = false;  
+        [SerializeField]
+        [ShowIf("specifyCustomInitialRotation")]
+        private Vector3 customStartRotation = Vector3.zero;
         public bool EnableCameraControls
         {
             get { return enableCameraControls; }
@@ -29,32 +41,33 @@ namespace ARKitect.Core
         }
 
         [Header("Rotation")]
+        [SerializeField]
         [Range(0.1f, 5f)]
-        [SerializeField]
         [Tooltip("How sensitive the mouse drag to camera rotation")]
-        private float mouseRotateSpeed = 0.7f;
-        [Range(0.01f, 100)]
+        private float mouseRotateSpeed = 0.7f;  
         [SerializeField]
+        [Range(0.1f, 5f)]
         [Tooltip("How sensitive the touch drag to camera rotation")]
         private float touchRotateSpeed = 0.7f;
         [SerializeField]
         [Tooltip("Smaller positive value means smoother rotation, 1 means no smooth apply")]
         private float slerpValue = 0.25f;
         [SerializeField]
+        [Range(-180f, 180f)]
         private float minXRotAngle = -90; // min angle around x axis
         [SerializeField]
+        [Range(-180f, 180f)]
         private float maxXRotAngle = 90; // max angle around x axis
 
+        // Camera state (position, rotation, distance relative to target)
         private float distanceBetweenCameraAndTarget;
         private Quaternion cameraRotation; // store the quaternion after the slerp operation
         private Vector3 cameraPos;
 
+        // Input data
         private InputAction rotateAction;
-        private Vector2 inputDelta;
-        private Vector2 inputRotation;
-        enum RotateMethod { Mouse, Touch };
-        private RotateMethod rotateMethod = RotateMethod.Mouse;
-
+        private Vector2 inputDelta = Vector2.zero;
+        private Vector2 inputRotation = Vector2.zero;
 
         [Header("Zoom")]
         [SerializeField]
@@ -62,11 +75,13 @@ namespace ARKitect.Core
         [SerializeField]
         private float touchZoomSpeed = 0.05f;
         [SerializeField]
+        [Range(0.0f, 180f)]
         private float minFOV = 20.0f;
         [SerializeField]
+        [Range(0.0f, 180f)]
         private float maxFOV = 70.0f;
 
-        // Mouse Zoom
+        // Zoom using mouse scroll wheel
         private InputAction mouseScrollAction;
 
         // Zoom using Pinch gesture
@@ -91,12 +106,38 @@ namespace ARKitect.Core
 
         private void Start()
         {
-            mainCamera.transform.LookAt(target);
-            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);
+            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, target.position);          
 
+            // Set camera initial rotation
+            if (specifyCustomInitialRotation)
+            {
+                Quaternion rotation = Quaternion.Euler(customStartRotation);
+                cameraRotation = rotation;
+                inputRotation.x = customStartRotation.y;
+                inputRotation.y = customStartRotation.x;
+            }
+            else
+            {
+                cameraRotation = mainCamera.transform.rotation;
+                inputRotation.x = mainCamera.transform.eulerAngles.x;
+                inputRotation.y = mainCamera.transform.eulerAngles.y;
+            }
+            mainCamera.transform.rotation = cameraRotation;
+
+            // Set camera initial position
+            Vector3 targetDirection = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
+            
+            if (specifyCustomInitialTargetDistance)
+                targetDirection = new Vector3(0.0f, 0.0f, -initialTargetDistance);
+
+            cameraPos = cameraRotation * targetDirection + target.position;
+            mainCamera.transform.position = cameraPos;
+
+            // Input Actions
             SetupInputActions();
             ProcessInputActions();
 
+            // UI Events
             uiDetectBackgroundClick.OnBackgroundPress.AddListener(MoveCamera);
             uiDetectBackgroundClick.OnBackgroundRelease.AddListener(StopMovingCamera);
         }
@@ -203,7 +244,7 @@ namespace ARKitect.Core
             ZoomCamera(difference * touchZoomSpeed);
         }
 
-        private void ZoomCamera(float increment) => mainCamera.fieldOfView = Mathf.Clamp(mainCamera.fieldOfView + increment, minFOV, maxFOV);
+        private void ZoomCamera(float increment) => mainCamera.fieldOfView = ClampAngle(mainCamera.fieldOfView + increment, minFOV, maxFOV);
 
         #endregion
 
@@ -227,9 +268,9 @@ namespace ARKitect.Core
         {
             if (!enableCameraControls || !moveCamera) return;
 
+            inputDelta = rotateAction.ReadValue<Vector2>();
             if (ctx.control.device is Mouse)
-            {
-                inputDelta = rotateAction.ReadValue<Vector2>();
+            {          
                 inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
                 inputRotation.y += inputDelta.x * mouseRotateSpeed;
 
@@ -244,9 +285,7 @@ namespace ARKitect.Core
                 inputRotation.y += -inputDelta.x * touchRotateSpeed;
 
                 inputRotation.y = ClampAngle(inputRotation.y, minXRotAngle, maxXRotAngle);
-            }
-
-            Logger.LogInfo($"Camera Controller: Rotation Ended ({ctx.control.device.displayName})");
+            }       
         }
 
         private void RotationUpdate()
@@ -257,7 +296,7 @@ namespace ARKitect.Core
             // Value equal to the delta change of our input (mouse or touch) position
             Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
 
-            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  //let cameraRotation value gradually reach newQ which corresponds to our touch
+            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
             cameraPos = cameraRotation * direction + target.position;
 
             mainCamera.transform.rotation = cameraRotation;
