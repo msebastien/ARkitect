@@ -117,14 +117,6 @@ namespace ARKitect.Core
             moveCamera = false;
         }
 
-        private void Update()
-        {
-            if (enableCameraControls && moveCamera)
-            {
-                RotateCamera();
-            }
-        }
-
         private void LateUpdate()
         {
             RotationUpdate();
@@ -154,6 +146,15 @@ namespace ARKitect.Core
 
             ScrollToZoomActions();
             PinchToZoomGestureActions();
+        }
+
+        private float ClampAngle(float angle, float min, float max)
+        {
+            if (angle < -360F)
+                angle += 360F;
+            if (angle > 360F)
+                angle -= 360F;
+            return Mathf.Clamp(angle, min, max);
         }
 
         #region Zoom
@@ -212,63 +213,52 @@ namespace ARKitect.Core
         {
             rotateAction.Enable();
 
-            rotateAction.performed += ctx =>
+            rotateAction.started += (ctx) =>
             {
-                if (ctx.control.device is Mouse)
-                    rotateMethod = RotateMethod.Mouse;
-                else if (ctx.control.device is Touchscreen)
-                    rotateMethod = RotateMethod.Touch;
+                if (!enableCameraControls || !moveCamera) return;
+
+                Logger.LogInfo($"Camera Controller: Rotation Began ({ctx.control.device.displayName})");
             };
+
+            rotateAction.performed += RotateCamera;           
         }
 
-        // TODO: Use a unique Rotation() method for rotateAction.performed
-        private void RotateCamera()
+        private void RotateCamera(InputAction.CallbackContext ctx)
         {
-            if (rotateMethod == RotateMethod.Mouse)
-                RotateCameraMouse();
-            else
-                RotateCameraTouch();
-        }
+            if (!enableCameraControls || !moveCamera) return;
 
-        private void RotateCameraMouse()
-        {
-            inputDelta = rotateAction.ReadValue<Vector2>();
-            inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
-            inputRotation.y += inputDelta.x * mouseRotateSpeed;
-
-            inputRotation.x = Mathf.Clamp(inputRotation.x, minXRotAngle, maxXRotAngle);
-        }
-
-        private void RotateCameraTouch()
-        {
-            if (touchCount > 1) return;
-            
-            inputDelta = rotateAction.ReadValue<Vector2>();
-
-            if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
+            if (ctx.control.device is Mouse)
             {
-                Logger.LogInfo("Camera Controller: Touch Began");
+                inputDelta = rotateAction.ReadValue<Vector2>();
+                inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
+                inputRotation.y += inputDelta.x * mouseRotateSpeed;
+
+                inputRotation.x = ClampAngle(inputRotation.x, minXRotAngle, maxXRotAngle);
             }
-            else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Moved)
+       
+            else if(ctx.control.device is Touchscreen)
             {
+                if (touchCount > 1) return;
+
                 inputRotation.x += inputDelta.y * touchRotateSpeed;
                 inputRotation.y += -inputDelta.x * touchRotateSpeed;
-            }
-            else if (Touchscreen.current.primaryTouch.phase.value == UnityEngine.InputSystem.TouchPhase.Ended)
-            {
-                Logger.LogInfo("Camera Controller: Touch Ended");
+
+                inputRotation.y = ClampAngle(inputRotation.y, minXRotAngle, maxXRotAngle);
             }
 
-            inputRotation.y = Mathf.Clamp(inputRotation.y, minXRotAngle, maxXRotAngle);
+            Logger.LogInfo($"Camera Controller: Rotation Ended ({ctx.control.device.displayName})");
         }
 
         private void RotationUpdate()
         {
+            // Camera look direction vector towards the target
+            Vector3 direction = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
+
             // Value equal to the delta change of our input (mouse or touch) position
             Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
 
-            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  //let cameraRot value gradually reach newQ which corresponds to our touch
-            cameraPos = cameraRotation * new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget) + target.position;
+            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  //let cameraRotation value gradually reach newQ which corresponds to our touch
+            cameraPos = cameraRotation * direction + target.position;
 
             mainCamera.transform.rotation = cameraRotation;
             mainCamera.transform.position = cameraPos;
