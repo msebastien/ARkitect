@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -729,7 +730,7 @@ MonoBehaviour:
   target: {fileID: 0}
   defaultTarget: {fileID: 1669005730}
   enableCameraControls: 1
-  actionMap: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
+  inputActionAsset: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
     type: 3}
   specifyCustomInitialTargetDistance: 0
   initialTargetDistance: 0
@@ -742,11 +743,62 @@ MonoBehaviour:
   maxXRotAngle: 90
   moveCameraBackAndForth: 1
   mouseZoomSpeed: 0.05
-  touchZoomSpeed: 0.05
+  touchZoomSpeed: 0.03
   minFOV: 20
   maxFOV: 70
   minTargetDistance: 2
   maxTargetDistance: 30
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc4fb37f6ca6c041ab77b60db55d119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defineActionsManually: 0
+  _inputActionAsset: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
+    type: 3}
+  _touch0ContactAction:
+    m_Name: Touch 0 Contact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5a1c938f-79e9-4470-b4b5-bbd560992525
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _touch1ContactAction:
+    m_Name: Touch 1 Contact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: aa19d5cd-9306-4a0e-9c5a-f733029f7b41
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _touch0PosAction:
+    m_Name: Touch 0 Pos
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e5c1563c-a689-42fa-b302-e4739e7f8a42
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _touch1PosAction:
+    m_Name: Touch 1 Pos
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 13c5a992-f23b-4b92-8c7c-127ba61e073a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

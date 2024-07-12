@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 
 using ARKitect.UI;
+using ARKitect.Input;
 
 namespace ARKitect.Core
 {
+    [RequireComponent(typeof(PinchGestureHandler))]
     [AddComponentMenu("ARkitect/Camera Controller")]
     public class CameraController : MonoBehaviour
     {
@@ -120,7 +122,7 @@ namespace ARKitect.Core
         [SerializeField]
         private bool enableCameraControls = true;
         [SerializeField]
-        private InputActionAsset actionMap;
+        private InputActionAsset inputActionAsset;
         [SerializeField]
         private bool specifyCustomInitialTargetDistance = false;
         [SerializeField]
@@ -176,7 +178,7 @@ namespace ARKitect.Core
         private float mouseZoomSpeed = 0.05f;
         [SerializeField]
         [Range(0.01f, 1f)]
-        private float touchZoomSpeed = 0.05f;
+        private float touchZoomSpeed = 0.03f;
         [SerializeField]
         [HideIf("moveCameraBackAndForth")]
         [Range(0.0f, 180f)]
@@ -200,12 +202,7 @@ namespace ARKitect.Core
         private InputAction mouseScrollAction;
 
         // Zoom using Pinch gesture
-        private InputAction touch0ContactAction;
-        private InputAction touch1ContactAction;
-        private InputAction touch0PosAction;
-        private InputAction touch1PosAction;
-        private float prevMagnitude = 0;
-        private int touchCount = 0;
+        private PinchGestureHandler pinchGestureHandler;
 
         private bool moveCamera = false;
 
@@ -215,6 +212,7 @@ namespace ARKitect.Core
         private void Awake()
         {
             if (mainCamera == null) mainCamera = Camera.main;
+            if (pinchGestureHandler == null) pinchGestureHandler = GetComponent<PinchGestureHandler>();
 
             uiDetectBackgroundClick = UIDetectBackgroundClick.Instance;
         }
@@ -296,13 +294,8 @@ namespace ARKitect.Core
         {
             try
             {
-                rotateAction = actionMap.FindAction("Camera/Rotate", true);
-
-                mouseScrollAction = actionMap.FindAction("Camera/ScrollWheel", true);
-                touch0ContactAction = actionMap.FindAction("Camera/Touch0Contact", true);
-                touch1ContactAction = actionMap.FindAction("Camera/Touch1Contact", true);
-                touch0PosAction = actionMap.FindAction("Camera/Touch0Pos", true);
-                touch1PosAction = actionMap.FindAction("Camera/Touch1Pos", true);
+                rotateAction = inputActionAsset.FindAction("Camera/Rotate", true);
+                mouseScrollAction = inputActionAsset.FindAction("Camera/ScrollWheel", true);
             }
             catch (ArgumentException e)
             {
@@ -315,7 +308,7 @@ namespace ARKitect.Core
             RotateCameraAction();
 
             ScrollToZoomActions();
-            PinchToZoomGestureActions();
+            pinchGestureHandler.Performed += PinchToZoomCamera;
         }
 
         private float ClampAngle(float angle, float min, float max)
@@ -347,50 +340,20 @@ namespace ARKitect.Core
             };
         }
 
-        private void PinchToZoomGestureActions()
-        {
-            touch0ContactAction.Enable();
-            touch1ContactAction.Enable();
-
-            touch0ContactAction.performed += _ => touchCount++;
-            touch1ContactAction.performed += _ => touchCount++;
-            touch0ContactAction.canceled += _ =>
-            {
-                touchCount--;
-                prevMagnitude = 0;
-            };
-            touch1ContactAction.canceled += _ =>
-            {
-                touchCount--;
-                prevMagnitude = 0;
-            };
-
-            touch0PosAction.Enable();
-            touch1PosAction.Enable();
-            touch1PosAction.performed += PinchToZoomCamera;
-        }
-
         private void PinchToZoomCamera(InputAction.CallbackContext ctx)
         {
             if (!enableCameraControls || !moveCamera) return;
-            if (touchCount < 2) return;
-
-            var magnitude = (touch0PosAction.ReadValue<Vector2>() - touch1PosAction.ReadValue<Vector2>()).magnitude;
-
-            if (prevMagnitude == 0) prevMagnitude = magnitude;
-
-            var difference = magnitude - prevMagnitude;
-            prevMagnitude = magnitude;
+            if (pinchGestureHandler.TouchCount < 2) return;
 
             if (!moveCameraBackAndForth)
             {
                 if (distanceBetweenCameraAndTarget != defaultTargetDistance) distanceBetweenCameraAndTarget = defaultTargetDistance;
-                ZoomCamera(difference * touchZoomSpeed);
+                ZoomCamera(pinchGestureHandler.MagnitudeDelta * touchZoomSpeed);
             }
             else
             {
                 if (mainCamera.fieldOfView != defaultFOV) mainCamera.fieldOfView = defaultFOV;
-                MoveCameraBackAndForth(difference * touchZoomSpeed);
+                MoveCameraBackAndForth(pinchGestureHandler.MagnitudeDelta * touchZoomSpeed);
             }
 
         }
@@ -420,25 +383,22 @@ namespace ARKitect.Core
         private void RotateCamera(InputAction.CallbackContext ctx)
         {
             if (!enableCameraControls || !moveCamera) return;
+            if (ctx.control.device is Touchscreen && pinchGestureHandler.TouchCount > 1) return;
 
             inputDelta = rotateAction.ReadValue<Vector2>();
+
             if (ctx.control.device is Mouse)
             {
                 inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
                 inputRotation.y += inputDelta.x * mouseRotateSpeed;
-
-                inputRotation.x = ClampAngle(inputRotation.x, minXRotAngle, maxXRotAngle);
             }
-
             else if (ctx.control.device is Touchscreen)
             {
-                if (touchCount > 1) return;
-
-                inputRotation.x += inputDelta.y * touchRotateSpeed;
-                inputRotation.y += -inputDelta.x * touchRotateSpeed;
-
-                inputRotation.y = ClampAngle(inputRotation.y, minXRotAngle, maxXRotAngle);
+                inputRotation.x += -inputDelta.y * touchRotateSpeed;
+                inputRotation.y += inputDelta.x * touchRotateSpeed;
             }
+
+            inputRotation.x = ClampAngle(inputRotation.x, minXRotAngle, maxXRotAngle);
         }
 
         private void RotationUpdate()
