@@ -725,29 +725,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272bd73686e1b0949a5de60dd72739e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 330585545}
-  sceneParent: {fileID: 1669005730}
-  target: {fileID: 0}
-  defaultTarget: {fileID: 1669005730}
-  enableCameraControls: 1
-  inputActionAsset: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
+  _mainCamera: {fileID: 330585545}
+  _sceneParent: {fileID: 1669005730}
+  _target: {fileID: 0}
+  _defaultTarget: {fileID: 1669005730}
+  _enableCameraControls: 1
+  _inputActionAsset: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
     type: 3}
-  specifyCustomInitialTargetDistance: 0
-  initialTargetDistance: 0
-  specifyCustomInitialRotation: 0
-  customStartRotation: {x: 0, y: 0, z: 0}
-  mouseRotateSpeed: 0.7
-  touchRotateSpeed: 0.7
-  slerpValue: 0.25
-  minXRotAngle: -90
-  maxXRotAngle: 90
-  moveCameraBackAndForth: 1
-  mouseZoomSpeed: 0.05
-  touchZoomSpeed: 0.03
-  minFOV: 20
-  maxFOV: 70
-  minTargetDistance: 2
-  maxTargetDistance: 30
+  _specifyCustomInitialTargetDistance: 0
+  _initialTargetDistance: 0
+  _specifyCustomInitialRotation: 0
+  _customStartRotation: {x: 0, y: 0, z: 0}
+  _mouseRotateSpeed: 0.7
+  _touchRotateSpeed: 0.7
+  _slerpValue: 0.25
+  _minXRotAngle: -90
+  _maxXRotAngle: 90
+  _moveCameraBackAndForth: 0
+  _mouseZoomSpeed: 0.05
+  _touchZoomSpeed: 0.03
+  _minFOV: 20
+  _maxFOV: 70
+  _minTargetDistance: 2
+  _maxTargetDistance: 30
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
