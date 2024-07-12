@@ -447,8 +447,9 @@ namespace ARKitect.Core
             cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
             cameraPos = cameraRotation * direction + TargetPosition;
 
-            mainCamera.transform.rotation = cameraRotation;
-            mainCamera.transform.position = cameraPos;
+            // Note: By using this method, we avoid settings sequentially position and rotation which is bad for performance.
+            // See: https://github.com/microsoft/Microsoft.Unity.Analyzers/blob/main/doc/UNT0022.md
+            mainCamera.transform.SetPositionAndRotation(cameraPos, cameraRotation);
         }
         #endregion
 
