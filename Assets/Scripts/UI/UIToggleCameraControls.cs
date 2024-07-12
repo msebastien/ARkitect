@@ -1,9 +1,8 @@
-using ARKitect.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ARkitect.UI
+using ARKitect.Core;
+
+namespace ARKitect.UI
 {
     [AddComponentMenu("ARkitect/UI/Toggle Camera Controls")]
     public class UIToggleCameraControls : MonoBehaviour
