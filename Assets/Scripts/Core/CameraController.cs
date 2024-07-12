@@ -280,6 +280,13 @@ namespace ARKitect.Core
             moveCamera = false;
         }
 
+        [PropertySpace]
+        [Button("Reset to default target", 30)]
+        public void ResetTarget()
+        {
+            Target = null;
+        }
+
         private void LateUpdate()
         {
             RotationUpdate();
