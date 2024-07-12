@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 8406937372581612679}
   - component: {fileID: 6861117280183329520}
   - component: {fileID: 7895427391766325202}
+  - component: {fileID: 3807854314585686572}
   m_Layer: 5
   m_Name: PanelSidebarMenu
   m_TagString: Untagged
@@ -401,6 +402,21 @@ MonoBehaviour:
   background: {fileID: 0}
   autoCloseDelay: 7
   alpha: 0.8
+  _onToggleSidebarEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3807854314585686572}
+        m_TargetAssemblyTypeName: ARkitect.UI.UIToggleCameraControls, Assembly-CSharp
+        m_MethodName: DisableCameraControlWhenEnablingSidebar
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &6861117280183329520
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -439,6 +455,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3807854314585686572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9188537562809273498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0477f5f48b1fdbb4880588760cad6dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraController: {fileID: 0}
 --- !u!1 &9213146905898255109
 GameObject:
   m_ObjectHideFlags: 0
