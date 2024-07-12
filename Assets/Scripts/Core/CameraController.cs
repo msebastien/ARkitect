@@ -148,7 +148,7 @@ namespace ARKitect.Core
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("How sensitive the touch drag to camera rotation")]
-        private float _touchRotateSpeed = 0.7f;
+        private float _touchRotateSpeed = 0.4f;
         [SerializeField]
         [Tooltip("Smaller positive value means smoother rotation, 1 means no smooth apply")]
         private float _slerpValue = 0.25f;
@@ -178,7 +178,7 @@ namespace ARKitect.Core
         private float _mouseZoomSpeed = 0.05f;
         [SerializeField]
         [Range(0.01f, 1f)]
-        private float _touchZoomSpeed = 0.03f;
+        private float _touchZoomSpeed = 0.05f;
         [SerializeField]
         [HideIf("_moveCameraBackAndForth")]
         [Range(0.0f, 180f)]

@@ -737,13 +737,13 @@ MonoBehaviour:
   _specifyCustomInitialRotation: 0
   _customStartRotation: {x: 0, y: 0, z: 0}
   _mouseRotateSpeed: 0.7
-  _touchRotateSpeed: 0.7
+  _touchRotateSpeed: 0.4
   _slerpValue: 0.25
   _minXRotAngle: -90
   _maxXRotAngle: 90
   _moveCameraBackAndForth: 0
   _mouseZoomSpeed: 0.05
-  _touchZoomSpeed: 0.03
+  _touchZoomSpeed: 0.05
   _minFOV: 20
   _maxFOV: 70
   _minTargetDistance: 2
