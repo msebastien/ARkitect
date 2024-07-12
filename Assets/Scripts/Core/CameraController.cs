@@ -15,32 +15,32 @@ namespace ARKitect.Core
     public class CameraController : MonoBehaviour
     {
         [SerializeField]
-        private Camera mainCamera;
+        private Camera _mainCamera;
         [SerializeField]
         [Tooltip("Root object of the scene")]
-        private Transform sceneParent;
+        private Transform _sceneParent;
         [SerializeField]
         [Tooltip("Defines the 3D scene point around which the camera will move and rotate")]
-        private Transform target;
+        private Transform _target;
         public Transform Target
         {
             get
             {
-                if (target != null)
+                if (_target != null)
                 {
-                    return target;
+                    return _target;
                 }
-                else if (defaultTarget != null)
+                else if (_defaultTarget != null)
                 {
-                    return defaultTarget;
+                    return _defaultTarget;
                 }
                 else
                 {
                     var newTarget = new GameObject("Camera Controller Target");
-                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
-                    targetPos = newTarget.transform.position;
-                    target = newTarget.transform;
-                    defaultTarget = newTarget.transform;
+                    if (_sceneParent != null) newTarget.transform.parent = _sceneParent;
+                    _targetPos = newTarget.transform.position;
+                    _target = newTarget.transform;
+                    _defaultTarget = newTarget.transform;
 
                     return newTarget.transform;
                 }
@@ -48,234 +48,234 @@ namespace ARKitect.Core
 
             set
             {
-                target = value;
-                if (target != null)
+                _target = value;
+                if (_target != null)
                 {
-                    targetPos = target.position;
+                    _targetPos = _target.position;
                 }
-                else if (defaultTarget != null)
+                else if (_defaultTarget != null)
                 {
-                    targetPos = defaultTarget.position;
+                    _targetPos = _defaultTarget.position;
                 }
                 else
                 {
                     var newTarget = new GameObject("Camera Controller Target");
-                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
-                    targetPos = newTarget.transform.position;
-                    target = newTarget.transform;
-                    defaultTarget = newTarget.transform;
+                    if (_sceneParent != null) newTarget.transform.parent = _sceneParent;
+                    _targetPos = newTarget.transform.position;
+                    _target = newTarget.transform;
+                    _defaultTarget = newTarget.transform;
                 }
             }
         }
         [SerializeField]
         [Tooltip("Defines the 3D scene point around which the camera will move and rotate by default")]
-        private Transform defaultTarget;
-        private Vector3 targetPos = Vector3.zero;
+        private Transform _defaultTarget;
+        private Vector3 _targetPos = Vector3.zero;
         public Vector3 TargetPosition
         {
             get
             {
-                if (target != null)
+                if (_target != null)
                 {
-                    targetPos = target.position;
+                    _targetPos = _target.position;
                 }
-                else if (defaultTarget != null)
+                else if (_defaultTarget != null)
                 {
-                    targetPos = defaultTarget.position;
+                    _targetPos = _defaultTarget.position;
                 }
                 else
                 {
                     var newTarget = new GameObject("Camera Controller Target");
-                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
-                    targetPos = newTarget.transform.position;
-                    target = newTarget.transform;
-                    defaultTarget = newTarget.transform;
+                    if (_sceneParent != null) newTarget.transform.parent = _sceneParent;
+                    _targetPos = newTarget.transform.position;
+                    _target = newTarget.transform;
+                    _defaultTarget = newTarget.transform;
                 }
 
-                return targetPos;
+                return _targetPos;
             }
 
             set
             {
-                targetPos = value;
-                if (target != null)
+                _targetPos = value;
+                if (_target != null)
                 {
-                    target.transform.position = targetPos;
+                    _target.transform.position = _targetPos;
                 }
-                else if (defaultTarget != null)
+                else if (_defaultTarget != null)
                 {
-                    target = defaultTarget.transform;
-                    target.transform.position = targetPos;
+                    _target = _defaultTarget.transform;
+                    _target.transform.position = _targetPos;
                 }
                 else
                 {
                     var newTarget = new GameObject("Camera Controller Target");
-                    newTarget.transform.position = targetPos;
-                    if (sceneParent != null) newTarget.transform.parent = sceneParent;
-                    target = newTarget.transform;
-                    defaultTarget = newTarget.transform;
+                    newTarget.transform.position = _targetPos;
+                    if (_sceneParent != null) newTarget.transform.parent = _sceneParent;
+                    _target = newTarget.transform;
+                    _defaultTarget = newTarget.transform;
                 }
             }
         }
 
         [Header("Config")]
         [SerializeField]
-        private bool enableCameraControls = true;
-        [SerializeField]
-        private InputActionAsset inputActionAsset;
-        [SerializeField]
-        private bool specifyCustomInitialTargetDistance = false;
-        [SerializeField]
-        [ShowIf("specifyCustomInitialTargetDistance")]
-        [Tooltip("Initial distance between camera and target")]
-        private float initialTargetDistance = 0.0f;
-        [SerializeField]
-        private bool specifyCustomInitialRotation = false;
-        [SerializeField]
-        [ShowIf("specifyCustomInitialRotation")]
-        private Vector3 customStartRotation = Vector3.zero;
+        private bool _enableCameraControls = true;
         public bool EnableCameraControls
         {
-            get { return enableCameraControls; }
-            set { enableCameraControls = value; }
+            get { return _enableCameraControls; }
+            set { _enableCameraControls = value; }
         }
+        [SerializeField]
+        private InputActionAsset _inputActionAsset;
+        [SerializeField]
+        private bool _specifyCustomInitialTargetDistance = false;
+        [SerializeField]
+        [ShowIf("_specifyCustomInitialTargetDistance")]
+        [Tooltip("Initial distance between camera and target")]
+        private float _initialTargetDistance = 0.0f;
+        [SerializeField]
+        private bool _specifyCustomInitialRotation = false;
+        [SerializeField]
+        [ShowIf("_specifyCustomInitialRotation")]
+        private Vector3 _customStartRotation = Vector3.zero;
 
         [Header("Rotation")]
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("How sensitive the mouse drag to camera rotation")]
-        private float mouseRotateSpeed = 0.7f;
+        private float _mouseRotateSpeed = 0.7f;
         [SerializeField]
         [Range(0.1f, 5f)]
         [Tooltip("How sensitive the touch drag to camera rotation")]
-        private float touchRotateSpeed = 0.7f;
+        private float _touchRotateSpeed = 0.7f;
         [SerializeField]
         [Tooltip("Smaller positive value means smoother rotation, 1 means no smooth apply")]
-        private float slerpValue = 0.25f;
+        private float _slerpValue = 0.25f;
         [SerializeField]
         [Range(-180f, 180f)]
-        private float minXRotAngle = -90; // min angle around x axis
+        private float _minXRotAngle = -90; // min angle around x axis
         [SerializeField]
         [Range(-180f, 180f)]
-        private float maxXRotAngle = 90; // max angle around x axis
+        private float _maxXRotAngle = 90; // max angle around x axis
 
         // Camera state (position, rotation, distance relative to target)
-        private float distanceBetweenCameraAndTarget;
-        private Quaternion cameraRotation; // store the quaternion after the slerp operation
-        private Vector3 cameraPos;
+        private float _distanceBetweenCameraAndTarget;
+        private Quaternion _cameraRotation; // store the quaternion after the slerp operation
+        private Vector3 _cameraPos;
 
         // Input data
-        private InputAction rotateAction;
-        private Vector2 inputDelta = Vector2.zero;
-        private Vector2 inputRotation = Vector2.zero;
+        private InputAction _rotateAction;
+        private Vector2 _inputDelta = Vector2.zero;
+        private Vector2 _inputRotation = Vector2.zero;
 
         [Header("Zoom")]
         [SerializeField]
         [Tooltip("Specifies whether the camera's FOV should be changed or the camera should move physically back and forth")]
-        private bool moveCameraBackAndForth = false;
+        private bool _moveCameraBackAndForth = false;
         [SerializeField]
         [Range(0.01f, 1f)]
-        private float mouseZoomSpeed = 0.05f;
+        private float _mouseZoomSpeed = 0.05f;
         [SerializeField]
         [Range(0.01f, 1f)]
-        private float touchZoomSpeed = 0.03f;
+        private float _touchZoomSpeed = 0.03f;
         [SerializeField]
-        [HideIf("moveCameraBackAndForth")]
+        [HideIf("_moveCameraBackAndForth")]
         [Range(0.0f, 180f)]
-        private float minFOV = 20.0f;
+        private float _minFOV = 20.0f;
         [SerializeField]
-        [HideIf("moveCameraBackAndForth")]
+        [HideIf("_moveCameraBackAndForth")]
         [Range(0.0f, 180f)]
-        private float maxFOV = 70.0f;
-        private float defaultFOV;
+        private float _maxFOV = 70.0f;
+        private float _defaultFOV;
         [SerializeField]
-        [ShowIf("moveCameraBackAndForth")]
+        [ShowIf("_moveCameraBackAndForth")]
         [Range(0.0f, 50f)]
-        private float minTargetDistance = 2.0f;
+        private float _minTargetDistance = 2.0f;
         [SerializeField]
-        [ShowIf("moveCameraBackAndForth")]
+        [ShowIf("_moveCameraBackAndForth")]
         [Range(0.0f, 50f)]
-        private float maxTargetDistance = 30.0f;
-        private float defaultTargetDistance;
+        private float _maxTargetDistance = 30.0f;
+        private float _defaultTargetDistance;
 
         // Zoom using mouse scroll wheel
-        private InputAction mouseScrollAction;
+        private InputAction _mouseScrollAction;
 
         // Zoom using Pinch gesture
-        private PinchGestureHandler pinchGestureHandler;
+        private PinchGestureHandler _pinchGestureHandler;
 
-        private bool moveCamera = false;
+        private bool _moveCamera = false;
 
-        private UIDetectBackgroundClick uiDetectBackgroundClick;
+        private UIDetectBackgroundClick _uiDetectBackgroundClick;
 
 
         private void Awake()
         {
-            if (mainCamera == null) mainCamera = Camera.main;
-            if (pinchGestureHandler == null) pinchGestureHandler = GetComponent<PinchGestureHandler>();
+            if (_mainCamera == null) _mainCamera = Camera.main;
+            if (_pinchGestureHandler == null) _pinchGestureHandler = GetComponent<PinchGestureHandler>();
 
-            uiDetectBackgroundClick = UIDetectBackgroundClick.Instance;
+            _uiDetectBackgroundClick = UIDetectBackgroundClick.Instance;
         }
 
         private void Start()
         {
-            distanceBetweenCameraAndTarget = Vector3.Distance(mainCamera.transform.position, TargetPosition);
-            defaultFOV = mainCamera.fieldOfView;
+            _distanceBetweenCameraAndTarget = Vector3.Distance(_mainCamera.transform.position, TargetPosition);
+            _defaultFOV = _mainCamera.fieldOfView;
 
             // Set camera initial rotation
-            if (specifyCustomInitialRotation)
+            if (_specifyCustomInitialRotation)
             {
-                Quaternion rotation = Quaternion.Euler(customStartRotation);
-                cameraRotation = rotation;
-                inputRotation.x = customStartRotation.y;
-                inputRotation.y = customStartRotation.x;
+                Quaternion rotation = Quaternion.Euler(_customStartRotation);
+                _cameraRotation = rotation;
+                _inputRotation.x = _customStartRotation.y;
+                _inputRotation.y = _customStartRotation.x;
             }
             else
             {
-                cameraRotation = mainCamera.transform.rotation;
-                inputRotation.x = mainCamera.transform.eulerAngles.x;
-                inputRotation.y = mainCamera.transform.eulerAngles.y;
+                _cameraRotation = _mainCamera.transform.rotation;
+                _inputRotation.x = _mainCamera.transform.eulerAngles.x;
+                _inputRotation.y = _mainCamera.transform.eulerAngles.y;
             }
-            mainCamera.transform.rotation = cameraRotation;
+            _mainCamera.transform.rotation = _cameraRotation;
 
             // Set camera initial position
-            Vector3 targetDirection = new Vector3(0.0f, 0.0f, -distanceBetweenCameraAndTarget);
-            if (specifyCustomInitialTargetDistance)
+            Vector3 targetDirection = new Vector3(0.0f, 0.0f, -_distanceBetweenCameraAndTarget);
+            if (_specifyCustomInitialTargetDistance)
             {
-                targetDirection = new Vector3(0.0f, 0.0f, -initialTargetDistance);
-                defaultTargetDistance = initialTargetDistance;
+                targetDirection = new Vector3(0.0f, 0.0f, -_initialTargetDistance);
+                _defaultTargetDistance = _initialTargetDistance;
             }
             else
             {
-                defaultTargetDistance = distanceBetweenCameraAndTarget;
+                _defaultTargetDistance = _distanceBetweenCameraAndTarget;
             }
-            cameraPos = cameraRotation * targetDirection + TargetPosition;
-            mainCamera.transform.position = cameraPos;
+            _cameraPos = _cameraRotation * targetDirection + TargetPosition;
+            _mainCamera.transform.position = _cameraPos;
 
             // Input Actions
             SetupInputActions();
             ProcessInputActions();
 
             // UI Events
-            uiDetectBackgroundClick.OnBackgroundPress.AddListener(MoveCamera);
-            uiDetectBackgroundClick.OnBackgroundRelease.AddListener(StopMovingCamera);
+            _uiDetectBackgroundClick.OnBackgroundPress.AddListener(MoveCamera);
+            _uiDetectBackgroundClick.OnBackgroundRelease.AddListener(StopMovingCamera);
         }
 
         private void OnDestroy()
         {
-            uiDetectBackgroundClick.OnBackgroundPress.RemoveListener(MoveCamera);
-            uiDetectBackgroundClick.OnBackgroundRelease.RemoveListener(StopMovingCamera);
-            if (defaultTarget != null) Destroy(defaultTarget.gameObject);
+            _uiDetectBackgroundClick.OnBackgroundPress.RemoveListener(MoveCamera);
+            _uiDetectBackgroundClick.OnBackgroundRelease.RemoveListener(StopMovingCamera);
+            if (_defaultTarget != null) Destroy(_defaultTarget.gameObject);
         }
 
         private void MoveCamera()
         {
-            moveCamera = true;
+            _moveCamera = true;
         }
 
         private void StopMovingCamera()
         {
-            moveCamera = false;
+            _moveCamera = false;
         }
 
         [PropertySpace]
@@ -294,8 +294,8 @@ namespace ARKitect.Core
         {
             try
             {
-                rotateAction = inputActionAsset.FindAction("Camera/Rotate", true);
-                mouseScrollAction = inputActionAsset.FindAction("Camera/ScrollWheel", true);
+                _rotateAction = _inputActionAsset.FindAction("Camera/Rotate", true);
+                _mouseScrollAction = _inputActionAsset.FindAction("Camera/ScrollWheel", true);
             }
             catch (ArgumentException e)
             {
@@ -307,8 +307,8 @@ namespace ARKitect.Core
         {
             RotateCameraAction();
 
-            ScrollToZoomActions();
-            pinchGestureHandler.Performed += PinchToZoomCamera;
+            ScrollToZoomAction();
+            _pinchGestureHandler.Performed += PinchToZoomCamera;
         }
 
         private float ClampAngle(float angle, float min, float max)
@@ -322,45 +322,44 @@ namespace ARKitect.Core
 
         #region Zoom
 
-        private void ScrollToZoomActions()
+        private void ScrollToZoomAction()
         {
-            mouseScrollAction.Enable();
-            mouseScrollAction.performed += ctx =>
+            _mouseScrollAction.Enable();
+            _mouseScrollAction.performed += (ctx) =>
             {
-                if (!moveCameraBackAndForth)
+                if (!_moveCameraBackAndForth)
                 {
-                    if (distanceBetweenCameraAndTarget != defaultTargetDistance) distanceBetweenCameraAndTarget = defaultTargetDistance;
-                    ZoomCamera(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
+                    if (_distanceBetweenCameraAndTarget != _defaultTargetDistance) _distanceBetweenCameraAndTarget = _defaultTargetDistance;
+                    ZoomCamera(ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
                 }
                 else
                 {
-                    if (mainCamera.fieldOfView != defaultFOV) mainCamera.fieldOfView = defaultFOV;
-                    MoveCameraBackAndForth(ctx.ReadValue<Vector2>().y * mouseZoomSpeed);
+                    if (_mainCamera.fieldOfView != _defaultFOV) _mainCamera.fieldOfView = _defaultFOV;
+                    MoveCameraBackAndForth(ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
                 }
             };
         }
 
         private void PinchToZoomCamera(InputAction.CallbackContext ctx)
         {
-            if (!enableCameraControls || !moveCamera) return;
-            if (pinchGestureHandler.TouchCount < 2) return;
+            if (!_enableCameraControls || !_moveCamera) return;
+            if (_pinchGestureHandler.TouchCount < 2) return;
 
-            if (!moveCameraBackAndForth)
+            if (!_moveCameraBackAndForth)
             {
-                if (distanceBetweenCameraAndTarget != defaultTargetDistance) distanceBetweenCameraAndTarget = defaultTargetDistance;
-                ZoomCamera(pinchGestureHandler.MagnitudeDelta * touchZoomSpeed);
+                if (_distanceBetweenCameraAndTarget != _defaultTargetDistance) _distanceBetweenCameraAndTarget = _defaultTargetDistance;
+                ZoomCamera(_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
             }
             else
             {
-                if (mainCamera.fieldOfView != defaultFOV) mainCamera.fieldOfView = defaultFOV;
-                MoveCameraBackAndForth(pinchGestureHandler.MagnitudeDelta * touchZoomSpeed);
+                if (_mainCamera.fieldOfView != _defaultFOV) _mainCamera.fieldOfView = _defaultFOV;
+                MoveCameraBackAndForth(_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
             }
-
         }
 
-        private void ZoomCamera(float increment) => mainCamera.fieldOfView = ClampAngle(mainCamera.fieldOfView + increment, minFOV, maxFOV);
+        private void ZoomCamera(float increment) => _mainCamera.fieldOfView = ClampAngle(_mainCamera.fieldOfView + increment, _minFOV, _maxFOV);
 
-        private void MoveCameraBackAndForth(float increment) => distanceBetweenCameraAndTarget = Mathf.Clamp(distanceBetweenCameraAndTarget + increment, minTargetDistance, maxTargetDistance);
+        private void MoveCameraBackAndForth(float increment) => _distanceBetweenCameraAndTarget = Mathf.Clamp(_distanceBetweenCameraAndTarget + increment, _minTargetDistance, _maxTargetDistance);
 
         #endregion
 
@@ -368,53 +367,53 @@ namespace ARKitect.Core
 
         private void RotateCameraAction()
         {
-            rotateAction.Enable();
+            _rotateAction.Enable();
 
-            rotateAction.started += (ctx) =>
+            _rotateAction.started += (ctx) =>
             {
-                if (!enableCameraControls || !moveCamera) return;
+                if (!_enableCameraControls || !_moveCamera) return;
 
                 Logger.LogInfo($"Camera Controller: Rotation Began ({ctx.control.device.displayName})");
             };
 
-            rotateAction.performed += RotateCamera;
+            _rotateAction.performed += RotateCamera;
         }
 
         private void RotateCamera(InputAction.CallbackContext ctx)
         {
-            if (!enableCameraControls || !moveCamera) return;
-            if (ctx.control.device is Touchscreen && pinchGestureHandler.TouchCount > 1) return;
+            if (!_enableCameraControls || !_moveCamera) return;
+            if (ctx.control.device is Touchscreen && _pinchGestureHandler.TouchCount > 1) return;
 
-            inputDelta = rotateAction.ReadValue<Vector2>();
+            _inputDelta = _rotateAction.ReadValue<Vector2>();
 
             if (ctx.control.device is Mouse)
             {
-                inputRotation.x += -inputDelta.y * mouseRotateSpeed; // around X
-                inputRotation.y += inputDelta.x * mouseRotateSpeed;
+                _inputRotation.x += -(_inputDelta.y * _mouseRotateSpeed); // around X
+                _inputRotation.y += _inputDelta.x * _mouseRotateSpeed;
             }
             else if (ctx.control.device is Touchscreen)
             {
-                inputRotation.x += -inputDelta.y * touchRotateSpeed;
-                inputRotation.y += inputDelta.x * touchRotateSpeed;
+                _inputRotation.x += -(_inputDelta.y * _touchRotateSpeed);
+                _inputRotation.y += _inputDelta.x * _touchRotateSpeed;
             }
 
-            inputRotation.x = ClampAngle(inputRotation.x, minXRotAngle, maxXRotAngle);
+            _inputRotation.x = ClampAngle(_inputRotation.x, _minXRotAngle, _maxXRotAngle);
         }
 
         private void RotationUpdate()
         {
             // Camera look direction vector towards the target
-            Vector3 direction = Vector3.forward * -distanceBetweenCameraAndTarget;
+            Vector3 direction = Vector3.forward * -_distanceBetweenCameraAndTarget;
 
             // Value equal to the delta change of our input (mouse or touch) position
-            Quaternion newQ = Quaternion.Euler(inputRotation.x, inputRotation.y, 0);
+            Quaternion newQ = Quaternion.Euler(_inputRotation.x, _inputRotation.y, 0);
 
-            cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
-            cameraPos = cameraRotation * direction + TargetPosition;
+            _cameraRotation = Quaternion.Slerp(_cameraRotation, newQ, _slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
+            _cameraPos = _cameraRotation * direction + TargetPosition;
 
             // Note: By using this method, we avoid setting sequentially position and rotation which is bad for performance.
             // See: https://github.com/microsoft/Microsoft.Unity.Analyzers/blob/main/doc/UNT0022.md
-            mainCamera.transform.SetPositionAndRotation(cameraPos, cameraRotation);
+            _mainCamera.transform.SetPositionAndRotation(_cameraPos, _cameraRotation);
         }
         #endregion
 
