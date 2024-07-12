@@ -80,7 +80,6 @@ namespace ARKitect.Core
                 else if (defaultTarget != null)
                 {
                     targetPos = defaultTarget.position;
-                    target = defaultTarget;
                 }
                 else
                 {
@@ -196,7 +195,6 @@ namespace ARKitect.Core
         [Range(0.0f, 50f)]
         private float maxTargetDistance = 30.0f;
         private float defaultTargetDistance;
-
 
         // Zoom using mouse scroll wheel
         private InputAction mouseScrollAction;
@@ -447,7 +445,7 @@ namespace ARKitect.Core
             cameraRotation = Quaternion.Slerp(cameraRotation, newQ, slerpValue);  // let cameraRotation value gradually reach newQ which corresponds to our touch
             cameraPos = cameraRotation * direction + TargetPosition;
 
-            // Note: By using this method, we avoid settings sequentially position and rotation which is bad for performance.
+            // Note: By using this method, we avoid setting sequentially position and rotation which is bad for performance.
             // See: https://github.com/microsoft/Microsoft.Unity.Analyzers/blob/main/doc/UNT0022.md
             mainCamera.transform.SetPositionAndRotation(cameraPos, cameraRotation);
         }

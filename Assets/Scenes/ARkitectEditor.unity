@@ -517,7 +517,7 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   sceneParent: {fileID: 1669005730}
   target: {fileID: 0}
-  defaultTarget: {fileID: 0}
+  defaultTarget: {fileID: 1669005730}
   enableCameraControls: 1
   actionMap: {fileID: -944628639613478452, guid: 54bae57c4e9011c48a575aaa50a1c13a,
     type: 3}
