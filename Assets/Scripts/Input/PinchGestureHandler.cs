@@ -40,21 +40,15 @@ namespace ARKitect.Input
         public int TouchCount => _touchCount;
 
         public float Magnitude => (_touch0PosAction.ReadValue<Vector2>() - _touch1PosAction.ReadValue<Vector2>()).magnitude;
-
         private float _prevMagnitude = 0f;
-        public float PrevMagnitude
-        {
-            get => _prevMagnitude;
-            set => _prevMagnitude = value;
-        }
 
         public float MagnitudeDelta
         {
             get
             {
-                if (PrevMagnitude == 0) PrevMagnitude = Magnitude;
-                float delta = Magnitude - PrevMagnitude;
-                PrevMagnitude = Magnitude;
+                if (_prevMagnitude == 0) _prevMagnitude = Magnitude;
+                float delta = Magnitude - _prevMagnitude;
+                _prevMagnitude = Magnitude;
 
                 return delta;
             }
