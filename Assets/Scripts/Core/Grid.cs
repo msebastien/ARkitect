@@ -10,50 +10,144 @@ namespace ARKitect.Core
     [AddComponentMenu("ARkitect/Grid")]
     public class Grid : MonoBehaviour
     {
-        public int lines = 20;
-        public float scale = 1f;
+        /// <summary>
+        /// Number of lines on each axis for the grid
+        /// </summary>
+        [SerializeField]
+        [Range(1, 100)]
+        private int lineCount = 20;
+
+        /// <summary>
+        /// Number of subdivisions for each cell on each axis
+        /// </summary>
+        [SerializeField]
+        [Range(1, 100)]
+        private int cellSubdivisionCount = 10; // 10 subdivisions per cell (For a 1m cell, a subdivision is 10 cm)
+
+        /// <summary>
+        /// Grid cell size, spacing between lines
+        /// </summary>
+        [SerializeField]
+        [Range(0.1f, 1.0f)]
+        private float cellSize = 1f; // 1m cell
+
+        private float SubdivisionScale => cellSize / cellSubdivisionCount;
+
+        /// <summary>
+        /// Line vertices: one line (2 vertices) on each of the 2 axes of the grid
+        /// </summary>
+        private Vector3[] vertices;
+
+        /// <summary>
+        /// Normal vectors
+        /// </summary>
+        private Vector3[] normals;
+
+        /// <summary>
+        /// UV coordinates
+        /// </summary>
+        private Vector2[] uv;
+
+        /// <summary>
+        /// Line vertex indices
+        /// </summary>
+        private int[] indices;
+
+        private int verticesCount;
+
+        private void Awake()
+        {
+            // Note: We need to draw n-1 lines for n subdivisions. For 10 cell subdivisions, 9 lines will be drawn.
+            if (cellSubdivisionCount > 1)
+                verticesCount = lineCount * 2 * 2 * (cellSubdivisionCount - 1) * 2 * 2;
+            else
+                verticesCount = lineCount * 2 * 2;
+
+            vertices = new Vector3[verticesCount]; // line vertices (2 vertices per line)           
+            normals = new Vector3[verticesCount]; // normal vectors
+            uv = new Vector2[verticesCount];
+            indices = new int[verticesCount]; // vertex indices
+        }
 
         private void Start()
         {
-            GetComponent<MeshFilter>().sharedMesh = GridMesh(lines, scale);
+            GetComponent<MeshFilter>().sharedMesh = GridMesh(lineCount, cellSize);
             transform.position = Vector3.zero;
 
-            GetComponent<BoxCollider>().size = new Vector3(lines * scale, 0, lines * scale);
+            GetComponent<BoxCollider>().size = new Vector3(lineCount * cellSize, 0, lineCount * cellSize);
             GetComponent<BoxCollider>().isTrigger = true;
         }
 
-        Mesh GridMesh(int lineCount, float scale)
+        /// <summary>
+        /// Create a grid mesh
+        /// </summary>
+        /// <param name="lineCount">Number of lines on each axis of the grid</param>
+        /// <param name="scale">Line spacing</param>
+        /// <returns></returns>
+        private Mesh GridMesh(int lineCount, float scale)
         {
-            float half = (lineCount / 2f) * scale;
+            if (lineCount == 0) return null;
 
-            lineCount++; // for grid borders
+            float gridHalf = (lineCount / 2f) * scale;
 
-            Vector3[] lines = new Vector3[lineCount * 4]; // line vertices (4 vertices per line)
-            Vector3[] normals = new Vector3[lineCount * 4];
-            Vector2[] uv = new Vector2[lineCount * 4];
-            int[] indices = new int[lineCount * 4]; // vertex indices
+            lineCount++; // for adding missing grid borders (one border line on each axis)
 
-            int n = 0;
-            for (int y = 0; y < lineCount; y++)
+            int vertexIdx = 0;
+            int subdivisionGridIdx = 1;
+
+            for (int line = 0; line < lineCount; line++)
             {
-                indices[n] = n;
-                uv[n] = y % 10 == 0 ? Vector2.one : Vector2.zero;
-                lines[n++] = new Vector3(y * scale - half, 0f, -half);
+                // Main Grid lines
+                // Line parallel to the Z Axis (vertices symmetrical with respect to the X axis)
+                indices[vertexIdx] = vertexIdx;
+                uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                vertices[vertexIdx++] = new Vector3(line * scale - gridHalf, 0f, -gridHalf);
 
-                indices[n] = n;
-                uv[n] = y % 10 == 0 ? Vector2.one : Vector2.zero;
-                lines[n++] = new Vector3(y * scale - half, 0f, half);
+                indices[vertexIdx] = vertexIdx;
+                uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                vertices[vertexIdx++] = new Vector3(line * scale - gridHalf, 0f, gridHalf);
 
-                indices[n] = n;
-                uv[n] = y % 10 == 0 ? Vector2.one : Vector2.zero;
-                lines[n++] = new Vector3(-half, 0f, y * scale - half);
+                // Line parallel to the X Axis (vertices symmetrical with respect to the Z axis)
+                indices[vertexIdx] = vertexIdx;
+                uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                vertices[vertexIdx++] = new Vector3(-gridHalf, 0f, line * scale - gridHalf);
 
-                indices[n] = n;
-                uv[n] = y % 10 == 0 ? Vector2.one : Vector2.zero;
-                lines[n++] = new Vector3(half, 0f, y * scale - half);
+                indices[vertexIdx] = vertexIdx;
+                uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                vertices[vertexIdx++] = new Vector3(gridHalf, 0f, line * scale - gridHalf);
+
+                // Subdivisions
+                if (line >= lineCount - 1) continue; // Don't draw cell subdivisions beyond grid borders
+
+                for (int subdivisionCellIdx = 1; subdivisionCellIdx < cellSubdivisionCount; subdivisionCellIdx++)
+                {
+                    // Subdivision parallel to the Z Axis (vertices symmetrical with respect to the X axis)
+                    indices[vertexIdx] = vertexIdx;
+                    uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                    vertices[vertexIdx++] = new Vector3(subdivisionGridIdx * SubdivisionScale - gridHalf, 0f, -gridHalf);
+
+                    indices[vertexIdx] = vertexIdx;
+                    uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                    vertices[vertexIdx++] = new Vector3(subdivisionGridIdx * SubdivisionScale - gridHalf, 0f, gridHalf);
+
+                    // Subdivision parallel to the X Axis (vertices symmetrical with respect to the Z axis)
+                    indices[vertexIdx] = vertexIdx;
+                    uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                    vertices[vertexIdx++] = new Vector3(-gridHalf, 0f, subdivisionGridIdx * SubdivisionScale - gridHalf);
+
+                    indices[vertexIdx] = vertexIdx;
+                    uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
+                    vertices[vertexIdx++] = new Vector3(gridHalf, 0f, subdivisionGridIdx * SubdivisionScale - gridHalf);
+
+                    Logger.LogInfo($"Line index= {line} / Subdivision Cell Index= {subdivisionCellIdx} / Subdivision Grid Index= {subdivisionGridIdx}");
+
+                    subdivisionGridIdx++;
+                }
+
+                subdivisionGridIdx++; // To avoid drawing again over the main grid line, so we skip it.
             }
 
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
                 normals[i] = Vector3.up;
             }
@@ -61,7 +155,7 @@ namespace ARKitect.Core
             Mesh tm = new Mesh();
 
             tm.name = "GridMesh";
-            tm.vertices = lines;
+            tm.vertices = vertices;
             tm.normals = normals;
             tm.subMeshCount = 1;
             tm.SetIndices(indices, MeshTopology.Lines, 0);
@@ -69,6 +163,7 @@ namespace ARKitect.Core
 
             return tm;
         }
+
     }
 
 }
