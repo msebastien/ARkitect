@@ -6,6 +6,7 @@ namespace ARKitect.Core
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(BoxCollider))]
     [AddComponentMenu("ARkitect/Grid")]
     public class Grid : MonoBehaviour
     {
@@ -16,18 +17,21 @@ namespace ARKitect.Core
         {
             GetComponent<MeshFilter>().sharedMesh = GridMesh(lines, scale);
             transform.position = Vector3.zero;
+
+            GetComponent<BoxCollider>().size = new Vector3(lines * scale, 0, lines * scale);
+            GetComponent<BoxCollider>().isTrigger = true;
         }
 
         Mesh GridMesh(int lineCount, float scale)
         {
             float half = (lineCount / 2f) * scale;
 
-            lineCount++;
+            lineCount++; // for grid borders
 
-            Vector3[] lines = new Vector3[lineCount * 4];
+            Vector3[] lines = new Vector3[lineCount * 4]; // line vertices (4 vertices per line)
             Vector3[] normals = new Vector3[lineCount * 4];
             Vector2[] uv = new Vector2[lineCount * 4];
-            int[] indices = new int[lineCount * 4];
+            int[] indices = new int[lineCount * 4]; // vertex indices
 
             int n = 0;
             for (int y = 0; y < lineCount; y++)
