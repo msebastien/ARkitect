@@ -29,6 +29,7 @@ namespace ARKitect.Core
                 if (value != _prevLineCount)
                 {
                     _lineCount = Mathf.Clamp(value, 1, MaxLines);
+                    GetComponent<BoxCollider>().size = new Vector3(_lineCount * _cellSize, 0, _lineCount * _cellSize);
 #if UNITY_EDITOR
                     DestroyImmediate(GetComponent<MeshFilter>().sharedMesh);
 #else
@@ -81,6 +82,7 @@ namespace ARKitect.Core
                 if (value != _prevCellSize)
                 {
                     _cellSize = Mathf.Clamp(value, 0.1f, 1.0f);
+                    GetComponent<BoxCollider>().size = new Vector3(_lineCount * _cellSize, 0, _lineCount * _cellSize);
 #if UNITY_EDITOR
                     DestroyImmediate(GetComponent<MeshFilter>().sharedMesh);
 #else
