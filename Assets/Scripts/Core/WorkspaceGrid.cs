@@ -126,6 +126,10 @@ namespace ARKitect.Core
             int[] _gridIndices = new int[MaxVertexCount];
             // Subdivision lines vertex indices
             int[] _subdivisionIndices = new int[MaxVertexCount];
+            // X Axis line vertex indices
+            int[] _XaxisIndices = new int[MaxVertexCount];
+            // Z Axis line vertex indices
+            int[] _ZaxisIndices = new int[MaxVertexCount];
 
             float gridHalf = (lineCount / 2f) * cellSize;
 
@@ -136,20 +140,36 @@ namespace ARKitect.Core
             {
                 // Main Grid lines
                 // Line parallel to the Z Axis (vertices symmetrical with respect to the X axis)
-                _gridIndices[vertexIdx] = vertexIdx;
+                // Line: First vertex
+                if (line * cellSize == gridHalf) // Retrieve axes vertex indices to put them in a different submesh
+                    _ZaxisIndices[vertexIdx] = vertexIdx;
+                else
+                    _gridIndices[vertexIdx] = vertexIdx;
                 _uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
                 _vertices[vertexIdx++] = new Vector3(line * cellSize - gridHalf, 0f, -gridHalf);
 
-                _gridIndices[vertexIdx] = vertexIdx;
+                // Line: Second vertex
+                if (line * cellSize == gridHalf)
+                    _ZaxisIndices[vertexIdx] = vertexIdx;
+                else
+                    _gridIndices[vertexIdx] = vertexIdx;
                 _uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
                 _vertices[vertexIdx++] = new Vector3(line * cellSize - gridHalf, 0f, gridHalf);
 
                 // Line parallel to the X Axis (vertices symmetrical with respect to the Z axis)
-                _gridIndices[vertexIdx] = vertexIdx;
+                // Line: First vertex
+                if (line * cellSize == gridHalf)
+                    _XaxisIndices[vertexIdx] = vertexIdx;
+                else
+                    _gridIndices[vertexIdx] = vertexIdx;
                 _uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
                 _vertices[vertexIdx++] = new Vector3(-gridHalf, 0f, line * cellSize - gridHalf);
 
-                _gridIndices[vertexIdx] = vertexIdx;
+                // Line: Second vertex
+                if (line * cellSize == gridHalf)
+                    _XaxisIndices[vertexIdx] = vertexIdx;
+                else
+                    _gridIndices[vertexIdx] = vertexIdx;
                 _uv[vertexIdx] = line % 10 == 0 ? Vector2.one : Vector2.zero;
                 _vertices[vertexIdx++] = new Vector3(gridHalf, 0f, line * cellSize - gridHalf);
 
@@ -194,9 +214,11 @@ namespace ARKitect.Core
             tm.name = "GridMesh";
             tm.vertices = _vertices;
             tm.normals = _normals;
-            tm.subMeshCount = 2;
+            tm.subMeshCount = 4;
             tm.SetIndices(_gridIndices, MeshTopology.Lines, 0);
             tm.SetIndices(_subdivisionIndices, MeshTopology.Lines, 1);
+            tm.SetIndices(_XaxisIndices, MeshTopology.Lines, 2);
+            tm.SetIndices(_ZaxisIndices, MeshTopology.Lines, 3);
             tm.uv = _uv;
 
             return tm;

@@ -4,7 +4,6 @@ using ARKitect.Core;
 
 namespace ARKitect.Editor
 {
-    [CanEditMultipleObjects]
     [UnityEditor.CustomEditor(typeof(WorkspaceGrid))]
     public class WorkspaceGridEditor : UnityEditor.Editor
     {
