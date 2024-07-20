@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a6b31ca2c35f94586c412f1fc7336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lineCount: 20
+  _cellCount: 20
   _cellSubdivisionCount: 10
   _cellSize: 1
 --- !u!33 &3066968541399188665
