@@ -2144,50 +2144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
---- !u!224 &2128181846 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2773810354452048579, guid: cb4ae15b31aa6164d8b7f3579f2970df,
-    type: 3}
-  m_PrefabInstance: {fileID: 166406177982399100}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2137043480
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137043481}
-  m_Layer: 0
-  m_Name: Scenery
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2137043481
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137043480}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 100314932}
-  - {fileID: 1208683637}
-  - {fileID: 1814960820}
-  - {fileID: 33073783}
-  - {fileID: 876409519}
-  - {fileID: 100477772}
-  m_Father: {fileID: 1669005730}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &2145798516
+--- !u!43 &2071084694
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2382,6 +2339,49 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!224 &2128181846 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2773810354452048579, guid: cb4ae15b31aa6164d8b7f3579f2970df,
+    type: 3}
+  m_PrefabInstance: {fileID: 166406177982399100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2137043480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2137043481}
+  m_Layer: 0
+  m_Name: Scenery
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2137043481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137043480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 100314932}
+  - {fileID: 1208683637}
+  - {fileID: 1814960820}
+  - {fileID: 33073783}
+  - {fileID: 876409519}
+  - {fileID: 100477772}
+  m_Father: {fileID: 1669005730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &37988500559137300
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,7 +3488,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 2145798516}
+      objectReference: {fileID: 2071084694}
     - target: {fileID: 8518558849337710821, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
         type: 3}
       propertyPath: m_Name
