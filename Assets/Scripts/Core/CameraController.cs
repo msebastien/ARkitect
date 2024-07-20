@@ -328,12 +328,12 @@ namespace ARKitect.Core
                 if (!_moveCameraBackAndForth)
                 {
                     if (_distanceBetweenCameraAndTarget != _defaultTargetDistance) _distanceBetweenCameraAndTarget = _defaultTargetDistance;
-                    ZoomCamera(ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
+                    ZoomCamera(-ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
                 }
                 else
                 {
                     if (_mainCamera.fieldOfView != _defaultFOV) _mainCamera.fieldOfView = _defaultFOV;
-                    MoveCameraBackAndForth(ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
+                    MoveCameraBackAndForth(-ctx.ReadValue<Vector2>().y * _mouseZoomSpeed);
                 }
             };
         }
@@ -346,12 +346,12 @@ namespace ARKitect.Core
             if (!_moveCameraBackAndForth)
             {
                 if (_distanceBetweenCameraAndTarget != _defaultTargetDistance) _distanceBetweenCameraAndTarget = _defaultTargetDistance;
-                ZoomCamera(_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
+                ZoomCamera(-_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
             }
             else
             {
                 if (_mainCamera.fieldOfView != _defaultFOV) _mainCamera.fieldOfView = _defaultFOV;
-                MoveCameraBackAndForth(_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
+                MoveCameraBackAndForth(-_pinchGestureHandler.MagnitudeDelta * _touchZoomSpeed);
             }
         }
 
