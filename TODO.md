@@ -6,6 +6,7 @@ Some rough ideas/plans about what to do next and potentially how to do it:
 - ~~Implement Item library~~
 - ~~**Search functionality** in item library~~
 - ~~**Implement camera management** to move view and zoom in/out~~
+- ~~**Add a workspace grid with subdivision units and colored axes**~~
 - **Implement Command Pattern** to undo/redo actions
 - **Select object**
 - **Translate** and **rotate** object
