@@ -1,7 +1,6 @@
 using UnityEditor;
 
 using ARKitect.Core;
-using UnityEngine;
 
 namespace ARKitect.Editor
 {
