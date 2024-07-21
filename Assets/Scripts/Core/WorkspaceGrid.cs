@@ -89,11 +89,26 @@ namespace ARKitect.Core
 
         private float SubdivisionScale => _cellSize / _cellSubdivisionCount;
 
+        [SerializeField]
+        private Material _gridMaterial;
+        [SerializeField]
+        private Material _cellSubdivisionMaterial;
+        [SerializeField]
+        private Material _XaxisMaterial;
+        [SerializeField]
+        private Material _ZaxisMaterial;
+
 
         private void Start()
         {
             CreateNewGridMesh();
             transform.position = Vector3.zero;
+        }
+
+        private void OnDestroy()
+        {
+            DestroyMesh();
+            DestroyMaterials();
         }
 
         /// <summary>
@@ -219,6 +234,7 @@ namespace ARKitect.Core
         public void CreateNewGridMesh()
         {
             GetComponent<MeshFilter>().mesh = GridMesh(_cellCount, _cellSubdivisionCount, _cellSize);
+            ApplyMaterials();
             UpdateColliderSize();
         }
 
@@ -237,7 +253,25 @@ namespace ARKitect.Core
             GetComponent<BoxCollider>().isTrigger = true;
         }
 
+        private void ApplyMaterials()
+        {
+            var meshRenderer = GetComponent<MeshRenderer>();
+            Material[] mat = new Material[4];
+            mat[0] = _gridMaterial;
+            mat[1] = _cellSubdivisionMaterial;
+            mat[2] = _XaxisMaterial;
+            mat[3] = _ZaxisMaterial;
+            meshRenderer.sharedMaterials = mat;
+        }
 
+        private void DestroyMaterials()
+        {
+#if !UNITY_EDITOR
+            var meshRenderer = GetComponent<MeshRenderer>();
+            foreach (var material in meshRenderer.materials)
+                Destroy(material);
+#endif
+        }
     }
 
 }

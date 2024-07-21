@@ -50,6 +50,11 @@ MonoBehaviour:
   _cellCount: 20
   _cellSubdivisionCount: 10
   _cellSize: 1
+  _gridMaterial: {fileID: 2100000, guid: 875ffb550231df64990ff3695233416f, type: 2}
+  _cellSubdivisionMaterial: {fileID: 2100000, guid: 1186bc33df6123247921ce181489e858,
+    type: 2}
+  _XaxisMaterial: {fileID: 2100000, guid: 9fe5126ff32598142bdea1219ae0e54f, type: 2}
+  _ZaxisMaterial: {fileID: 2100000, guid: 425050e0993da04468fd74f24a00e107, type: 2}
 --- !u!33 &3066968541399188665
 MeshFilter:
   m_ObjectHideFlags: 0
