@@ -3489,31 +3489,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 949801684}
-    - target: {fileID: 3470972842718754425, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
-        type: 3}
-      propertyPath: _cellCount
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 3470972842718754425, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
-        type: 3}
-      propertyPath: _cellSubdivisionMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 1186bc33df6123247921ce181489e858, type: 2}
-    - target: {fileID: 7304647466555741255, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 1186bc33df6123247921ce181489e858, type: 2}
-    - target: {fileID: 7477355557434160974, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7477355557434160974, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 8518558849337710821, guid: 5d1882d01cd2c5e43beb91f72ad26d96,
         type: 3}
       propertyPath: m_Name
