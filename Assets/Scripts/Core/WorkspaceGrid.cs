@@ -241,9 +241,9 @@ namespace ARKitect.Core
         public void DestroyMesh()
         {
 #if UNITY_EDITOR
-            DestroyImmediate(GetComponent<MeshFilter>().sharedMesh);
+            DestroyImmediate(GetComponent<MeshFilter>().sharedMesh); // not an actual asset, so we are safe: no risk of data loss
 #else
-            Destroy(GetComponent<MeshFilter>().sharedMesh);
+            Destroy(GetComponent<MeshFilter>().mesh); // destroy instantiated mesh at runtime
 #endif
         }
 
@@ -264,6 +264,9 @@ namespace ARKitect.Core
             meshRenderer.sharedMaterials = mat;
         }
 
+        /// <summary>
+        /// Destroy all renderer's instantiated materials
+        /// </summary>
         private void DestroyMaterials()
         {
 #if !UNITY_EDITOR
