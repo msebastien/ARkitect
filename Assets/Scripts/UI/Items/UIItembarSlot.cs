@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.Items;
+using ARKitect.Commands;
+using ARKitect.Core;
+using ARKitect.Items.Resource;
 
 namespace ARKitect.UI.Items
 {
@@ -61,8 +65,9 @@ namespace ARKitect.UI.Items
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
-                // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                _controller.Spawn(_index, hit.point);
+
+                ExecuteItemCommand(hit);
+
                 return true;
             }
             return false;
@@ -87,6 +92,20 @@ namespace ARKitect.UI.Items
             }
 
             return false;
+        }
+
+        private void ExecuteItemCommand(RaycastHit hit)
+        {
+            Identifier itemId = _controller.GetItemId(_index);
+            var item = PrefabsManager.Items[itemId];
+
+            ICommand command = null;
+            if (item.Resource is ResourceObject)
+                command = new SpawnCommand((ResourceObject)item.Resource, hit.point, Quaternion.identity);
+            else if (item.Resource is ResourceMaterial)
+                command = new ApplyMaterialCommand((ResourceMaterial)item.Resource, hit.collider.gameObject);
+
+            command?.Execute();
         }
 
         protected override void OpenModalWindow()
