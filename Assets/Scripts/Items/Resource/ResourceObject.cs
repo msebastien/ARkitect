@@ -16,8 +16,6 @@ namespace ARKitect.Items.Resource
         private GameObject _resource;
         public GameObject Resource => _resource;
 
-        public System.Type Type => GetType();
-
         public ResourceObject(string itemId, GameObject resource)
         {
             _itemId = new Identifier(itemId);

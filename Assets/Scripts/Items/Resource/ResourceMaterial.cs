@@ -14,8 +14,6 @@ namespace ARKitect.Items.Resource
         private Material _resource;
         public Material Resource => _resource;
 
-        public System.Type Type => GetType();
-
         public ResourceMaterial(string itemId, Material resource)
         {
             _itemId = new Identifier(itemId);
