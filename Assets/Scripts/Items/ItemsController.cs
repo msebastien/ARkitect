@@ -4,7 +4,6 @@ using UnityEngine;
 
 using ARKitect.Core;
 using Logger = ARKitect.Core.Logger;
-using Sirenix.Utilities;
 
 namespace ARKitect.Items
 {
@@ -35,10 +34,6 @@ namespace ARKitect.Items
         /// Actually used capacity for displayed slots
         /// </summary>
         public int UsedCapacity { get; set; } = 5;
-
-        [SerializeField]
-        [Tooltip("Parent of the spawned objects")]
-        private Transform instancesParent;
 
         [SerializeField]
         private string[] defaultItems = new string[]
@@ -229,17 +224,6 @@ namespace ARKitect.Items
         public void Swap(int slot1, int slot2)
         {
             (itemDefinitions[slot1], itemDefinitions[slot2]) = (itemDefinitions[slot2], itemDefinitions[slot1]);
-        }
-
-        /// <summary>
-        /// Spawn the item in the specified slot, if it can be instantiated
-        /// </summary>
-        /// <param name="slot">Index of the slot</param>
-        /// <param name="position">Position of the object to instantiate in World Space</param>
-        public void Spawn(int slot, Vector3 position)
-        {
-            var itemDefinitionId = itemDefinitions[slot];
-            PrefabsManager.Instance.Spawn(itemDefinitionId, position, instancesParent);
         }
 
         public Dictionary<Identifier, float> Search(string query)
