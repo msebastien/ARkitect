@@ -20,22 +20,27 @@ namespace ARKitect.Core
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
         [Tooltip("Map of Item identifiers and Items")]
         [SerializeField]
-        private Dictionary<Identifier, IItem> itemCatalog = new Dictionary<Identifier, IItem>();
-        public static Dictionary<Identifier, IItem> Items => Instance.itemCatalog;
+        private Dictionary<Identifier, Item> _itemCatalog = new Dictionary<Identifier, Item>();
+        public static Dictionary<Identifier, Item> Items => Instance._itemCatalog;
 
         [Header("Instances")]
+        [SerializeField]
+        [Tooltip("Parent of the spawned objects")]
+        private Transform _instancesParent;
+        public Transform InstancesParent => _instancesParent;
         [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
         [Tooltip("Cached object instances")]
         [SerializeField]
-        private Dictionary<int, GameObject> instances = new Dictionary<int, GameObject>();
+        private Dictionary<int, GameObject> _instancesDict = new Dictionary<int, GameObject>();
+        public static Dictionary<int, GameObject> Instances => Instance._instancesDict;
 
         [Header("Event")]
         [SerializeField]
         private UnityEvent _onItemCatalogLoaded;
         public UnityEvent OnItemCatalogLoaded => _onItemCatalogLoaded;
 
-
         private InternalImporter internalImporter;
+
 
         private void Awake()
         {
@@ -45,29 +50,22 @@ namespace ARKitect.Core
         private void Start()
         {
             // Load built-in items
-            itemCatalog.AddRange(internalImporter?.Load());
+            _itemCatalog.AddRange(internalImporter?.Load());
             _onItemCatalogLoaded.Invoke();
         }
 
         /// <summary>
-        /// Instantiate an item and save it
+        /// Instantiate a GameObject and save it
         /// </summary>
-        /// <param name="item">Item definition identifier</param>
+        /// <param name="obj">GameObject to instantiate</param>
         /// <param name="position">Coordinates in World Space</param>
-        /// <param name="parent">Parent transform of this newly instanced object</param>
-        public void Spawn(Identifier item, Vector3 position, Transform parent = null)
+        /// <param name="rotation">Rotation</param>
+        /// <returns>Instance ID</returns>
+        public int Spawn(GameObject obj, Vector3 position, Quaternion rotation)
         {
-            if (itemCatalog[item].Type == ItemType.Object)
-            {
-                var itemObject = itemCatalog[item] as Item<GameObject>;
-                var go = Instantiate(itemObject.Resource, position, Quaternion.identity, parent);
-                instances.Add(go.GetInstanceID(), go);
-                Logger.LogInfo($"Object of the item {item} has been instantiated.");
-            }
-            else
-            {
-                Logger.LogInfo($"The resource of the item {item} is not a GameObject and cannot be instantiated");
-            }
+            var go = Instantiate(obj, position, rotation, _instancesParent);
+            _instancesDict.Add(go.GetInstanceID(), go);
+            return go.GetInstanceID();
         }
     }
 
