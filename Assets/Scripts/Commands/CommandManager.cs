@@ -18,6 +18,8 @@ namespace ARKitect.Commands
 
         public void ExecuteCommand(ICommand command)
         {
+            if(command == null) return;
+
             command.Execute();
             _commands.Push(command);
         }
