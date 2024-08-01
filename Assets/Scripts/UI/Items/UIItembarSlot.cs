@@ -101,9 +101,9 @@ namespace ARKitect.UI.Items
 
             ICommand command = null;
             if (item.Resource is ResourceObject)
-                command = new SpawnCommand((ResourceObject)item.Resource, hit.point, Quaternion.identity);
+                command = new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity);
             else if (item.Resource is ResourceMaterial)
-                command = new ApplyMaterialCommand((ResourceMaterial)item.Resource, hit.collider.gameObject);
+                command = new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject);
 
             // TODO: Replace by call to invoker (which will execute and add the command to history)
             command?.Execute();

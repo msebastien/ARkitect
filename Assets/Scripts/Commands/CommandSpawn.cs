@@ -5,14 +5,14 @@ using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.Commands
 {
-    public class SpawnCommand : ICommand
+    public class CommandSpawn : ICommand
     {
         private ResourceObject _itemResource;
         private Vector3 _position;
         private Quaternion _rotation;
         private int _instanceID = -1;
 
-        public SpawnCommand(ResourceObject itemObject, Vector3 position, Quaternion rotation)
+        public CommandSpawn(ResourceObject itemObject, Vector3 position, Quaternion rotation)
         {
             _itemResource = itemObject;
             _position = position;
