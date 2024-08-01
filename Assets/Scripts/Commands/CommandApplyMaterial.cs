@@ -20,6 +20,11 @@ namespace ARKitect.Commands
         {
             _itemResource.ApplyTo(_selectedObject);
         }
+
+        public void Undo()
+        {
+
+        }
     }
 
 }

@@ -23,6 +23,24 @@ namespace ARKitect.Core
         [SerializeField]
         private Dictionary<int, GameObject> _instances = new Dictionary<int, GameObject>();
 
+        /// <summary>
+        /// Destroy the specified instance using its Id
+        /// </summary>
+        /// <param name="id">Id of the instantiated object</param>
+        /// <returns>'true' if it succeeded, else 'false'</returns>
+        public bool DestroyInstance(int id)
+        {
+            bool ret = false;
+
+            if (_instances.TryGetValue(id, out GameObject instance))
+            {
+                Destroy(instance);
+                _instances.Remove(id);
+                ret = true;
+            }
+
+            return ret;
+        }
 
         /// <summary>
         /// Instantiate a GameObject and save it

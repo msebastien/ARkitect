@@ -22,6 +22,12 @@ namespace ARKitect.Commands
             command.Execute();
             _commands.Push(command);
         }
+
+        public void UndoCommand()
+        {
+            ICommand latestCommand = _commands.Pop();
+            latestCommand.Undo();
+        }
     }
 
 }

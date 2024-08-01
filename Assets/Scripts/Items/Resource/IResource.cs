@@ -15,6 +15,7 @@ namespace ARKitect.Items.Resource
     public interface IResourceObject : IResource, IResourceProp<GameObject>
     {
         int Spawn(Vector3 position, Quaternion rotation);
+        bool DestroyObject(int instanceID);
     }
     public interface IResourceMaterial : IResource, IResourceProp<Material>
     {

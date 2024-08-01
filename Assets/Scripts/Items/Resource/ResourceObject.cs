@@ -28,9 +28,25 @@ namespace ARKitect.Items.Resource
             _resource = resource;
         }
 
+        /// <summary>
+        /// Instantiate the object resource
+        /// </summary>
+        /// <param name="position">Coordinates on world space</param>
+        /// <param name="rotation"></param>
+        /// <returns>Instance ID</returns>
         public int Spawn(Vector3 position, Quaternion rotation)
         {
             return ARKitectApp.InstanceManager.Spawn(_resource, position, rotation);
+        }
+
+        /// <summary>
+        /// Destroy the specified object
+        /// </summary>
+        /// <param name="id">Id of the instantiated object</param>
+        /// <returns>'true' if it succeeded, else 'false'</returns>
+        public bool DestroyObject(int instanceID)
+        {
+            return ARKitectApp.InstanceManager.DestroyInstance(instanceID);
         }
     }
 

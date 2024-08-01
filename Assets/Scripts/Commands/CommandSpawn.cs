@@ -24,6 +24,14 @@ namespace ARKitect.Commands
             _instanceID = _itemResource.Spawn(_position, _rotation);
             Logger.LogInfo($"Spawn object of '{_itemResource.Item}'.");
         }
+
+        public void Undo()
+        {
+            if(_itemResource.DestroyObject(_instanceID))
+                Logger.LogInfo($"Destroy instance '{_instanceID}' of the object '{_itemResource.Item}'.");
+
+            _instanceID = -1;
+        }
     }
 
 }
