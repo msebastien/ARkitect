@@ -9,6 +9,7 @@ namespace ARKitect.Commands
     public class CommandManager
     {
         private Stack<ICommand> _commands;
+        private Stack<ICommand> _undoneCommands;
 
         public CommandManager()
         {
@@ -27,6 +28,13 @@ namespace ARKitect.Commands
         {
             ICommand latestCommand = _commands.Pop();
             latestCommand.Undo();
+            _undoneCommands.Push(latestCommand);
+        }
+
+        public void RedoCommand()
+        {
+            ICommand latestCommand = _commands.Pop();
+            ExecuteCommand(latestCommand);
         }
     }
 
