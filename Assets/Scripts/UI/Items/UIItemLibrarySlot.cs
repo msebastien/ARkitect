@@ -35,7 +35,7 @@ namespace ARKitect.UI.Items
 
             if (_iconFavorite != null)
             {
-                if (PrefabsManager.Items[_controller.GetItemId(_index)].MarkedAsFavorite)
+                if (Core.ARKitectApp.Items[_controller.GetItemId(_index)].MarkedAsFavorite)
                     _iconFavorite.color = _iconFavoriteColor.color;
                 else
                     _iconFavorite.color = Color.clear;

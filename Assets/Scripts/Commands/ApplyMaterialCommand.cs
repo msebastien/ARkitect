@@ -1,5 +1,6 @@
-using ARKitect.Items.Resource;
 using UnityEngine;
+
+using ARKitect.Items.Resource;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.Commands

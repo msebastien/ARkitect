@@ -97,7 +97,7 @@ namespace ARKitect.UI.Items
         private void ExecuteItemCommand(RaycastHit hit)
         {
             Identifier itemId = _controller.GetItemId(_index);
-            var item = PrefabsManager.Items[itemId];
+            var item = Core.ARKitectApp.Items[itemId];
 
             ICommand command = null;
             if (item.Resource is ResourceObject)
@@ -105,6 +105,7 @@ namespace ARKitect.UI.Items
             else if (item.Resource is ResourceMaterial)
                 command = new ApplyMaterialCommand((ResourceMaterial)item.Resource, hit.collider.gameObject);
 
+            // TODO: Replace by call to invoker (which will execute and add the command to history)
             command?.Execute();
         }
 

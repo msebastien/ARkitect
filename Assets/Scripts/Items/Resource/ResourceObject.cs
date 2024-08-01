@@ -30,7 +30,7 @@ namespace ARKitect.Items.Resource
 
         public int Spawn(Vector3 position, Quaternion rotation)
         {
-            return PrefabsManager.Instance.Spawn(_resource, position, rotation);
+            return ARKitectApp.InstanceManager.Spawn(_resource, position, rotation);
         }
     }
 

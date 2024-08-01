@@ -1,3 +1,4 @@
+using ARKitect.Core;
 using ARKitect.Coroutine;
 using System.Collections;
 using UnityEngine;
@@ -16,14 +17,14 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle AnimateBackdropEnter(UIModalBackdrop backdrop)
         {
-            return CoroutineManager.Instance.Run(AnimateBackdropEnterRoutine(backdrop));
+            return ARKitectApp.CoroutineManager.Run(AnimateBackdropEnterRoutine(backdrop));
         }
 
         protected abstract IEnumerator AnimateBackdropEnterRoutine(UIModalBackdrop backdrop);
 
         public AsyncProcessHandle AnimateBackdropExit(UIModalBackdrop backdrop)
         {
-            return CoroutineManager.Instance.Run(AnimateBackdropExitRoutine(backdrop));
+            return ARKitectApp.CoroutineManager.Run(AnimateBackdropExitRoutine(backdrop));
         }
 
         protected abstract IEnumerator AnimateBackdropExitRoutine(UIModalBackdrop backdrop);
