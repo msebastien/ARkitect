@@ -8,6 +8,7 @@ using Sirenix.OdinInspector;
 using ARKitect.Items;
 using ARKitect.Items.Import;
 using ARKitect.Coroutine;
+using ARKitect.Commands;
 
 namespace ARKitect.Core
 {
@@ -24,6 +25,8 @@ namespace ARKitect.Core
         [SerializeField]
         private CoroutineManager _coroutineManager;
         public static CoroutineManager CoroutineManager => Instance._coroutineManager;
+        private CommandManager _commandManager;
+        public static CommandManager CommandManager => Instance._commandManager;
 
         [Header("Item Catalog")]
         [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
@@ -42,6 +45,7 @@ namespace ARKitect.Core
 
         private void Awake()
         {
+            _commandManager = new CommandManager();
             internalImporter = FindObjectOfType<InternalImporter>();
         }
 
@@ -51,6 +55,7 @@ namespace ARKitect.Core
             _itemCatalog.AddRange(internalImporter?.Load());
             _onItemCatalogLoaded.Invoke();
         }
+        
     }
 
 }
