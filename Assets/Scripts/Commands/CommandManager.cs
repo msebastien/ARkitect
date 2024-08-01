@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ARKitect.Commands
 {
@@ -9,7 +8,7 @@ namespace ARKitect.Commands
     /// </summary>
     public class CommandManager
     {
-        private Stack<ICommand> _commands = new Stack<ICommand>();
+        private Stack<ICommand> _commands;
 
         public CommandManager()
         {
