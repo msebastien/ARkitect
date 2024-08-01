@@ -33,7 +33,7 @@ namespace ARKitect.Commands
 
         public void RedoCommand()
         {
-            ICommand latestCommand = _commands.Pop();
+            ICommand latestCommand = _undoneCommands.Pop();
             ExecuteCommand(latestCommand);
         }
     }
