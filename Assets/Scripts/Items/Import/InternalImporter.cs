@@ -134,7 +134,7 @@ namespace ARKitect.Items.Import
                 var parsedItemData = parsedJson.Item;
 
                 // Create an Item resource based on the deserialized data
-                UnityEngine.Object itemResource = null;
+                Object itemResource = null;
                 foreach (var resourceDef in parsedItemData.Resources)
                 {
                     string path = resourceDef.Path.Split('.')[0];
@@ -195,7 +195,7 @@ namespace ARKitect.Items.Import
 
         }*/
 
-        private void OnParsingError(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+        private void OnParsingError(object sender, ErrorEventArgs args)
         {
             Logger.LogError(args.ErrorContext.Error.Message);
             args.ErrorContext.Handled = true;
