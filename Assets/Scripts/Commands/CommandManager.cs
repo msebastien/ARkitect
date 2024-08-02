@@ -14,11 +14,18 @@ namespace ARKitect.Commands
         public CommandManager()
         {
             _commands = new Stack<ICommand>();
+            _undoneCommands = new Stack<ICommand>();
         }
 
         public void ExecuteCommand(ICommand command)
         {
-            if(command == null) return;
+            ExecuteCommand(command, true);
+        }
+
+        private void ExecuteCommand(ICommand command, bool clearUndoneCommands)
+        {
+            if (command == null) return;
+            if (clearUndoneCommands && _undoneCommands.Count > 0) _undoneCommands.Clear();
 
             command.Execute();
             _commands.Push(command);
@@ -34,7 +41,7 @@ namespace ARKitect.Commands
         public void RedoCommand()
         {
             ICommand latestCommand = _undoneCommands.Pop();
-            ExecuteCommand(latestCommand);
+            ExecuteCommand(latestCommand, false);
         }
     }
 
