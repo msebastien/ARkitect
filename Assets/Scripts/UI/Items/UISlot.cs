@@ -161,7 +161,7 @@ namespace ARKitect.UI.Items
             }
 
             // Get the item matching the identifier from the item database/catalog
-            var itemDefinition = Core.ARKitectApp.Items[itemDefinitionId];
+            var itemDefinition = ARKitectApp.Items[itemDefinitionId];
 
             if (itemDefinition == null)
             {

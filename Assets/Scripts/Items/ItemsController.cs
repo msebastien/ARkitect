@@ -237,7 +237,7 @@ namespace ARKitect.Items
             foreach (var itemId in itemDefinitions)
             {
                 if (itemId.IsUndefined) continue;
-                var item = Core.ARKitectApp.Items[itemId];
+                var item = ARKitectApp.Items[itemId];
 
                 float weight = 0;
                 float totalWeight = 0;
