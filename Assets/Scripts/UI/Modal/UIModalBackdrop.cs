@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 using ARKitect.Coroutine;
+using ARKitect.Core;
 
 namespace ARKitect.UI.Modal
 {
@@ -60,7 +61,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Enter(bool playAnimation)
         {
-            return CoroutineManager.Instance.Run(EnterRoutine(playAnimation));
+            return ARKitectApp.CoroutineManager.Run(EnterRoutine(playAnimation));
         }
 
         private IEnumerator EnterRoutine(bool playAnimation)
@@ -79,7 +80,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Exit(bool playAnimation)
         {
-            return CoroutineManager.Instance.Run(ExitRoutine(playAnimation));
+            return ARKitectApp.CoroutineManager.Run(ExitRoutine(playAnimation));
         }
 
         private IEnumerator ExitRoutine(bool playAnimation)

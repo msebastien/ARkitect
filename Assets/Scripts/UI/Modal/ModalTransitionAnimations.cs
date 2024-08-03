@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 using ARKitect.Coroutine;
+using ARKitect.Core;
 
 namespace ARKitect.UI.Modal
 {
@@ -13,14 +14,14 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle AnimateEnter(UIModal modal)
         {
-            return CoroutineManager.Instance.Run(AnimateEnterRoutine(modal));
+            return ARKitectApp.CoroutineManager.Run(AnimateEnterRoutine(modal));
         }
 
         protected abstract IEnumerator AnimateEnterRoutine(UIModal modal);
 
         public AsyncProcessHandle AnimateExit(UIModal modal)
         {
-            return CoroutineManager.Instance.Run(AnimateExitRoutine(modal));
+            return ARKitectApp.CoroutineManager.Run(AnimateExitRoutine(modal));
         }
 
         protected abstract IEnumerator AnimateExitRoutine(UIModal modal);

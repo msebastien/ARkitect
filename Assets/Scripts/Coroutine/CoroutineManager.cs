@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using ARKitect.Core;
-
 namespace ARKitect.Coroutine
 {
-    internal class CoroutineManager : Singleton<CoroutineManager>
+    public class CoroutineManager : MonoBehaviour
     {
         private readonly Dictionary<int, UnityEngine.Coroutine> _runningCoroutines =
             new Dictionary<int, UnityEngine.Coroutine>();

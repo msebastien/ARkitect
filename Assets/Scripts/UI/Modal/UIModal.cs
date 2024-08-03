@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using Sirenix.OdinInspector;
 
 using ARKitect.Coroutine;
+using ARKitect.Core;
 
 
 namespace ARKitect.UI.Modal
@@ -102,7 +103,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Enter(UIModal partnerModal, bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(EnterRoutine(partnerModal, playAnimation));
+            return ARKitectApp.CoroutineManager.Run(EnterRoutine(partnerModal, playAnimation));
         }
 
         private IEnumerator EnterRoutine(UIModal partnerModal, bool playAnimation)
@@ -140,7 +141,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Exit(UIModal partnerModal, bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(ExitRoutine(partnerModal, playAnimation));
+            return ARKitectApp.CoroutineManager.Run(ExitRoutine(partnerModal, playAnimation));
         }
 
         private IEnumerator ExitRoutine(UIModal partnerModal, bool playAnimation)

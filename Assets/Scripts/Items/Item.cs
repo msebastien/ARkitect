@@ -1,6 +1,8 @@
-using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+
+using ARKitect.Items.Resource;
 
 namespace ARKitect.Items
 {
@@ -19,23 +21,10 @@ namespace ARKitect.Items
         Material
     }
 
-    public interface IItem
-    {
-        public Sprite Icon { get; }
-        public string Name { get; }
-        public ItemType Type { get; }
-        public ItemCategory Category { get; }
-        public string Description { get; }
-        public string Author { get; }
-        public bool MarkedAsFavorite { get; set; }
-        public List<string> Tags { get; }
-        public bool IsBuiltIn { get; }
-    }
-
     /// <summary>
     /// Define properties of an item from the building parts' library
     /// </summary>
-    public class Item<T> : IItem where T : UnityEngine.Object
+    public class Item
     {
         [PreviewField]
         [SerializeField]
@@ -78,22 +67,25 @@ namespace ARKitect.Items
         public bool IsBuiltIn => builtin;
 
         [SerializeField]
-        private T resource; // T -> GameObject or Texture2D
-        // Link an item to a command (Command Pattern) ?    
-        public T Resource => resource;
+        private IResource resource;
+        public IResource Resource => resource;
 
         // TODO: Refactor to avoid this extremely big constructor using an ItemBuilder
-        public Item(string name, Sprite icon, ItemType type, T resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", IEnumerable<string> tags = default, bool builtin = false)
+        public Item(string name, Sprite icon, IResource resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", IEnumerable<string> tags = default, bool builtin = false)
         {
             this.name = name;
             this.icon = icon;
-            this.type = type;
             this.category = category;
             this.resource = resource;
             this.description = description;
             this.author = author;
             this.tags.AddRange(tags);
             this.builtin = builtin;
+
+            if (resource is ResourceObject)
+                this.type = ItemType.Object;
+            else if (resource is ResourceMaterial)
+                this.type = ItemType.Material;
         }
 
     }
