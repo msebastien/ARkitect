@@ -11,6 +11,9 @@ namespace ARKitect.Commands
         private Stack<ICommand> _commands;
         private Stack<ICommand> _undoneCommands;
 
+        public int CommandCount => _commands.Count;
+        public int UndoneCommandCount => _undoneCommands.Count;
+
         public CommandManager()
         {
             _commands = new Stack<ICommand>();
