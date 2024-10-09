@@ -102,12 +102,12 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle Push(string modalId, bool playAnimation = true, Action<UIModal> onLoad = null)
         {
-            return ARKitectApp.CoroutineManager.Run(PushRoutine(modalId, playAnimation, onLoad));
+            return ARKitectApp.Instance.CoroutineManager.Run(PushRoutine(modalId, playAnimation, onLoad));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true, int popCount = 1)
         {
-            return ARKitectApp.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation, string destinationModalId)
@@ -125,7 +125,7 @@ namespace ARKitect.UI.Modal
             if (popCount == _orderedModalIds.Count)
                 throw new Exception($"The modal with id '{destinationModalId}' is not found.");
 
-            return ARKitectApp.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         private IEnumerator PushRoutine(string modalId, bool playAnimation, Action<UIModal> onLoad = null)

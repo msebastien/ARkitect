@@ -97,12 +97,12 @@ namespace ARKitect.UI.Items
         private void ExecuteItemCommand(RaycastHit hit)
         {
             Identifier itemId = _controller.GetItemId(_index);
-            var item = ARKitectApp.Items[itemId];
+            var item = ARKitectApp.Instance.Items[itemId];
 
             if (item.Resource is ResourceObject)
-                ARKitectApp.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
             else if (item.Resource is ResourceMaterial)
-                ARKitectApp.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
         }
 
         protected override void OpenModalWindow()

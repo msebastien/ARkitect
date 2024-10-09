@@ -17,14 +17,14 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle AnimateBackdropEnter(UIModalBackdrop backdrop)
         {
-            return ARKitectApp.CoroutineManager.Run(AnimateBackdropEnterRoutine(backdrop));
+            return ARKitectApp.Instance.CoroutineManager.Run(AnimateBackdropEnterRoutine(backdrop));
         }
 
         protected abstract IEnumerator AnimateBackdropEnterRoutine(UIModalBackdrop backdrop);
 
         public AsyncProcessHandle AnimateBackdropExit(UIModalBackdrop backdrop)
         {
-            return ARKitectApp.CoroutineManager.Run(AnimateBackdropExitRoutine(backdrop));
+            return ARKitectApp.Instance.CoroutineManager.Run(AnimateBackdropExitRoutine(backdrop));
         }
 
         protected abstract IEnumerator AnimateBackdropExitRoutine(UIModalBackdrop backdrop);

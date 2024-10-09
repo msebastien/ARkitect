@@ -36,7 +36,7 @@ namespace ARKitect.Items.Resource
         /// <returns>Instance ID</returns>
         public int Spawn(Vector3 position, Quaternion rotation)
         {
-            return ARKitectApp.InstanceManager.Spawn(_resource, position, rotation);
+            return ARKitectApp.Instance.InstanceManager.Spawn(_resource, position, rotation);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace ARKitect.Items.Resource
         /// <returns>'true' if it succeeded, else 'false'</returns>
         public bool DestroyObject(int instanceID)
         {
-            return ARKitectApp.InstanceManager.DestroyInstance(instanceID);
+            return ARKitectApp.Instance.InstanceManager.DestroyInstance(instanceID);
         }
     }
 

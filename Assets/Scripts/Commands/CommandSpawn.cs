@@ -22,13 +22,13 @@ namespace ARKitect.Commands
         public void Execute()
         {
             _instanceID = _itemResource.Spawn(_position, _rotation);
-            Logger.LogInfo($"Spawn object of '{_itemResource.Item}'.");
+            Logger.LogInfo($"Execute {GetType()}: Spawn object of '{_itemResource.Item}'.");
         }
 
         public void Undo()
         {
             if(_itemResource.DestroyObject(_instanceID))
-                Logger.LogInfo($"Destroy instance '{_instanceID}' of the object '{_itemResource.Item}'.");
+                Logger.LogInfo($"Undo {GetType()}: Destroy instance '{_instanceID}' of the object '{_itemResource.Item}'.");
 
             _instanceID = -1;
         }

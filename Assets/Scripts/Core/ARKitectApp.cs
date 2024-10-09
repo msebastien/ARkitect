@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.VisualScripting;
-using Sirenix.OdinInspector;
 
 using ARKitect.Items;
 using ARKitect.Items.Import;
@@ -16,36 +15,33 @@ namespace ARKitect.Core
     /// Main class for ARkitect application
     /// </summary>
     [AddComponentMenu("ARkitect/App")]
-    public class ARKitectApp : SerializedSingleton<ARKitectApp>
+    public class ARKitectApp : Singleton<ARKitectApp>
     {
         [Header("Managers")]
         [SerializeField]
         private InstanceManager _instanceManager;
-        public static InstanceManager InstanceManager => Instance._instanceManager;
+        public InstanceManager InstanceManager => _instanceManager;
         [SerializeField]
         private CoroutineManager _coroutineManager;
-        public static CoroutineManager CoroutineManager => Instance._coroutineManager;
-        private CommandManager _commandManager;
-        public static CommandManager CommandManager => Instance._commandManager;
-
-        [Header("Item Catalog")]
-        [DictionaryDrawerSettings(KeyLabel = "Identifier", ValueLabel = "Item properties")]
-        [Tooltip("Map of Item identifiers and Items")]
+        public CoroutineManager CoroutineManager => _coroutineManager;
         [SerializeField]
+        private CommandManager _commandManager;
+        public CommandManager CommandManager => _commandManager;
+
+
         private Dictionary<Identifier, Item> _itemCatalog = new Dictionary<Identifier, Item>();
-        public static Dictionary<Identifier, Item> Items => Instance._itemCatalog;
+        public Dictionary<Identifier, Item> Items => _itemCatalog;
 
         [Header("Event")]
         [SerializeField]
         private UnityEvent _onItemCatalogLoaded;
         public UnityEvent OnItemCatalogLoaded => _onItemCatalogLoaded;
-        
+
         private InternalImporter internalImporter;
 
 
         private void Awake()
         {
-            _commandManager = new CommandManager();
             internalImporter = FindObjectOfType<InternalImporter>();
         }
 
@@ -55,7 +51,7 @@ namespace ARKitect.Core
             _itemCatalog.AddRange(internalImporter?.Load());
             _onItemCatalogLoaded.Invoke();
         }
-        
+
     }
 
 }

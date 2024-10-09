@@ -14,14 +14,14 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle AnimateEnter(UIModal modal)
         {
-            return ARKitectApp.CoroutineManager.Run(AnimateEnterRoutine(modal));
+            return ARKitectApp.Instance.CoroutineManager.Run(AnimateEnterRoutine(modal));
         }
 
         protected abstract IEnumerator AnimateEnterRoutine(UIModal modal);
 
         public AsyncProcessHandle AnimateExit(UIModal modal)
         {
-            return ARKitectApp.CoroutineManager.Run(AnimateExitRoutine(modal));
+            return ARKitectApp.Instance.CoroutineManager.Run(AnimateExitRoutine(modal));
         }
 
         protected abstract IEnumerator AnimateExitRoutine(UIModal modal);

@@ -1,12 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+using ARKitect.Events;
+
+namespace ARKitect.Events
+{
+    [Serializable]
+    public class CommandEvent : UnityEvent<Commands.ICommand> { }
+}
 
 namespace ARKitect.Commands
 {
     /// <summary>
     /// Invoke commands and store them in a history
     /// </summary>
-    public class CommandManager
+    [AddComponentMenu("ARkitect/Command Manager")]
+    public class CommandManager : MonoBehaviour
     {
         private Stack<ICommand> _commands;
         private Stack<ICommand> _undoneCommands;
@@ -14,7 +26,10 @@ namespace ARKitect.Commands
         public int CommandCount => _commands.Count;
         public int UndoneCommandCount => _undoneCommands.Count;
 
-        public CommandManager()
+        public CommandEvent OnExecuteCommand;
+        public CommandEvent OnUndoCommand;
+
+        public void Awake()
         {
             _commands = new Stack<ICommand>();
             _undoneCommands = new Stack<ICommand>();
@@ -32,6 +47,7 @@ namespace ARKitect.Commands
 
             command.Execute();
             _commands.Push(command);
+            OnExecuteCommand.Invoke(command);
         }
 
         public void UndoCommand()
@@ -39,6 +55,7 @@ namespace ARKitect.Commands
             ICommand latestCommand = _commands.Pop();
             latestCommand.Undo();
             _undoneCommands.Push(latestCommand);
+            OnUndoCommand.Invoke(latestCommand);
         }
 
         public void RedoCommand()

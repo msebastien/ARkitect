@@ -93,7 +93,7 @@ namespace ARKitect.UI.Page
 
         internal AsyncProcessHandle Enter(bool playAnimation = true)
         {
-            return ARKitectApp.CoroutineManager.Run(EnterRoutine(playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(EnterRoutine(playAnimation));
         }
 
         private IEnumerator EnterRoutine(bool playAnimation)
@@ -135,7 +135,7 @@ namespace ARKitect.UI.Page
 
         internal AsyncProcessHandle Exit(bool playAnimation = true)
         {
-            return ARKitectApp.CoroutineManager.Run(ExitRoutine(playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(ExitRoutine(playAnimation));
         }
 
         private IEnumerator ExitRoutine(bool playAnimation)

@@ -88,7 +88,7 @@ namespace ARKitect.UI.Items
             {
                 case SlotActionType.ToggleFavorite:
                     if (_itemId != null && !_itemId.IsUndefined)
-                        state = ARKitectApp.Items[_itemId].MarkedAsFavorite;
+                        state = ARKitectApp.Instance.Items[_itemId].MarkedAsFavorite;
                     break;
 
                 // Non-toggleable actions, so no state to get
@@ -139,7 +139,7 @@ namespace ARKitect.UI.Items
         private void ToggleFavorite(bool toggle)
         {
             if (_itemId != null && !_itemId.IsUndefined)
-                ARKitectApp.Items[_itemId].MarkedAsFavorite = toggle;
+                ARKitectApp.Instance.Items[_itemId].MarkedAsFavorite = toggle;
 
             // Refresh library visual
             if (_container is UIItemLibrary)

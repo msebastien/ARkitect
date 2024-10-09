@@ -103,7 +103,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Enter(UIModal partnerModal, bool playAnimation = true)
         {
-            return ARKitectApp.CoroutineManager.Run(EnterRoutine(partnerModal, playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(EnterRoutine(partnerModal, playAnimation));
         }
 
         private IEnumerator EnterRoutine(UIModal partnerModal, bool playAnimation)
@@ -141,7 +141,7 @@ namespace ARKitect.UI.Modal
 
         internal AsyncProcessHandle Exit(UIModal partnerModal, bool playAnimation = true)
         {
-            return ARKitectApp.CoroutineManager.Run(ExitRoutine(partnerModal, playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(ExitRoutine(partnerModal, playAnimation));
         }
 
         private IEnumerator ExitRoutine(UIModal partnerModal, bool playAnimation)

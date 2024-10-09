@@ -45,10 +45,10 @@ namespace ARKitect.UI.Items
         /// </summary>
         public override void Init()
         {
-            InstantiateSlots(ARKitectApp.Items.Count);
+            InstantiateSlots(ARKitectApp.Instance.Items.Count);
             BindSlots();
 
-            FillSlots(ARKitectApp.Items.Keys);
+            FillSlots(ARKitectApp.Instance.Items.Keys);
             RefreshSlots();
 
             AddModalIdToSlots();
@@ -160,7 +160,7 @@ namespace ARKitect.UI.Items
 
             itemsController.ForEach((itemId) =>
             {
-                if (ARKitectApp.Items[itemId].Category != category)
+                if (ARKitectApp.Instance.Items[itemId].Category != category)
                     ToggleSlot(i, false);
                 else
                     ToggleSlot(i, true);
@@ -179,7 +179,7 @@ namespace ARKitect.UI.Items
 
             itemsController.ForEach((itemId) =>
             {
-                if (!ARKitectApp.Items[itemId].MarkedAsFavorite)
+                if (!ARKitectApp.Instance.Items[itemId].MarkedAsFavorite)
                     ToggleSlot(i, false);
                 else
                     ToggleSlot(i, true);
