@@ -17,11 +17,11 @@ namespace ARKitect.UI
         [SerializeField]
         private Button _redoButton;
 
-        private ARKitectApp _app;
+        private CommandManager _commandManager;
 
         private void Awake()
         {
-            _app = ARKitectApp.Instance;
+            _commandManager = ARKitectApp.Instance.CommandManager;
         }
 
         private void Start()
@@ -31,26 +31,26 @@ namespace ARKitect.UI
 
         private void OnEnable()
         {
-            _undoButton.onClick.AddListener(_app.CommandManager.UndoCommand);
-            _redoButton.onClick.AddListener(_app.CommandManager.RedoCommand);
+            _undoButton.onClick.AddListener(_commandManager.UndoCommand);
+            _redoButton.onClick.AddListener(_commandManager.RedoCommand);
 
             _undoButton.onClick.AddListener(UpdateButtons);
             _redoButton.onClick.AddListener(UpdateButtons);
 
-            _app.CommandManager.OnExecuteCommand.AddListener(ExecuteOrUndoCommand);
-            _app.CommandManager.OnUndoCommand.AddListener(ExecuteOrUndoCommand);
+            _commandManager.OnExecuteCommand.AddListener(ExecuteOrUndoCommand);
+            _commandManager.OnUndoCommand.AddListener(ExecuteOrUndoCommand);
         }
 
         private void OnDisable()
         {
-            _undoButton.onClick.RemoveListener(_app.CommandManager.UndoCommand);
-            _redoButton.onClick.RemoveListener(_app.CommandManager.RedoCommand);
+            _undoButton.onClick.RemoveListener(_commandManager.UndoCommand);
+            _redoButton.onClick.RemoveListener(_commandManager.RedoCommand);
 
             _undoButton.onClick.RemoveListener(UpdateButtons);
             _redoButton.onClick.RemoveListener(UpdateButtons);
 
-            _app.CommandManager.OnExecuteCommand.RemoveListener(ExecuteOrUndoCommand);
-            _app.CommandManager.OnUndoCommand.RemoveListener(ExecuteOrUndoCommand);
+            _commandManager.OnExecuteCommand.RemoveListener(ExecuteOrUndoCommand);
+            _commandManager.OnUndoCommand.RemoveListener(ExecuteOrUndoCommand);
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace ARKitect.UI
         /// </summary>
         private void UpdateButtons()
         {
-            _undoButton.interactable = _app.CommandManager.CommandCount > 0;
-            _redoButton.interactable = _app.CommandManager.UndoneCommandCount > 0;
+            _undoButton.interactable = _commandManager.CommandCount > 0;
+            _redoButton.interactable = _commandManager.UndoneCommandCount > 0;
         }
 
     }
