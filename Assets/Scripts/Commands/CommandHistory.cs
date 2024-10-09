@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ARKitect.Commands
 {
@@ -11,12 +10,25 @@ namespace ARKitect.Commands
     {
         private LinkedList<ICommand> _commands = new LinkedList<ICommand>();
 
+        private LinkedListNode<ICommand> _current; // point to the current active command
+
         private int _maxSize = 20;
         private int _cancelledCommandCount = 0;
 
-        private LinkedListNode<ICommand> _current; // point to the current active command
+        /// <summary>
+        /// Current active command / Last executed command
+        /// </summary>
         public ICommand Current => _current.Value;
+
+        /// <summary>
+        /// Total number of executed commands
+        /// </summary>
         public int Count => _commands.Count;
+
+        /// <summary>
+        /// Number of cancelled commands
+        /// </summary>
+        public int CancelledCount => _cancelledCommandCount;
 
         public CommandHistory() { }
         public CommandHistory(int maxSize) => _maxSize = maxSize;
@@ -37,6 +49,7 @@ namespace ARKitect.Commands
         public ICommand Cancel()
         {
             if (_current == null) return null;
+            if (Count - CancelledCount <= 0) return null;
 
             var prev = _current.Previous;
             var cmdToCancel = _current;
@@ -47,15 +60,27 @@ namespace ARKitect.Commands
 
         public ICommand Restore()
         {
-            if (_current == null) return null;
+            if (CancelledCount <= 0) return null;
 
-            var cmdToRestore = _current.Next;
+            LinkedListNode<ICommand> cmdToRestore;
+            if (_current == null)
+                cmdToRestore = _commands.First;
+            else
+                cmdToRestore = _current.Next;
+
             _current = cmdToRestore;
             _cancelledCommandCount--;
             return cmdToRestore.Value;
         }
 
-        public void ClearCancelledCommands() => RemoveAfter(_current);
+        public void ClearCancelledCommands()
+        {
+            if(_current != null)
+                RemoveAfter(_current);
+            else
+                _commands.Clear();
+            _cancelledCommandCount = 0;
+        }
 
         private void RemoveAfter(LinkedListNode<ICommand> node)
         {

@@ -20,49 +20,62 @@ namespace ARKitect.Commands
     [AddComponentMenu("ARkitect/Command Manager")]
     public class CommandManager : MonoBehaviour
     {
-        private Stack<ICommand> _commands;
-        private Stack<ICommand> _undoneCommands;
+        private CommandHistory _commands;
 
+        private int _maxHistorySize = 20;
+
+        /// <summary>
+        /// Total number of executed commands
+        /// </summary>
         public int CommandCount => _commands.Count;
-        public int UndoneCommandCount => _undoneCommands.Count;
+
+        /// <summary>
+        /// Number of undone commands
+        /// </summary>
+        public int UndoneCommandCount => _commands.CancelledCount;
 
         public CommandEvent OnExecuteCommand;
         public CommandEvent OnUndoCommand;
 
         public void Awake()
         {
-            _commands = new Stack<ICommand>();
-            _undoneCommands = new Stack<ICommand>();
+            _commands = new CommandHistory(_maxHistorySize);
         }
 
         public void ExecuteCommand(ICommand command)
         {
-            ExecuteCommand(command, true);
-        }
-
-        private void ExecuteCommand(ICommand command, bool clearUndoneCommands)
-        {
             if (command == null) return;
-            if (clearUndoneCommands && _undoneCommands.Count > 0) _undoneCommands.Clear();
 
             command.Execute();
-            _commands.Push(command);
+            _commands.Add(command);
             OnExecuteCommand.Invoke(command);
         }
 
         public void UndoCommand()
         {
-            ICommand latestCommand = _commands.Pop();
-            latestCommand.Undo();
-            _undoneCommands.Push(latestCommand);
-            OnUndoCommand.Invoke(latestCommand);
+            if (CommandCount - UndoneCommandCount <= 0) return;
+
+            ICommand cancelledCommand = _commands.Cancel();
+            if (cancelledCommand != null)
+            {
+                cancelledCommand.Undo();
+                OnUndoCommand.Invoke(cancelledCommand);
+            }
+
         }
 
         public void RedoCommand()
         {
-            ICommand latestCommand = _undoneCommands.Pop();
-            ExecuteCommand(latestCommand, false);
+            if (UndoneCommandCount <= 0) return;
+
+            ICommand restoredCommand = _commands.Restore();
+            if (restoredCommand != null)
+            {
+                restoredCommand.Execute();
+                OnExecuteCommand.Invoke(restoredCommand);
+            }
         }
+
     }
 
 }
