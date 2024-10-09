@@ -15,7 +15,7 @@ namespace ARKitect.Events
 namespace ARKitect.Commands
 {
     /// <summary>
-    /// Invoke commands and store them in a history
+    /// Execute and undo commands
     /// </summary>
     [AddComponentMenu("ARkitect/Command Manager")]
     public class CommandManager : MonoBehaviour
