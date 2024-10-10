@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ARKitect.Commands
 {
     /// <summary>
-    /// This class stores the history of all commands executed in the app
+    /// This class stores the history of all commands executed in the app.
     /// </summary>
     public class CommandHistory
     {
@@ -16,24 +16,24 @@ namespace ARKitect.Commands
         private int _cancelledCommandCount = 0;
 
         /// <summary>
-        /// Current active command / Last executed command
+        /// Current active command / Last executed command.
         /// </summary>
         public ICommand Current => _current.Value;
 
         public bool IsEmpty => _commands.Count == 0;
 
         /// <summary>
-        /// Total number of executed commands
+        /// Total number of executed commands.
         /// </summary>
         public int Count => _commands.Count;
 
         /// <summary>
-        /// Number of cancelled commands
+        /// Number of cancelled commands.
         /// </summary>
         public int CancelledCount => _cancelledCommandCount;
 
         /// <summary>
-        /// Number of currently active executed commands that can be cancelled
+        /// Number of currently active executed commands that can be cancelled.
         /// </summary>
         public int ActiveCount => _commands.Count - _cancelledCommandCount;
 
@@ -47,11 +47,11 @@ namespace ARKitect.Commands
         }
 
         /// <summary>
-        /// Add an active/executed command to the history
-        /// Cancelled commands remaining in the history are cleared
-        /// If the history reaches its maximum size, the first command of the history will be removed
+        /// Add an active/executed command to the end of the history.
+        /// Cancelled commands remaining in the history are cleared.
+        /// If the history reaches its maximum size, the first command of the history will be removed.
         /// </summary>
-        /// <param name="command">Active/Executed Command by the Command Manager</param>
+        /// <param name="command">Active/Executed Command by the Command Manager.</param>
         public void Add(ICommand command)
         {
             if (_commands.Count >= _maxSize) _commands.RemoveFirst();
@@ -60,9 +60,9 @@ namespace ARKitect.Commands
         }
 
         /// <summary>
-        /// Return the Cancel/Unexecute the current active command
+        /// Return the Cancel/Unexecute the current active command.
         /// </summary>
-        /// <returns>Active command to cancel/unexecute, else null</returns>
+        /// <returns>Active command to cancel/unexecute, else null.</returns>
         public ICommand Cancel()
         {
             if (ActiveCount <= 0) return null; // If there is no active commands (all have been cancelled), do nothing
@@ -78,13 +78,13 @@ namespace ARKitect.Commands
             _current = prev;                // Then, go the previous active one
             _cancelledCommandCount++;       // Increment the number of cancelled command
 
-            return cmdToCancel.Value;       // Return the command to cancel (CommandManager calls Undo() on this command)
+            return cmdToCancel.Value;       // Return the command to cancel (Command Manager calls Undo() on this command)
         }
 
         /// <summary>
-        /// Return the cancelled command to restore
+        /// Return the cancelled command to restore.
         /// </summary>
-        /// <returns>Cancelled command to restore, else null</returns>
+        /// <returns>Cancelled command to restore, else null.</returns>
         public ICommand Restore()
         {
             if (CancelledCount <= 0) return null; // If there is no cancelled commands (all have been restored), do nothing
@@ -98,26 +98,26 @@ namespace ARKitect.Commands
             _current = cmdToRestore;                                // Make command to restore, the current node
             _cancelledCommandCount--;                               // Decrement the number of cancelled command
 
-            return cmdToRestore.Value;                              // Return the command to restore (CommandManager calls Execute() on this command)
+            return cmdToRestore.Value;                              // Return the command to restore (Command Manager calls Execute() on this command)
         }
 
         /// <summary>
-        /// Remove all cancelled commands in the history
+        /// Remove all cancelled commands in the history.
         /// </summary>
         public void ClearCancelledCommands()
         {
             if (ActiveCount == 0 && _current == _commands.First)    // We are on the first node with no active command
                 _commands.Clear();                                  // Clear all the history
             else
-                RemoveAfter(_current);                              // Else, clear the following nodes (cancelled commands)
+                RemoveAfter(_current);                              // Else, clear the nodes (cancelled commands) following the current active one
             _cancelledCommandCount = 0;                             // Set the number of cancelled commands to 0 as all have been cleared
         }
 
         /// <summary>
-        /// Remove all nodes after the specified one
-        /// The specified node and all its previous one are preserved
+        /// Remove all nodes after the specified one.
+        /// The specified node and all the previous ones are preserved.
         /// </summary>
-        /// <param name="node">Start Node</param>
+        /// <param name="node">The node to start from.</param>
         private void RemoveAfter(LinkedListNode<ICommand> node)
         {
             if (node == null) return;
