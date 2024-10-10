@@ -62,7 +62,7 @@ namespace ARKitect.Commands
         /// <summary>
         /// Return the current active command to cancel/unexecute.
         /// </summary>
-        /// <returns>Active command to cancel/unexecute, else null.</returns>
+        /// <returns>Active command to cancel/unexecute if there is one, else null.</returns>
         public ICommand Cancel()
         {
             if (ActiveCount <= 0) return null; // If there is no active commands (all have been cancelled), do nothing
@@ -84,7 +84,7 @@ namespace ARKitect.Commands
         /// <summary>
         /// Return the cancelled command to restore.
         /// </summary>
-        /// <returns>Cancelled command to restore, else null.</returns>
+        /// <returns>Cancelled command to restore if there is one, else null.</returns>
         public ICommand Restore()
         {
             if (CancelledCount <= 0) return null; // If there is no cancelled commands (all have been restored), do nothing
