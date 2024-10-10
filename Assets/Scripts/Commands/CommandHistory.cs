@@ -46,6 +46,12 @@ namespace ARKitect.Commands
             Add(command);
         }
 
+        /// <summary>
+        /// Add an active/executed command to the history
+        /// Cancelled commands remaining in the history are cleared
+        /// If the history reaches its maximum size, the first command of the history will be removed
+        /// </summary>
+        /// <param name="command">Active/Executed Command by the Command Manager</param>
         public void Add(ICommand command)
         {
             if (_commands.Count >= _maxSize) _commands.RemoveFirst();
@@ -53,6 +59,10 @@ namespace ARKitect.Commands
             _current = _commands.AddLast(command);
         }
 
+        /// <summary>
+        /// Return the Cancel/Unexecute the current active command
+        /// </summary>
+        /// <returns>Active command to cancel/unexecute, else null</returns>
         public ICommand Cancel()
         {
             if (ActiveCount <= 0) return null; // If there is no active commands (all have been cancelled), do nothing
@@ -68,9 +78,13 @@ namespace ARKitect.Commands
             _current = prev;                // Then, go the previous active one
             _cancelledCommandCount++;       // Increment the number of cancelled command
 
-            return cmdToCancel.Value;       // Return the cancelled command
+            return cmdToCancel.Value;       // Return the command to cancel (CommandManager calls Undo() on this command)
         }
 
+        /// <summary>
+        /// Return the cancelled command to restore
+        /// </summary>
+        /// <returns>Cancelled command to restore, else null</returns>
         public ICommand Restore()
         {
             if (CancelledCount <= 0) return null; // If there is no cancelled commands (all have been restored), do nothing
@@ -81,12 +95,15 @@ namespace ARKitect.Commands
             else
                 cmdToRestore = _current.Next;                       // Else, just keep going normally to the next node
 
-            _current = cmdToRestore;                                // The command to restore is the current node
+            _current = cmdToRestore;                                // Make command to restore, the current node
             _cancelledCommandCount--;                               // Decrement the number of cancelled command
 
-            return cmdToRestore.Value;                              // Return the restored command
+            return cmdToRestore.Value;                              // Return the command to restore (CommandManager calls Execute() on this command)
         }
 
+        /// <summary>
+        /// Remove all cancelled commands in the history
+        /// </summary>
         public void ClearCancelledCommands()
         {
             if (ActiveCount == 0 && _current == _commands.First)    // We are on the first node with no active command
@@ -96,6 +113,11 @@ namespace ARKitect.Commands
             _cancelledCommandCount = 0;                             // Set the number of cancelled commands to 0 as all have been cleared
         }
 
+        /// <summary>
+        /// Remove all nodes after the specified one
+        /// The specified node and all its previous one are preserved
+        /// </summary>
+        /// <param name="node">Start Node</param>
         private void RemoveAfter(LinkedListNode<ICommand> node)
         {
             if (node == null) return;
