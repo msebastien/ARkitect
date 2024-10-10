@@ -126,7 +126,7 @@ namespace ARKitect.Commands
             var current = node.Next;
 
             // Remove nodes
-            while (!current.Equals(_commands.Last))
+            while (current != _commands.Last)
             {
                 var next = current.Next;
                 _commands.Remove(current);
