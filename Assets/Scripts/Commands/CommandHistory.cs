@@ -67,15 +67,15 @@ namespace ARKitect.Commands
         {
             if (ActiveCount <= 0) return null; // If there is no active commands (all have been cancelled), do nothing
 
+            var cmdToCancel = _current;     // The command to cancel is the current active one
+
             LinkedListNode<ICommand> prev;
             if (_current.Previous == null)  // We are on the first node
                 prev = _commands.First;     // Keep the pointer to the first node, as its "previous" pointer is obviously null
             else
-                prev = _current.Previous;   // Else, just keep going normally to the previous node
-
-            var cmdToCancel = _current;     // The command to cancel is the current active one
-
+                prev = _current.Previous;   // Else, just keep going normally to the previous node          
             _current = prev;                // Then, go the previous active one
+
             _cancelledCommandCount++;       // Increment the number of cancelled command
 
             return cmdToCancel.Value;       // Return the command to cancel (Command Manager calls Undo() on this command)
@@ -94,8 +94,8 @@ namespace ARKitect.Commands
                 cmdToRestore = _current;                            // Restore the current one before going to next one
             else
                 cmdToRestore = _current.Next;                       // Else, just keep going normally to the next node
-
             _current = cmdToRestore;                                // Make command to restore, the current node
+
             _cancelledCommandCount--;                               // Decrement the number of cancelled command
 
             return cmdToRestore.Value;                              // Return the command to restore (Command Manager calls Execute() on this command)
