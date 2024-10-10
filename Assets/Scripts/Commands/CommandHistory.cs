@@ -60,7 +60,7 @@ namespace ARKitect.Commands
         }
 
         /// <summary>
-        /// Return the Cancel/Unexecute the current active command.
+        /// Return the current active command to cancel/unexecute.
         /// </summary>
         /// <returns>Active command to cancel/unexecute, else null.</returns>
         public ICommand Cancel()
