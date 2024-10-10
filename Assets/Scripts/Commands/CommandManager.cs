@@ -32,6 +32,11 @@ namespace ARKitect.Commands
         /// </summary>
         public int UndoneCommandCount => _commands.CancelledCount;
 
+        /// <summary>
+        /// Number of currently active executed commands that can be undone
+        /// </summary>
+        public int ActiveCommandCount => _commands.ActiveCount;
+
         public CommandEvent OnExecuteCommand;
         public CommandEvent OnUndoCommand;
 
@@ -51,7 +56,7 @@ namespace ARKitect.Commands
 
         public void UndoCommand()
         {
-            if (CommandCount - UndoneCommandCount <= 0) return;
+            if (ActiveCommandCount <= 0) return;
 
             ICommand cancelledCommand = _commands.Cancel();
             if (cancelledCommand != null)

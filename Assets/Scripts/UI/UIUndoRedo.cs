@@ -64,7 +64,7 @@ namespace ARKitect.UI
         /// </summary>
         private void UpdateButtons()
         {
-            _undoButton.interactable = (_commandManager.CommandCount - _commandManager.UndoneCommandCount) > 0;
+            _undoButton.interactable = _commandManager.ActiveCommandCount > 0;
             _redoButton.interactable = _commandManager.UndoneCommandCount > 0;
         }
 

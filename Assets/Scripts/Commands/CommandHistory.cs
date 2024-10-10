@@ -20,6 +20,8 @@ namespace ARKitect.Commands
         /// </summary>
         public ICommand Current => _current.Value;
 
+        public bool IsEmpty => _commands.Count == 0;
+
         /// <summary>
         /// Total number of executed commands
         /// </summary>
@@ -29,6 +31,11 @@ namespace ARKitect.Commands
         /// Number of cancelled commands
         /// </summary>
         public int CancelledCount => _cancelledCommandCount;
+
+        /// <summary>
+        /// Number of currently active executed commands that can be cancelled
+        /// </summary>
+        public int ActiveCount => _commands.Count - _cancelledCommandCount;
 
         public CommandHistory() { }
         public CommandHistory(int maxSize) => _maxSize = maxSize;
@@ -48,38 +55,45 @@ namespace ARKitect.Commands
 
         public ICommand Cancel()
         {
-            if (_current == null) return null;
-            if (Count - CancelledCount <= 0) return null;
+            if (ActiveCount <= 0) return null; // If there is no active commands (all have been cancelled), do nothing
 
-            var prev = _current.Previous;
-            var cmdToCancel = _current;
-            _current = prev;
-            _cancelledCommandCount++;
-            return cmdToCancel.Value;
+            LinkedListNode<ICommand> prev;
+            if (_current.Previous == null)  // We are on the first node
+                prev = _commands.First;     // Keep the pointer to the first node, as its "previous" pointer is obviously null
+            else
+                prev = _current.Previous;   // Else, just keep going normally to the previous node
+
+            var cmdToCancel = _current;     // The command to cancel is the current active one
+
+            _current = prev;                // Then, go the previous active one
+            _cancelledCommandCount++;       // Increment the number of cancelled command
+
+            return cmdToCancel.Value;       // Return the cancelled command
         }
 
         public ICommand Restore()
         {
-            if (CancelledCount <= 0) return null;
+            if (CancelledCount <= 0) return null; // If there is no cancelled commands (all have been restored), do nothing
 
             LinkedListNode<ICommand> cmdToRestore;
-            if (_current == null)
-                cmdToRestore = _commands.First;
+            if (ActiveCount == 0 && _current == _commands.First)    // We are on the first node with no active command
+                cmdToRestore = _current;                            // Restore the current one before going to next one
             else
-                cmdToRestore = _current.Next;
+                cmdToRestore = _current.Next;                       // Else, just keep going normally to the next node
 
-            _current = cmdToRestore;
-            _cancelledCommandCount--;
-            return cmdToRestore.Value;
+            _current = cmdToRestore;                                // The command to restore is the current node
+            _cancelledCommandCount--;                               // Decrement the number of cancelled command
+
+            return cmdToRestore.Value;                              // Return the restored command
         }
 
         public void ClearCancelledCommands()
         {
-            if(_current != null)
-                RemoveAfter(_current);
+            if (ActiveCount == 0 && _current == _commands.First)    // We are on the first node with no active command
+                _commands.Clear();                                  // Clear all the history
             else
-                _commands.Clear();
-            _cancelledCommandCount = 0;
+                RemoveAfter(_current);                              // Else, clear the following nodes (cancelled commands)
+            _cancelledCommandCount = 0;                             // Set the number of cancelled commands to 0 as all have been cleared
         }
 
         private void RemoveAfter(LinkedListNode<ICommand> node)
