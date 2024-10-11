@@ -10,20 +10,15 @@ namespace ARKitect.Commands
     {
         private LinkedList<ICommand> _commands = new LinkedList<ICommand>();
 
-        private LinkedListNode<ICommand> _current; // point to the current active command
+        private LinkedListNode<ICommand> _current; // point to the current active command (last executed command)
 
         private int _maxSize = 20;
         private int _cancelledCommandCount = 0;
 
-        /// <summary>
-        /// Current active command / Last executed command.
-        /// </summary>
-        public ICommand Current => _current.Value;
-
         public bool IsEmpty => _commands.Count == 0;
 
         /// <summary>
-        /// Total number of executed commands.
+        /// Total number of commands in the history (active + cancelled).
         /// </summary>
         public int Count => _commands.Count;
 
@@ -57,6 +52,16 @@ namespace ARKitect.Commands
             if (_commands.Count >= _maxSize) _commands.RemoveFirst();
             if (_cancelledCommandCount > 0) ClearCancelledCommands();
             _current = _commands.AddLast(command);
+        }
+
+        /// <summary>
+        /// Clear completely the history
+        /// </summary>
+        public void Clear()
+        {
+            _current = null;
+            _commands.Clear();
+            _cancelledCommandCount = 0;
         }
 
         /// <summary>
@@ -104,10 +109,10 @@ namespace ARKitect.Commands
         /// <summary>
         /// Remove all cancelled commands in the history.
         /// </summary>
-        public void ClearCancelledCommands()
+        private void ClearCancelledCommands()
         {
             if (ActiveCount == 0 && _current == _commands.First)    // We are on the first node with no active command
-                _commands.Clear();                                  // Clear all the history
+                Clear();                                            // Clear all the history
             else
                 RemoveAfter(_current);                              // Else, clear the nodes (cancelled commands) following the current active one
             _cancelledCommandCount = 0;                             // Set the number of cancelled commands to 0 as all have been cleared
