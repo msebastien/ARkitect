@@ -20,7 +20,7 @@ namespace ARKitect.Commands
     {
         private CommandHistory _commands;
 
-        private int _maxHistorySize = 20;
+        private int _maxHistorySize = 30;
 
         /// <summary>
         /// Total number of executed commands
@@ -40,9 +40,14 @@ namespace ARKitect.Commands
         public CommandEvent OnExecuteCommand;
         public CommandEvent OnUndoCommand;
 
-        public void Awake()
+        private void Awake()
         {
             _commands = new CommandHistory(_maxHistorySize);
+        }
+
+        private void OnDestroy()
+        {
+            _commands.Clear();
         }
 
         public void ExecuteCommand(ICommand command)
