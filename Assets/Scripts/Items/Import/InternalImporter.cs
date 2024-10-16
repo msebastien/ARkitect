@@ -6,6 +6,7 @@ using Newtonsoft.Json.Converters;
 
 using Logger = ARKitect.Core.Logger;
 using ARKitect.Items.Resource;
+using System;
 
 namespace ARKitect.Items.Import
 {
@@ -32,8 +33,7 @@ namespace ARKitect.Items.Import
         public ItemType Type { get; set; }
 
         [JsonProperty("category")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ItemCategory Category { get; set; }
+        public string Category { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -134,7 +134,7 @@ namespace ARKitect.Items.Import
                 var parsedItemData = parsedJson.Item;
 
                 // Create an Item resource based on the deserialized data
-                Object itemResource = null;
+                UnityEngine.Object itemResource = null;
                 foreach (var resourceDef in parsedItemData.Resources)
                 {
                     string path = resourceDef.Path.Split('.')[0];
@@ -154,6 +154,13 @@ namespace ARKitect.Items.Import
 
                 }
 
+                // Check category
+                ItemCategory category;
+                if(Enum.TryParse<ItemCategory>(parsedItemData.Category, true, out var parsedCategory))
+                    category = parsedCategory;
+                else
+                    category = ItemCategory.Misc;
+
                 // Create Item icon
                 Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);
 
@@ -166,7 +173,7 @@ namespace ARKitect.Items.Import
                     var go = (GameObject)itemResource;
                     Item item = new Item(parsedItemData.Name, icon,
                                                                 new ResourceObject(parsedItemData.Id, go),
-                                                                parsedItemData.Category,
+                                                                category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
                                                                 parsedItemData.Tags,
@@ -178,7 +185,7 @@ namespace ARKitect.Items.Import
                     var mat = (Material)itemResource;
                     Item item = new Item(parsedItemData.Name, icon,
                                                                 new ResourceMaterial(parsedItemData.Id, mat),
-                                                                parsedItemData.Category,
+                                                                category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
                                                                 parsedItemData.Tags,
