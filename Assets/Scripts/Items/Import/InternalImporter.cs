@@ -7,6 +7,7 @@ using Newtonsoft.Json.Converters;
 using Logger = ARKitect.Core.Logger;
 using ARKitect.Items.Resource;
 using System;
+using ARKitect.Core;
 
 namespace ARKitect.Items.Import
 {
@@ -157,11 +158,7 @@ namespace ARKitect.Items.Import
                 if (itemResource == null) continue; // Go to the next item
 
                 // Check category
-                ItemCategory category;
-                if(Enum.TryParse<ItemCategory>(parsedItemData.Category, true, out var parsedCategory))
-                    category = parsedCategory;
-                else
-                    category = ItemCategory.Misc;
+                ItemCategory category = parsedItemData.Category.ToEnum<ItemCategory>(ItemCategory.Misc);
 
                 // Create Item icon
                 Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);           
