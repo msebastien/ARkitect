@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:clean_plaster_white",
+    "name": "Clean Plaster (White)",
+    "icon": "Icons/Item_Mat_CleanPlaster_White.png",
+    "type": "Material",
+    "category": "Material",
+    "description": "Used for the protective or decorative coating of walls and ceilings and for moulding and casting decorative elements.",
+    "author": "ARKitect",
+    "tags": ["material", "protection", "decoration", "coating", "mould", "cast"],
+    "resources": [
+      {
+        "type": "material",
+        "path": "Materials/M_CleanPlaster_White.mat"
+      }
+    ]
+  }
+}
