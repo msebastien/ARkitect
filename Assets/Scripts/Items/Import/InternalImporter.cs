@@ -154,6 +154,8 @@ namespace ARKitect.Items.Import
 
                 }
 
+                if (itemResource == null) continue; // Go to the next item
+
                 // Check category
                 ItemCategory category;
                 if(Enum.TryParse<ItemCategory>(parsedItemData.Category, true, out var parsedCategory))
@@ -162,9 +164,7 @@ namespace ARKitect.Items.Import
                     category = ItemCategory.Misc;
 
                 // Create Item icon
-                Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);
-
-                if (itemResource == null) continue; // Go to the next item
+                Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);           
 
                 // Create item and cast resource into the correct Unity type
                 var type = itemResource.GetType();
