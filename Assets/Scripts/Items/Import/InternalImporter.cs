@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
-using Logger = ARKitect.Core.Logger;
-using ARKitect.Items.Resource;
-using System;
 using ARKitect.Core;
+using ARKitect.Items.Resource;
+using Logger = ARKitect.Core.Logger;
+
 
 namespace ARKitect.Items.Import
 {
@@ -135,7 +135,7 @@ namespace ARKitect.Items.Import
                 var parsedItemData = parsedJson.Item;
 
                 // Create an Item resource based on the deserialized data
-                UnityEngine.Object itemResource = null;
+                Object itemResource = null;
                 foreach (var resourceDef in parsedItemData.Resources)
                 {
                     string path = resourceDef.Path.Split('.')[0];
