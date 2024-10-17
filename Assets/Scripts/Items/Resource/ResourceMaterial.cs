@@ -29,7 +29,7 @@ namespace ARKitect.Items.Resource
         // TODO: Implement ApplyTo method to add the material to an object
         public void ApplyTo(GameObject obj)
         {
-
+            
         }
     }
 
