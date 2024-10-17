@@ -4,7 +4,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
+using ARKitect.Core;
+using ARKitect.Items.Resource;
 using Logger = ARKitect.Core.Logger;
+
 
 namespace ARKitect.Items.Import
 {
@@ -31,8 +34,7 @@ namespace ARKitect.Items.Import
         public ItemType Type { get; set; }
 
         [JsonProperty("category")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ItemCategory Category { get; set; }
+        public string Category { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -47,7 +49,7 @@ namespace ARKitect.Items.Import
         {
             get
             {
-                if(_tags == null)
+                if (_tags == null)
                 {
                     Logger.LogError("InternalImporter: List of Item Tags is null");
                     _tags = new List<string>();
@@ -89,7 +91,7 @@ namespace ARKitect.Items.Import
     [AddComponentMenu("ARkitect/Internal Importer")]
     public class InternalImporter : MonoBehaviour
     {
-        private Dictionary<Identifier, IItem> importedItems = new Dictionary<Identifier, IItem>();
+        private Dictionary<Identifier, Item> importedItems = new Dictionary<Identifier, Item>();
 
         [SerializeField]
         [Tooltip("Path to the directory which contains all the item definition JSON files")]
@@ -100,7 +102,7 @@ namespace ARKitect.Items.Import
         /// </summary>
         public void Import()
         {
-            Dictionary<string, IItem> items = ParseJSONItemDefinition();
+            Dictionary<string, Item> items = ParseJSONItemDefinition();
             foreach (var item in items)
             {
                 importedItems.Add(new Identifier(item.Key), item.Value);
@@ -111,17 +113,17 @@ namespace ARKitect.Items.Import
         /// Transfer imported items data while clearing imported internal data
         /// </summary>
         /// <returns></returns>
-        public Dictionary<Identifier, IItem> Load()
+        public Dictionary<Identifier, Item> Load()
         {
-            Dictionary<Identifier, IItem> tempDict = new Dictionary<Identifier, IItem>(importedItems);
+            Dictionary<Identifier, Item> tempDict = new Dictionary<Identifier, Item>(importedItems);
             importedItems.Clear();
             return tempDict;
         }
 
         // TODO: Maybe, we should load assets asynchronously ?
-        private Dictionary<string, IItem> ParseJSONItemDefinition()
+        private Dictionary<string, Item> ParseJSONItemDefinition()
         {
-            Dictionary<string, IItem> parsedItems = new Dictionary<string, IItem>();
+            Dictionary<string, Item> parsedItems = new Dictionary<string, Item>();
 
             foreach (TextAsset itemDefFile in Resources.LoadAll<TextAsset>(_path))
             {
@@ -133,19 +135,19 @@ namespace ARKitect.Items.Import
                 var parsedItemData = parsedJson.Item;
 
                 // Create an Item resource based on the deserialized data
-                UnityEngine.Object itemResource = null;
+                Object itemResource = null;
                 foreach (var resourceDef in parsedItemData.Resources)
                 {
                     string path = resourceDef.Path.Split('.')[0];
                     string resourceType = resourceDef.Type.ToLower();
 
-                    switch(parsedItemData.Type) 
+                    switch (parsedItemData.Type)
                     {
                         case ItemType.Object:
-                            if(resourceType == "prefab") itemResource = Resources.Load<GameObject>(path);
+                            if (resourceType == "prefab") itemResource = Resources.Load<GameObject>(path);
                             break;
                         case ItemType.Material:
-                            if(resourceType == "material") itemResource = Resources.Load<Material>(path);
+                            if (resourceType == "material") itemResource = Resources.Load<Material>(path);
                             break;
                         default:
                             break;
@@ -153,19 +155,22 @@ namespace ARKitect.Items.Import
 
                 }
 
-                // Create Item icon
-                Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);
-
                 if (itemResource == null) continue; // Go to the next item
+
+                // Check category
+                ItemCategory category = parsedItemData.Category.ToEnum<ItemCategory>(ItemCategory.Misc);
+
+                // Create Item icon
+                Sprite icon = Resources.Load<Sprite>(parsedItemData.IconPath.Split(".")[0]);           
 
                 // Create item and cast resource into the correct Unity type
                 var type = itemResource.GetType();
                 if (type == typeof(GameObject))
                 {
-                    Item<GameObject> item = new Item<GameObject>(parsedItemData.Name, icon,
-                                                                parsedItemData.Type,
-                                                                (GameObject)itemResource,
-                                                                parsedItemData.Category,
+                    var go = (GameObject)itemResource;
+                    Item item = new Item(parsedItemData.Name, icon,
+                                                                new ResourceObject(parsedItemData.Id, go),
+                                                                category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
                                                                 parsedItemData.Tags,
@@ -174,10 +179,10 @@ namespace ARKitect.Items.Import
                 }
                 else if (type == typeof(Material))
                 {
-                    Item<Material> item = new Item<Material>(parsedItemData.Name, icon,
-                                                                parsedItemData.Type,
-                                                                (Material)itemResource,
-                                                                parsedItemData.Category,
+                    var mat = (Material)itemResource;
+                    Item item = new Item(parsedItemData.Name, icon,
+                                                                new ResourceMaterial(parsedItemData.Id, mat),
+                                                                category,
                                                                 parsedItemData.Description,
                                                                 parsedItemData.Author,
                                                                 parsedItemData.Tags,
@@ -194,7 +199,7 @@ namespace ARKitect.Items.Import
 
         }*/
 
-        private void OnParsingError(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+        private void OnParsingError(object sender, ErrorEventArgs args)
         {
             Logger.LogError(args.ErrorContext.Error.Message);
             args.ErrorContext.Handled = true;

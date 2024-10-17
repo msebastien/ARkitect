@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:parquet_light",
+    "name": "Light Parquet",
+    "icon": "Icons/Item_Mat_LightParquet.png",
+    "type": "Material",
+    "category": "Material",
+    "description": "A sleek, light-colored parquet floor. A parquet is a geometric mosaic of wood pieces used for decorative effect in flooring.",
+    "author": "ARKitect",
+    "tags": ["material", "parquet", "wood", "decoration", "flooring", "elegant"],
+    "resources": [
+      {
+        "type": "material",
+        "path": "Materials/M_LightParquet.mat"
+      }
+    ]
+  }
+}

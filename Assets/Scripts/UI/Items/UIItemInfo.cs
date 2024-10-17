@@ -109,7 +109,7 @@ namespace ARKitect.UI.Items
 
         private void UpdateItemInfo()
         {
-            var item = PrefabsManager.Items[new Identifier(_itemId)];
+            var item = ARKitectApp.Instance.Items[new Identifier(_itemId)];
 
             if (_nameText != null)
                 _nameText.text = _nameText.text.Replace(_placeholderName, item.Name);

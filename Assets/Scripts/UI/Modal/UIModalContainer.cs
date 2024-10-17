@@ -8,6 +8,7 @@ using UnityEngine.Assertions;
 using ARKitect.Coroutine;
 using ARKitect.UI.Page;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.Core;
 
 
 namespace ARKitect.UI.Modal
@@ -101,12 +102,12 @@ namespace ARKitect.UI.Modal
 
         public AsyncProcessHandle Push(string modalId, bool playAnimation = true, Action<UIModal> onLoad = null)
         {
-            return CoroutineManager.Instance.Run(PushRoutine(modalId, playAnimation, onLoad));
+            return ARKitectApp.Instance.CoroutineManager.Run(PushRoutine(modalId, playAnimation, onLoad));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true, int popCount = 1)
         {
-            return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation, string destinationModalId)
@@ -124,7 +125,7 @@ namespace ARKitect.UI.Modal
             if (popCount == _orderedModalIds.Count)
                 throw new Exception($"The modal with id '{destinationModalId}' is not found.");
 
-            return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         private IEnumerator PushRoutine(string modalId, bool playAnimation, Action<UIModal> onLoad = null)

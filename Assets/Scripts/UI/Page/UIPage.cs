@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 
 using ARKitect.Coroutine;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.Core;
 
 
 namespace ARKitect.UI.Page
@@ -92,7 +93,7 @@ namespace ARKitect.UI.Page
 
         internal AsyncProcessHandle Enter(bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(EnterRoutine(playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(EnterRoutine(playAnimation));
         }
 
         private IEnumerator EnterRoutine(bool playAnimation)
@@ -134,7 +135,7 @@ namespace ARKitect.UI.Page
 
         internal AsyncProcessHandle Exit(bool playAnimation = true)
         {
-            return CoroutineManager.Instance.Run(ExitRoutine(playAnimation));
+            return ARKitectApp.Instance.CoroutineManager.Run(ExitRoutine(playAnimation));
         }
 
         private IEnumerator ExitRoutine(bool playAnimation)

@@ -84,7 +84,7 @@ namespace ARKitect.UI.Items
             {
                 _isPressed = true;
                 _slotImage.color = _pressedColor.color;
-                CoroutineManager.Instance.Run(LongPressToClickRoutine());
+                ARKitectApp.Instance.CoroutineManager.Run(LongPressToClickRoutine());
             }
         }
 
@@ -161,7 +161,7 @@ namespace ARKitect.UI.Items
             }
 
             // Get the item matching the identifier from the item database/catalog
-            var itemDefinition = PrefabsManager.Items[itemDefinitionId];
+            var itemDefinition = ARKitectApp.Instance.Items[itemDefinitionId];
 
             if (itemDefinition == null)
             {

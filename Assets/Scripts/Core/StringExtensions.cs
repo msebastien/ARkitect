@@ -18,6 +18,16 @@ namespace ARKitect.Core
 
             return count;
         }
+
+        public static TEnum ToEnum<TEnum>(this string self, TEnum defaultValue) where TEnum : struct
+        {
+            if (string.IsNullOrEmpty(self))
+            {
+                return defaultValue;
+            }
+
+            return Enum.TryParse<TEnum>(self, true, out TEnum result) ? result : defaultValue;
+        }
     }
 
 }

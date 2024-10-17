@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.Items;
+using ARKitect.Commands;
+using ARKitect.Core;
+using ARKitect.Items.Resource;
 
 namespace ARKitect.UI.Items
 {
@@ -52,17 +56,18 @@ namespace ARKitect.UI.Items
         private bool DropOnGround()
         {
 #if UNITY_EDITOR
-            var ray = UnityEngine.Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 #elif UNITY_ANDROID
-            var ray = UnityEngine.Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
+            var ray = Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
 #endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
-                // TODO: Use Command Pattern, trigger default action of the Item (object-> spawnable or texture->appliable to geometry)
-                _controller.Spawn(_index, hit.point);
+
+                ExecuteItemCommand(hit);
+
                 return true;
             }
             return false;
@@ -87,6 +92,17 @@ namespace ARKitect.UI.Items
             }
 
             return false;
+        }
+
+        private void ExecuteItemCommand(RaycastHit hit)
+        {
+            Identifier itemId = _controller.GetItemId(_index);
+            var item = ARKitectApp.Instance.Items[itemId];
+
+            if (item.Resource is ResourceObject)
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
+            else if (item.Resource is ResourceMaterial)
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
         }
 
         protected override void OpenModalWindow()

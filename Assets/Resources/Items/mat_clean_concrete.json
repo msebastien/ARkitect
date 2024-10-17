@@ -1,0 +1,18 @@
+{
+  "item": {
+    "id": "arkitect:clean_concrete",
+    "name": "Bare Clean Concrete",
+    "icon": "Icons/Item_Mat_BareCleanConcrete.png",
+    "type": "Material",
+    "category": "Material",
+    "description": "A clean, smooth concrete ideal for interior decoration, floors or other things like foundations, a cellar.",
+    "author": "ARKitect",
+    "tags": ["material", "concrete", "clean", "smooth", "sleek", "gray", "solid"],
+    "resources": [
+      {
+        "type": "material",
+        "path": "Materials/M_BareCleanConcrete.mat"
+      }
+    ]
+  }
+}

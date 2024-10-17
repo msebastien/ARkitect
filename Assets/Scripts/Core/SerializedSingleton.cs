@@ -30,7 +30,7 @@ namespace ARKitect.Core
                     // Warn that multiple instances of the same singleton class exist, which SHOULD NOT happen
                     if (objs.Length > 1)
                     {
-                        Debug.LogError("There is more than one " + typeof(T).Name + " in the scene.");
+                        Logger.LogError("There is more than one " + typeof(T).Name + " in the scene.");
                     }
 
                     // Initialize a new instance

@@ -54,7 +54,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preallocated: 1
-  instancesParent: {fileID: 0}
   defaultItems:
   - arkitect:foundation_wall
   - arkitect:wall
@@ -77,6 +76,7 @@ MonoBehaviour:
   slotsParent: {fileID: 925929101460338029}
   slotPrefab: {fileID: 3047023623163199701, guid: 9350544ad1f49e141a3c2d6c45ff2a88,
     type: 3}
+  itemModalWindow: {fileID: 0}
   numSlots: 5
   loadDefaultItems: 1
 --- !u!222 &7512679676351301607
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0.7490196}
+  m_Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0.6509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

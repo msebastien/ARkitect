@@ -8,6 +8,7 @@ using UnityEngine.Assertions;
 using ARKitect.Coroutine;
 using ARKitect.UI.Modal;
 using Logger = ARKitect.Core.Logger;
+using ARKitect.Core;
 
 
 namespace ARKitect.UI.Page
@@ -101,12 +102,12 @@ namespace ARKitect.UI.Page
 
         public AsyncProcessHandle Push(string pageId, bool playAnimation = true, Action<UIPage> onLoad = null)
         {
-            return CoroutineManager.Instance.Run(PushRoutine(pageId, playAnimation, onLoad));
+            return ARKitectApp.Instance.CoroutineManager.Run(PushRoutine(pageId, playAnimation, onLoad));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true, int popCount = 1)
         {
-            return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         public AsyncProcessHandle Pop(bool playAnimation, string destinationPageId)
@@ -124,7 +125,7 @@ namespace ARKitect.UI.Page
             if (popCount == _orderedPageIds.Count)
                 throw new Exception($"The page with id '{destinationPageId}' is not found.");
 
-            return CoroutineManager.Instance.Run(PopRoutine(playAnimation, popCount));
+            return ARKitectApp.Instance.CoroutineManager.Run(PopRoutine(playAnimation, popCount));
         }
 
         private IEnumerator PushRoutine(string pageId, bool playAnimation, Action<UIPage> onLoad = null)
