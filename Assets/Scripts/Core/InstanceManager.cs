@@ -81,7 +81,7 @@ namespace ARKitect.Core
         // At runtime, `EditorMeshUtility` is not available. To collapse duplicate
         // vertices in runtime, modify the MeshFilter.sharedMesh directly.
         // Note that any subsequent changes to `quad` will overwrite the sharedMesh.
-        var umesh = cube.GetComponent<MeshFilter>().sharedMesh;
+        var umesh = pbMesh.GetComponent<MeshFilter>().sharedMesh;
         MeshUtility.CollapseSharedVertices(umesh);    
 #endif
         }
