@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.ProBuilder;
+using UnityEditor.ProBuilder;
 using Sirenix.OdinInspector;
 
 namespace ARKitect.Core
@@ -53,7 +56,34 @@ namespace ARKitect.Core
         {
             var go = Instantiate(obj, position, rotation, _instancesParent);
             _instances.Add(go.GetInstanceID(), go);
+
+            ConvertToProbuilderMesh(go);
+
             return go.GetInstanceID();
+        }
+
+        private void ConvertToProbuilderMesh(GameObject go)
+        {
+            new MeshImporter(go).Import(); // default import settings
+
+            var pbMesh = go.GetComponent<ProBuilderMesh>();
+
+            // Rebuild mesh positions and submeshes
+            pbMesh.ToMesh(MeshTopology.Quads);
+
+            // Recalculate UVs, Normals, Tangents, Collisions, then apply to Unity Mesh.
+            pbMesh.Refresh();
+
+            // If in Editor, generate UV2 and collapse duplicate vertices.
+#if UNITY_EDITOR
+            EditorMeshUtility.Optimize(pbMesh, true);
+#else
+        // At runtime, `EditorMeshUtility` is not available. To collapse duplicate
+        // vertices in runtime, modify the MeshFilter.sharedMesh directly.
+        // Note that any subsequent changes to `quad` will overwrite the sharedMesh.
+        var umesh = cube.GetComponent<MeshFilter>().sharedMesh;
+        MeshUtility.CollapseSharedVertices(umesh);    
+#endif
         }
     }
 
