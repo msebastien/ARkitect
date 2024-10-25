@@ -1,9 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
-using System;
-using Unity.VisualScripting;
+
 
 namespace ARKitect.Core
 {
@@ -19,10 +18,10 @@ namespace ARKitect.Core
         private Transform _instancesParent;
         public Transform InstancesParent => _instancesParent;
 
-        [Header("Objects")]
-        [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
-        [Tooltip("Cached object instances")]
-        [SerializeField]
+        //[Header("Objects")]
+        //[DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
+        //[Tooltip("Cached object instances")]
+        //[SerializeField]
         private Dictionary<Guid, GameObject> _instances = new Dictionary<Guid, GameObject>();
 
         public GameObject GetInstance(Guid guid)
