@@ -11,7 +11,7 @@
     "resources": [
       {
         "type": "material",
-        "path": "Materials/M_CleanPlaster_White.mat"
+        "path": "BuildingMaterials/M_CleanPlaster_White.mat"
       }
     ]
   }

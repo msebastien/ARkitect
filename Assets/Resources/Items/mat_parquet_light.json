@@ -11,7 +11,7 @@
     "resources": [
       {
         "type": "material",
-        "path": "Materials/M_LightParquet.mat"
+        "path": "BuildingMaterials/M_LightParquet.mat"
       }
     ]
   }
