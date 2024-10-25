@@ -56,9 +56,12 @@ namespace ARKitect.UI.Items
         private bool DropOnGround()
         {
 #if UNITY_EDITOR
-            var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            var screenPos = Mouse.current.position.ReadValue();
+            var ray = Camera.main.ScreenPointToRay(screenPos);
+            UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red);
 #elif UNITY_ANDROID
-            var ray = Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
+            var screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+            var ray = Camera.main.ScreenPointToRay(screenPos);
 #endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
 
@@ -66,7 +69,7 @@ namespace ARKitect.UI.Items
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
 
-                ExecuteItemCommand(hit);
+                ExecuteItemCommand(screenPos, hit);
 
                 return true;
             }
@@ -94,7 +97,7 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        private void ExecuteItemCommand(RaycastHit hit)
+        private void ExecuteItemCommand(Vector2 screenPos, RaycastHit hit)
         {
             Identifier itemId = _controller.GetItemId(_index);
             var item = ARKitectApp.Instance.Items[itemId];
@@ -102,7 +105,7 @@ namespace ARKitect.UI.Items
             if (item.Resource is ResourceObject)
                 ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
             else if (item.Resource is ResourceMaterial)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
         }
 
         protected override void OpenModalWindow()
