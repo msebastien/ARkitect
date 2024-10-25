@@ -67,7 +67,7 @@ namespace ARKitect.UI.Items
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
 
-                ExecuteItemCommand(hit);
+                ExecuteItemCommand(screenPos, hit);
 
                 return true;
             }
@@ -95,7 +95,7 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        private void ExecuteItemCommand(RaycastHit hit)
+        private void ExecuteItemCommand(Vector2 screenPos, RaycastHit hit)
         {
             Identifier itemId = _controller.GetItemId(_index);
             var item = ARKitectApp.Instance.Items[itemId];
@@ -103,7 +103,7 @@ namespace ARKitect.UI.Items
             if (item.Resource is ResourceObject)
                 ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
             else if (item.Resource is ResourceMaterial)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
         }
 
         protected override void OpenModalWindow()

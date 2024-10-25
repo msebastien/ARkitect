@@ -7,7 +7,6 @@ using ARKitect.Geometry;
 using Logger = ARKitect.Core.Logger;
 
 
-
 namespace ARKitect.Commands
 {
     public class CommandApplyMaterial : ICommand
