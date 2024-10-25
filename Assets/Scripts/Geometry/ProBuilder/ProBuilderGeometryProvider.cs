@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ProBuilder;
@@ -101,11 +100,11 @@ namespace ARKitect.Geometry.Providers.ProBuilder
 #if UNITY_EDITOR
             EditorMeshUtility.Optimize(_pbMesh, true);
 #else
-        // At runtime, `EditorMeshUtility` is not available. To collapse duplicate
-        // vertices in runtime, modify the MeshFilter.sharedMesh directly.
-        // Note that any subsequent changes to `quad` will overwrite the sharedMesh.
-        var umesh = _pbMesh.GetComponent<MeshFilter>().sharedMesh;
-        MeshUtility.CollapseSharedVertices(umesh);    
+            // At runtime, `EditorMeshUtility` is not available. To collapse duplicate
+            // vertices in runtime, modify the MeshFilter.sharedMesh directly.
+            // Note that any subsequent changes to `quad` will overwrite the sharedMesh.
+            var umesh = _pbMesh.GetComponent<MeshFilter>().sharedMesh;
+            MeshUtility.CollapseSharedVertices(umesh);    
 #endif
         }
 

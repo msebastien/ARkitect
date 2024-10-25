@@ -18,10 +18,6 @@ namespace ARKitect.Core
         private Transform _instancesParent;
         public Transform InstancesParent => _instancesParent;
 
-        //[Header("Objects")]
-        //[DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
-        //[Tooltip("Cached object instances")]
-        //[SerializeField]
         private Dictionary<Guid, GameObject> _instances = new Dictionary<Guid, GameObject>();
 
         public GameObject GetInstance(Guid guid)
