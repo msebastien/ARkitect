@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
-using UnityEngine.ProBuilder;
-using UnityEditor.ProBuilder;
 using Sirenix.OdinInspector;
+using System;
+using Unity.VisualScripting;
 
 namespace ARKitect.Core
 {
@@ -24,21 +23,31 @@ namespace ARKitect.Core
         [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
         [Tooltip("Cached object instances")]
         [SerializeField]
-        private Dictionary<int, GameObject> _instances = new Dictionary<int, GameObject>();
+        private Dictionary<Guid, GameObject> _instances = new Dictionary<Guid, GameObject>();
+
+        public GameObject GetInstance(Guid guid)
+        {
+            GameObject go = null;
+
+            if (_instances.TryGetValue(guid, out GameObject instance))
+                go = instance;
+
+            return go;
+        }
 
         /// <summary>
         /// Destroy the specified instance using its Id
         /// </summary>
-        /// <param name="id">Id of the instantiated object</param>
+        /// <param name="guid">Unique Id of the instantiated object</param>
         /// <returns>'true' if it succeeded, else 'false'</returns>
-        public bool DestroyInstance(int id)
+        public bool DestroyInstance(Guid guid)
         {
             bool ret = false;
 
-            if (_instances.TryGetValue(id, out GameObject instance))
+            if (_instances.TryGetValue(guid, out GameObject instance))
             {
                 Destroy(instance);
-                _instances.Remove(id);
+                _instances.Remove(guid);
                 ret = true;
             }
 
@@ -46,44 +55,32 @@ namespace ARKitect.Core
         }
 
         /// <summary>
-        /// Instantiate a GameObject and save it
+        /// Create a new instance of a GameObject with a random Guid and save it
         /// </summary>
         /// <param name="obj">GameObject to instantiate</param>
         /// <param name="position">Coordinates in World Space</param>
         /// <param name="rotation">Rotation</param>
         /// <returns>Instance ID</returns>
-        public int Spawn(GameObject obj, Vector3 position, Quaternion rotation)
+        public Guid Spawn(GameObject obj, Vector3 position, Quaternion rotation)
         {
-            var go = Instantiate(obj, position, rotation, _instancesParent);
-            _instances.Add(go.GetInstanceID(), go);
+            var guid = Guid.NewGuid();
+            Spawn(guid, obj, position, rotation);
 
-            ConvertToProbuilderMesh(go);
-
-            return go.GetInstanceID();
+            return guid;
         }
 
-        private void ConvertToProbuilderMesh(GameObject go)
+        /// <summary>
+        /// Create a new instance of a GameObject with a specified Guid and save it
+        /// </summary>
+        /// <param name="guid">Unique Instance ID</param>
+        /// <param name="obj">GameObject to instantiate</param>
+        /// <param name="position">Coordinates in World Space</param>
+        /// <param name="rotation">Rotation</param>
+        public void Spawn(Guid guid, GameObject obj, Vector3 position, Quaternion rotation)
         {
-            new MeshImporter(go).Import(); // default import settings
-
-            var pbMesh = go.GetComponent<ProBuilderMesh>();
-
-            // Rebuild mesh positions and submeshes
-            pbMesh.ToMesh(MeshTopology.Quads);
-
-            // Recalculate UVs, Normals, Tangents, Collisions, then apply to Unity Mesh.
-            pbMesh.Refresh();
-
-            // If in Editor, generate UV2 and collapse duplicate vertices.
-#if UNITY_EDITOR
-            EditorMeshUtility.Optimize(pbMesh, true);
-#else
-        // At runtime, `EditorMeshUtility` is not available. To collapse duplicate
-        // vertices in runtime, modify the MeshFilter.sharedMesh directly.
-        // Note that any subsequent changes to `quad` will overwrite the sharedMesh.
-        var umesh = pbMesh.GetComponent<MeshFilter>().sharedMesh;
-        MeshUtility.CollapseSharedVertices(umesh);    
-#endif
+            var go = Instantiate(obj, position, rotation, _instancesParent);
+            _instances.Add(guid, go);
+            ARKitectApp.Instance.GeometryProviderManager.InitProvider(go);
         }
     }
 
