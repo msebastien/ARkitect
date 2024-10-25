@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 using ARKitect.Items.Resource;
@@ -10,7 +11,7 @@ namespace ARKitect.Commands
         private ResourceObject _itemResource;
         private Vector3 _position;
         private Quaternion _rotation;
-        private int _instanceID = -1;
+        private Guid _instanceID = Guid.Empty;
 
         public CommandSpawn(ResourceObject itemObject, Vector3 position, Quaternion rotation)
         {
@@ -21,7 +22,11 @@ namespace ARKitect.Commands
 
         public void Execute()
         {
-            _instanceID = _itemResource.Spawn(_position, _rotation);
+            if(_instanceID == Guid.Empty)
+                _instanceID = _itemResource.Spawn(_position, _rotation);
+            else
+                _itemResource.Spawn(_instanceID, _position, _rotation);
+
             Logger.LogInfo($"Execute {GetType()}: Spawn object of '{_itemResource.Item}'.");
         }
 
@@ -29,8 +34,6 @@ namespace ARKitect.Commands
         {
             if(_itemResource.DestroyObject(_instanceID))
                 Logger.LogInfo($"Undo {GetType()}: Destroy instance '{_instanceID}' of the object '{_itemResource.Item}'.");
-
-            _instanceID = -1;
         }
     }
 
