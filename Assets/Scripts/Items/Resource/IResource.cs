@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ARKitect.Items.Resource
@@ -7,19 +8,21 @@ namespace ARKitect.Items.Resource
         Identifier Item { get; }
     }
 
-    public interface IResourceProp<T> where T : Object
+    public interface IResourceProp<T> where T : UnityEngine.Object
     {
         T Resource { get; }
     }
 
     public interface IResourceObject : IResource, IResourceProp<GameObject>
     {
-        int Spawn(Vector3 position, Quaternion rotation);
-        bool DestroyObject(int instanceID);
+        Guid Spawn(Vector3 position, Quaternion rotation);
+        void Spawn(Guid guid, Vector3 position, Quaternion rotation);
+        bool DestroyObject(Guid instanceID);
     }
     public interface IResourceMaterial : IResource, IResourceProp<Material>
     {
-        void ApplyTo(GameObject obj);
+        int ApplyTo(GameObject obj, Vector2 screenPos);
+        void ApplyTo(GameObject obj, int submeshIndex);
     }
 
 }
