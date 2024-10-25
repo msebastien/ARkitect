@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ProBuilder;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 using UnityEngine.ProBuilder.MeshOperations;
+
+#if UNITY_EDITOR
+using UnityEditor.ProBuilder;
+#endif
 
 using Logger = ARKitect.Core.Logger;
 
