@@ -10,15 +10,20 @@ namespace ARKitect.Core
     /// </summary>
     public class BuildingObject : MonoBehaviour
     {
-        [SerializeField]
         private Guid _instanceId = Guid.Empty;
         public Guid InstanceId => _instanceId;
 
-        [SerializeField]
         private Identifier _itemId = new Identifier(); // Item Id matching this object
         public Identifier ItemId => _itemId;
 
         private bool _isInitialized = false;
+
+#if UNITY_EDITOR
+        [SerializeField]
+        private string _instanceGuidString;
+        [SerializeField]
+        private string _itemIdString;
+#endif
 
         public void Init(Guid instanceId, Identifier itemId)
         {
@@ -31,6 +36,11 @@ namespace ARKitect.Core
 
             if (_itemId.IsUndefined)
                 _itemId = itemId;
+
+#if UNITY_EDITOR
+            _instanceGuidString = _instanceId.ToString();
+            _itemIdString = _itemId.ToString();
+#endif
 
             _isInitialized = true;
         }
