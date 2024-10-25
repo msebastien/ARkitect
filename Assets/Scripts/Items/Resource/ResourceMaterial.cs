@@ -1,6 +1,8 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+using ARKitect.Geometry;
+
 namespace ARKitect.Items.Resource
 {
     public class ResourceMaterial : IResourceMaterial
@@ -26,10 +28,23 @@ namespace ARKitect.Items.Resource
             _resource = resource;
         }
 
-        // TODO: Implement ApplyTo method to add the material to an object
-        public void ApplyTo(GameObject obj)
+        public int ApplyTo(GameObject obj, Vector2 screenPos)
         {
-            
+            int submeshIndex = -1;
+            if (obj.TryGetComponent<IGeometryProvider>(out var provider))
+            {
+                submeshIndex = provider.SetFaceMaterial(screenPos, _resource);
+            }
+
+            return submeshIndex;
+        }
+
+        public void ApplyTo(GameObject obj, int submeshIndex)
+        {
+            if (obj.TryGetComponent<IGeometryProvider>(out var provider))
+            {
+                provider.SetFaceMaterial(submeshIndex, _resource);
+            }
         }
     }
 
