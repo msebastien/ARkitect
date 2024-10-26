@@ -69,9 +69,7 @@ namespace ARKitect.UI.Items
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
 
-                ExecuteItemCommand(screenPos, hit);
-
-                return true;
+                return ExecuteItemCommand(screenPos, hit);
             }
             return false;
         }
@@ -97,15 +95,25 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        private void ExecuteItemCommand(Vector2 screenPos, RaycastHit hit)
+        private bool ExecuteItemCommand(Vector2 screenPos, RaycastHit hit)
         {
             Identifier itemId = _controller.GetItemId(_index);
             var item = ARKitectApp.Instance.Items[itemId];
+            bool ret = false;
 
             if (item.Resource is ResourceObject)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
+            {
+                ret = true;
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));             
+            }          
             else if (item.Resource is ResourceMaterial)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
+            {
+                ret = hit.collider.gameObject.layer != 3; // Is the hit object part of layer 3 ? (a layer dedicated to the Editor grid)
+                if (ret) 
+                    ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));           
+            }
+
+            return ret; // Whether a command has been executed or not
         }
 
         protected override void OpenModalWindow()
