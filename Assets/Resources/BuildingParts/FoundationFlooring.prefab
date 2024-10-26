@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1177698661311304949}
   - component: {fileID: 1435050149212296500}
   - component: {fileID: 4088327182448737854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FoundationFlooring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
