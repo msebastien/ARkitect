@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8268572027166870903}
   - component: {fileID: 6089299955117614689}
   - component: {fileID: 4457500294057758489}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FoundationWallFrontDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
