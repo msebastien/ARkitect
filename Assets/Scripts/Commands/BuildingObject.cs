@@ -1,7 +1,12 @@
 using System;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using Sirenix.OdinInspector;
+#endif
+
 using ARKitect.Items;
+
 
 namespace ARKitect.Core
 {
@@ -20,8 +25,10 @@ namespace ARKitect.Core
 
 #if UNITY_EDITOR
         [SerializeField]
+        [ReadOnly]
         private string _instanceGuidString;
         [SerializeField]
+        [ReadOnly]
         private string _itemIdString;
 #endif
 
