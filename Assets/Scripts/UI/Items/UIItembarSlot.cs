@@ -39,7 +39,7 @@ namespace ARKitect.UI.Items
             if (_itemIcon.sprite != null)
             {
                 // Check if item dropped
-                if (DropOnItemSlot(eventData) || DropOnGround())
+                if (DropOnItemSlot(eventData) || DropOnGround(eventData))
                     Logger.LogInfo("Item Dropped successfully");
                 else
                     Logger.LogInfo("No item dropped");
@@ -53,14 +53,15 @@ namespace ARKitect.UI.Items
                 Reset();
         }
 
-        private bool DropOnGround()
+        private bool DropOnGround(PointerEventData eventData)
         {
-#if UNITY_EDITOR
-            var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-#elif UNITY_ANDROID
-            var ray = Camera.main.ScreenPointToRay(Touchscreen.current.primaryTouch.position.ReadValue());
-#endif
+            var screenPos = eventData.position;
+            var ray = Camera.main.ScreenPointToRay(screenPos);
             Logger.LogInfo($"Ray: {ray.ToString()}");
+
+#if UNITY_EDITOR
+            UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2f);
+#endif
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
