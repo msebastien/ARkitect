@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+using ARKitect.Core;
 using ARKitect.Geometry;
 
 namespace ARKitect.Items.Resource
@@ -26,6 +27,12 @@ namespace ARKitect.Items.Resource
         {
             _itemId = itemId;
             _resource = resource;
+        }
+
+        public int GetRaycastMask()
+        {
+            string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
+            return LayerMask.GetMask(new string[] { objectLayer });
         }
 
         public int ApplyTo(GameObject obj, Vector2 screenPos)

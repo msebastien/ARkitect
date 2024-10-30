@@ -66,7 +66,7 @@ namespace ARKitect.UI.Items
             var item = ARKitectApp.Instance.Items[itemId];
 
             // Check if the the game object colliding with the ray is a valid one (specified in the layer mask)
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, GetRaycastMask(item), QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, item.Resource.GetRaycastMask(), QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
                 ExecuteItemCommand(item, hit, screenPos);
@@ -106,20 +106,6 @@ namespace ARKitect.UI.Items
                 cmd = new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos);
 
             ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
-        }
-
-        private int GetRaycastMask(Item item)
-        {
-            string gridLayer = LayerMask.LayerToName((int)Layers.GRID);
-            string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
-
-            int mask = Physics.DefaultRaycastLayers;
-            if (item.Resource is ResourceObject)
-                mask = LayerMask.GetMask(new string[] { gridLayer, objectLayer });
-            else if (item.Resource is ResourceMaterial)
-                mask = LayerMask.GetMask(new string[] { objectLayer });
-
-            return mask;
         }
 
         protected override void OpenModalWindow()

@@ -29,6 +29,13 @@ namespace ARKitect.Items.Resource
             _resource = resource;
         }
 
+        public int GetRaycastMask()
+        {
+            string gridLayer = LayerMask.LayerToName((int)Layers.GRID);
+            string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
+            return LayerMask.GetMask(new string[] { gridLayer, objectLayer });
+        }
+
         /// <summary>
         /// Instantiate the object resource
         /// </summary>
@@ -38,7 +45,7 @@ namespace ARKitect.Items.Resource
         public Guid Spawn(Vector3 position, Quaternion rotation)
         {
             var instanceManager = ARKitectApp.Instance.InstanceManager;
-            
+
             var guid = instanceManager.Spawn(_resource, position, rotation);
             instanceManager.GetInstance(guid).AddComponent<BuildingObject>().Init(guid, _itemId);
 
@@ -54,7 +61,7 @@ namespace ARKitect.Items.Resource
         public void Spawn(Guid guid, Vector3 position, Quaternion rotation)
         {
             var instanceManager = ARKitectApp.Instance.InstanceManager;
-            
+
             instanceManager.Spawn(guid, _resource, position, rotation);
             instanceManager.GetInstance(guid).AddComponent<BuildingObject>().Init(guid, _itemId);
         }
