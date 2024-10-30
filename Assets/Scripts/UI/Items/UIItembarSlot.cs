@@ -57,11 +57,6 @@ namespace ARKitect.UI.Items
         {
             var screenPos = eventData.position;
             var ray = Camera.main.ScreenPointToRay(screenPos);
-            UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red);
-#elif UNITY_ANDROID
-            var screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
-            var ray = Camera.main.ScreenPointToRay(screenPos);
-#endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
 
 #if UNITY_EDITOR
