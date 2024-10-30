@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
-using ARKitect.UI.Modal;
-using Logger = ARKitect.Core.Logger;
-using ARKitect.Items;
-using ARKitect.Commands;
 using ARKitect.Core;
+using ARKitect.UI.Modal;
+using ARKitect.Items;
 using ARKitect.Items.Resource;
+using ARKitect.Commands;
+using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
 {
@@ -100,10 +99,13 @@ namespace ARKitect.UI.Items
 
         private void ExecuteItemCommand(Item item, RaycastHit hit, Vector2 screenPos)
         {
+            ICommand cmd = null;
             if (item.Resource is ResourceObject)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
+                cmd = new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity);
             else if (item.Resource is ResourceMaterial)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
+                cmd = new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos);
+
+            ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
         }
 
         private int GetRaycastMask(Item item)
