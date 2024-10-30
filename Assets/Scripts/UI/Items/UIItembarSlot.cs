@@ -58,19 +58,25 @@ namespace ARKitect.UI.Items
 #if UNITY_EDITOR
             var screenPos = Mouse.current.position.ReadValue();
             var ray = Camera.main.ScreenPointToRay(screenPos);
-            UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red);
+            UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2f);
 #elif UNITY_ANDROID
             var screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
             var ray = Camera.main.ScreenPointToRay(screenPos);
 #endif
             Logger.LogInfo($"Ray: {ray.ToString()}");
 
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            // Get Item definition
+            Identifier itemId = _controller.GetItemId(_index);
+            var item = ARKitectApp.Instance.Items[itemId];
+
+            // Check if the the game object colliding with the ray is a valid one (specified in the layer mask)
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, GetRaycastMask(item), QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
-
-                return ExecuteItemCommand(screenPos, hit);
+                ExecuteItemCommand(item, hit, screenPos);
+                return true;
             }
+
             return false;
         }
 
@@ -95,25 +101,26 @@ namespace ARKitect.UI.Items
             return false;
         }
 
-        private bool ExecuteItemCommand(Vector2 screenPos, RaycastHit hit)
+        private void ExecuteItemCommand(Item item, RaycastHit hit, Vector2 screenPos)
         {
-            Identifier itemId = _controller.GetItemId(_index);
-            var item = ARKitectApp.Instance.Items[itemId];
-            bool execute = false;
-
             if (item.Resource is ResourceObject)
-            {
-                execute = true;
                 ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
-            }
             else if (item.Resource is ResourceMaterial)
-            {
-                execute = hit.collider.gameObject.layer != 3; // Is the hit object part of layer 3 ? (a layer dedicated to the Editor grid)
-                if (execute)
-                    ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
-            }
+                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos));
+        }
 
-            return execute; // Whether a command has been executed or not
+        private int GetRaycastMask(Item item)
+        {
+            string gridLayer = LayerMask.LayerToName((int)Layers.GRID);
+            string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
+
+            int mask = Physics.DefaultRaycastLayers;
+            if (item.Resource is ResourceObject)
+                mask = LayerMask.GetMask(new string[] { gridLayer, objectLayer });
+            else if (item.Resource is ResourceMaterial)
+                mask = LayerMask.GetMask(new string[] { objectLayer });
+
+            return mask;
         }
 
         protected override void OpenModalWindow()
