@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace ARKitect.Items.Resource
 {
@@ -7,6 +8,7 @@ namespace ARKitect.Items.Resource
     {
         Identifier Item { get; }
         int GetRaycastMask();
+        void RunCommand(RaycastHit hit, PointerEventData eventData);
     }
 
     public interface IResourceProperty<T> where T : UnityEngine.Object

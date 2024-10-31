@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 
 using ARKitect.Core;
+using ARKitect.Commands;
 
 namespace ARKitect.Items.Resource
 {
@@ -34,6 +36,12 @@ namespace ARKitect.Items.Resource
             string gridLayer = LayerMask.LayerToName((int)Layers.GRID);
             string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
             return LayerMask.GetMask(new string[] { gridLayer, objectLayer });
+        }
+
+        public void RunCommand(RaycastHit hit, PointerEventData eventData)
+        {
+            ICommand cmd = new CommandSpawn(this, hit.point, Quaternion.identity);
+            ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
         }
 
         /// <summary>

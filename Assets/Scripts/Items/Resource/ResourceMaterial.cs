@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 
 using ARKitect.Core;
 using ARKitect.Geometry;
+using ARKitect.Commands;
 
 namespace ARKitect.Items.Resource
 {
@@ -33,6 +35,12 @@ namespace ARKitect.Items.Resource
         {
             string objectLayer = LayerMask.LayerToName((int)Layers.BUILDING_OBJECT);
             return LayerMask.GetMask(new string[] { objectLayer });
+        }
+
+        public void RunCommand(RaycastHit hit, PointerEventData eventData)
+        {
+            ICommand cmd = new CommandApplyMaterial(this, hit.collider.gameObject, eventData.position);
+            ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
         }
 
         public int ApplyTo(GameObject obj, Vector2 screenPos)

@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 using ARKitect.Core;
 using ARKitect.UI.Modal;
 using ARKitect.Items;
-using ARKitect.Items.Resource;
-using ARKitect.Commands;
 using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
@@ -54,10 +52,8 @@ namespace ARKitect.UI.Items
 
         private bool DropOnGround(PointerEventData eventData)
         {
-            var screenPos = eventData.position;
-            var ray = Camera.main.ScreenPointToRay(screenPos);
+            var ray = Camera.main.ScreenPointToRay(eventData.position);
             Logger.LogInfo($"Ray: {ray.ToString()}");
-
 #if UNITY_EDITOR
             UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2f);
 #endif
@@ -69,7 +65,8 @@ namespace ARKitect.UI.Items
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, item.Resource.GetRaycastMask(), QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
-                ExecuteItemCommand(item, hit, screenPos);
+
+                item.Resource.RunCommand(hit, eventData);
                 return true;
             }
 
@@ -95,17 +92,6 @@ namespace ARKitect.UI.Items
             }
 
             return false;
-        }
-
-        private void ExecuteItemCommand(Item item, RaycastHit hit, Vector2 screenPos)
-        {
-            ICommand cmd = null;
-            if (item.Resource is ResourceObject)
-                cmd = new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity);
-            else if (item.Resource is ResourceMaterial)
-                cmd = new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject, screenPos);
-
-            ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
         }
 
         protected override void OpenModalWindow()
