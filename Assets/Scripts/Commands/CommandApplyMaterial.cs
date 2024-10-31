@@ -15,7 +15,7 @@ namespace ARKitect.Commands
         private ResourceMaterial _prevMaterial;
         private Guid _instanceId;
         private Vector2 _screenPosition;
-        private int _submeshIndex;
+        private int _submeshIndex = -1;
 
         public CommandApplyMaterial(ResourceMaterial itemMaterial, GameObject obj, Vector2 screenPos)
             : this(
@@ -42,8 +42,16 @@ namespace ARKitect.Commands
         {
             var obj = ARKitectApp.Instance.InstanceManager.GetInstance(_instanceId);
 
-            int submeshIndex;
-            if ((submeshIndex = _newMaterial.ApplyTo(obj, _screenPosition)) != -1)
+            // If submeshindex has already been set
+            if (_submeshIndex >= 0)
+            {
+                _newMaterial.ApplyTo(obj, _submeshIndex);
+                return;
+            }
+
+            // Else, retrieve the submesh index when executing this command for the first time (never undone and redone)
+            int submeshIndex = _newMaterial.ApplyTo(obj, _screenPosition);
+            if (submeshIndex >= 0)
                 _submeshIndex = submeshIndex;
         }
 

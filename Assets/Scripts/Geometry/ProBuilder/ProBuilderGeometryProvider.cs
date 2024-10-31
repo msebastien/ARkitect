@@ -42,6 +42,7 @@ namespace ARKitect.Geometry.Providers.ProBuilder
             return face.submeshIndex;
         }
 
+        // TODO: Use Face instead of using directly the submesh index. Each Face will store the current submesh index attributed to it
         public void SetFaceMaterial(int submeshIndex, Material material)
         {
             var materials = _renderer.sharedMaterials;
@@ -56,7 +57,7 @@ namespace ARKitect.Geometry.Providers.ProBuilder
 
             if (index < 0) // Material doesn't exist in MeshRenderer.sharedMaterials, so use the specified subMeshIndex
             {
-                if (submeshIndex > 0 && submeshIndex < submeshCount)
+                if (submeshIndex >= 0 && submeshIndex < submeshCount)
                 {
                     materials[submeshIndex] = material;
                     _renderer.sharedMaterials = materials;
