@@ -8,7 +8,7 @@ using ARKitect.Commands;
 
 namespace ARKitect.Items.Resource
 {
-    public class ResourceMaterial : IResourceMaterial
+    public class ResourceMaterial : IResourceMaterial, IResourceActions
     {
         [SerializeField]
         [ReadOnly]

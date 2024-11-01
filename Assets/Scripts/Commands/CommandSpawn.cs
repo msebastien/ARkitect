@@ -8,12 +8,12 @@ namespace ARKitect.Commands
 {
     public class CommandSpawn : ICommand
     {
-        private ResourceObject _itemResource;
+        private IResourceObject _itemResource;
         private Vector3 _position;
         private Quaternion _rotation;
         private Guid _instanceID = Guid.Empty;
 
-        public CommandSpawn(ResourceObject itemObject, Vector3 position, Quaternion rotation)
+        public CommandSpawn(IResourceObject itemObject, Vector3 position, Quaternion rotation)
         {
             _itemResource = itemObject;
             _position = position;

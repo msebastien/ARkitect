@@ -11,13 +11,13 @@ namespace ARKitect.Commands
 {
     public class CommandApplyMaterial : ICommand
     {
-        private ResourceMaterial _newMaterial;
-        private ResourceMaterial _prevMaterial;
+        private IResourceMaterial _newMaterial;
+        private IResourceMaterial _prevMaterial;
         private Guid _instanceId;
         private Vector2 _screenPosition;
         private int _submeshIndex = -1;
 
-        public CommandApplyMaterial(ResourceMaterial itemMaterial, GameObject obj, Vector2 screenPos)
+        public CommandApplyMaterial(IResourceMaterial itemMaterial, GameObject obj, Vector2 screenPos)
             : this(
                   itemMaterial,
                   obj.GetComponent<BuildingObject>().InstanceId,
@@ -25,7 +25,7 @@ namespace ARKitect.Commands
                   )
         { }
 
-        public CommandApplyMaterial(ResourceMaterial itemMaterial, Guid instanceId, Vector2 screenPos)
+        public CommandApplyMaterial(IResourceMaterial itemMaterial, Guid instanceId, Vector2 screenPos)
         {
             _newMaterial = itemMaterial;
             _screenPosition = screenPos;

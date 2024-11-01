@@ -62,11 +62,11 @@ namespace ARKitect.UI.Items
             var item = ARKitectApp.Instance.Items[itemId];
 
             // Check if the the game object colliding with the ray is a valid one (specified in the layer mask)
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, item.Resource.GetRaycastMask(), QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, item.ResourceActions.GetRaycastMask(), QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
 
-                item.Resource.RunCommand(hit, eventData);
+                item.ResourceActions.RunCommand(hit, eventData);
                 return true;
             }
 
