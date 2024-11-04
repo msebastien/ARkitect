@@ -20,7 +20,6 @@ namespace ARKitect.Debug
         private Dictionary<Guid, GameObject> _instances;
 
         private InstanceManager _instanceManager;
-        private int instanceFieldIndex = 0;
 
         private void Awake()
         {
@@ -29,30 +28,9 @@ namespace ARKitect.Debug
 
         private void Start()
         {
-            _instances = GetInstanceField();
+            _instances = ReflectionUtils.GetPrivateFieldValue<InstanceManager, Dictionary<Guid, GameObject>>("_instances", _instanceManager);
         }
 
-        private Dictionary<Guid, GameObject> GetInstanceField()
-        {
-            FieldInfo[] fields;
-
-            // Get fields of InstanceManager
-            Type type = typeof(InstanceManager);
-            fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
-
-            // Find field index
-            int i;
-            for (i = 0; i < fields.Length; i++)
-            {
-                if (fields[i].Name == "_instances")
-                {
-                    instanceFieldIndex = i;
-                    break;
-                }
-            }
-
-            return (Dictionary<Guid, GameObject>)fields[instanceFieldIndex].GetValue(_instanceManager);
-        }
     }
 #endif
 }
