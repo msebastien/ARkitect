@@ -8,7 +8,6 @@ using ARKitect.Items;
 using ARKitect.Items.Import;
 using ARKitect.Coroutine;
 using ARKitect.Commands;
-using ARKitect.Geometry;
 
 namespace ARKitect.Core
 {
@@ -28,9 +27,6 @@ namespace ARKitect.Core
         [SerializeField]
         private CommandManager _commandManager;
         public CommandManager CommandManager => _commandManager;
-        [SerializeField]
-        private GeometryProviderManager _geometryProviderManager;
-        public GeometryProviderManager GeometryProviderManager => _geometryProviderManager;
 
 
         private Dictionary<Identifier, Item> _itemCatalog = new Dictionary<Identifier, Item>();
