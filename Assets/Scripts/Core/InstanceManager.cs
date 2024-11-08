@@ -75,7 +75,6 @@ namespace ARKitect.Core
         {
             var go = Instantiate(obj, position, rotation, _instancesParent);
             _instances.Add(guid, go);
-            ARKitectApp.Instance.GeometryProviderManager.InitProvider(go);
         }
     }
 
