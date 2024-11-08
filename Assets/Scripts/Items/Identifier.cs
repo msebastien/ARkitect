@@ -29,7 +29,7 @@ namespace ARKitect.Items
         public Identifier(string identifierStr)
         {
             string[] ids = identifierStr.Split(':');
-            if (ids?.Length > 0)
+            if (ids?.Length > 1)
             {
                 Init(ids[0], ids[1]);
             }
