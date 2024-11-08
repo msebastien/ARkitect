@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ProBuilder;
 using Sirenix.OdinInspector;
 
 using ARKitect.Core;
@@ -43,22 +44,22 @@ namespace ARKitect.Items.Resource
             ARKitectApp.Instance.CommandManager.ExecuteCommand(cmd);
         }
 
-        public int ApplyTo(GameObject obj, Vector2 screenPos)
+        public Face ApplyTo(GameObject obj, Vector2 screenPos)
         {
-            int submeshIndex = -1;
-            if (obj.TryGetComponent<IGeometryProvider>(out var provider))
+            Face face = null;
+            if (obj.TryGetComponent<GeometrySystem>(out var geometry))
             {
-                submeshIndex = provider.SetFaceMaterial(screenPos, _resource);
+                face = geometry.SetFaceMaterial(screenPos, _resource);
             }
 
-            return submeshIndex;
+            return face;
         }
 
-        public void ApplyTo(GameObject obj, int submeshIndex)
+        public void ApplyTo(GameObject obj, Face face)
         {
-            if (obj.TryGetComponent<IGeometryProvider>(out var provider))
+            if (obj.TryGetComponent<GeometrySystem>(out var geometry))
             {
-                provider.SetFaceMaterial(submeshIndex, _resource);
+                geometry.SetFaceMaterial(face, _resource);
             }
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ProBuilder;
 
 namespace ARKitect.Items.Resource
 {
@@ -29,8 +30,8 @@ namespace ARKitect.Items.Resource
 
     public interface IResourceMaterial : IResourceProperty<Material>
     {
-        int ApplyTo(GameObject obj, Vector2 screenPos);
-        void ApplyTo(GameObject obj, int submeshIndex);
+        Face ApplyTo(GameObject obj, Vector2 screenPos);
+        void ApplyTo(GameObject obj, Face face);
     }
 
 }
