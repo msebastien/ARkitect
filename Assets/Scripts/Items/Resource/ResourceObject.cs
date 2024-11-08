@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 
 using ARKitect.Core;
 using ARKitect.Commands;
+using ARKitect.Geometry;
 
 namespace ARKitect.Items.Resource
 {
@@ -55,7 +56,10 @@ namespace ARKitect.Items.Resource
             var instanceManager = ARKitectApp.Instance.InstanceManager;
 
             var guid = instanceManager.Spawn(_resource, position, rotation);
-            instanceManager.GetInstance(guid).AddComponent<BuildingObject>().Init(guid, _itemId);
+
+            var instance = instanceManager.GetInstance(guid);
+            instance.AddComponent<GeometrySystem>().Init();
+            instance.AddComponent<BuildingObject>().Init(guid, _itemId);
 
             return guid;
         }
@@ -71,7 +75,10 @@ namespace ARKitect.Items.Resource
             var instanceManager = ARKitectApp.Instance.InstanceManager;
 
             instanceManager.Spawn(guid, _resource, position, rotation);
-            instanceManager.GetInstance(guid).AddComponent<BuildingObject>().Init(guid, _itemId);
+
+            var instance = instanceManager.GetInstance(guid);
+            instance.AddComponent<GeometrySystem>().Init();
+            instance.AddComponent<BuildingObject>().Init(guid, _itemId);
         }
 
         /// <summary>
