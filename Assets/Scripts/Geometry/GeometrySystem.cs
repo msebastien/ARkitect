@@ -43,6 +43,14 @@ namespace ARKitect.Geometry
             return face;
         }
 
+        public Face SetFaceMaterial(Ray ray, Material material)
+        {
+            var face = GetFace(ray);
+            _pbMesh.SetMaterial(new Face[] { face }, material);
+            ApplyChanges();
+            return face;
+        }
+
         public void SetFaceMaterial(Face face, Material material)
         {
             _pbMesh.SetMaterial(new Face[] { face }, material);
@@ -61,7 +69,12 @@ namespace ARKitect.Geometry
 
         public Face GetFace(Ray ray)
         {
-            throw new NotImplementedException();
+            GeometryRaycastHit hit;
+
+            if (RaycastUtility.FaceRaycast(ray, _pbMesh, out hit, Mathf.Infinity, CullingMode.Back))
+                return _pbMesh.faces[hit.face];
+
+            return null;
         }
 
         public void ApplyChanges()
