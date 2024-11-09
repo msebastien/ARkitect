@@ -55,7 +55,7 @@ namespace ARKitect.Core
             where T : class
         {
             Type type = typeof(T);
-            MethodInfo method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             method.Invoke(instance, parameters);
         }
 
@@ -72,8 +72,74 @@ namespace ARKitect.Core
             where T : class
         {
             Type type = typeof(T);
-            MethodInfo method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             return (U)method.Invoke(instance, parameters);
+        }
+
+        /// <summary>
+        /// Invoke a static private method, which returns nothing, from a static class by using reflection
+        /// </summary>
+        /// <param name="methodName">Method name</param>
+        /// <param name="classType">Type of the class</param>
+        /// <param name="parameters">Parameters' value</param>
+        public static void InvokeStaticClassPrivateMethod(string methodName, Type classType, params object[] parameters)
+        {
+            MethodInfo method = classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+            method.Invoke(null, parameters);
+        }
+
+        /// <summary>
+        /// Invoke a static private method, which returns nothing, from a static class by using reflection
+        /// </summary>
+        /// <param name="methodName">Method name</param>
+        /// <param name="classType">Type of the class</param>
+        /// <param name="paramTypes">Types for each method parameter</param>
+        /// <param name="parameters">Parameters' value</param>
+        public static void InvokeStaticClassPrivateMethod(string methodName, Type classType, Type[] paramTypes, params object[] parameters)
+        {
+            MethodInfo method = classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, null, paramTypes, null);
+            method.Invoke(null, parameters);
+        }
+
+        /// <summary>
+        /// Invoke a static private method, which returns a value, from a static class by using reflection
+        /// </summary>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <param name="methodName">Method name</param>
+        /// <param name="classType">Type of the class</param>
+        /// <param name="parameters">Parameters' value</param>
+        /// <returns>Value returned by the method</returns>
+        public static T InvokeStaticClassPrivateMethod<T>(string methodName, Type classType, params object[] parameters)
+        {
+            MethodInfo method = classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+            return (T)method.Invoke(null, parameters);
+        }
+
+        /// <summary>
+        /// Invoke a static private method, which returns a value, from a static class by using reflection
+        /// </summary>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <param name="methodName">Method name</param>
+        /// <param name="classType">Type of the class</param>
+        /// <param name="paramTypes">Types for each method parameter</param>
+        /// <param name="parameters">Parameters' value</param>
+        /// <returns>Value returned by the method</returns>
+        public static T InvokeStaticClassPrivateMethod<T>(string methodName, Type classType, Type[] paramTypes, params object[] parameters)
+        {
+            MethodInfo method = classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, null, paramTypes, null);
+            return (T)method.Invoke(null, parameters);
+        }
+
+        public static T CreateDelegate<T>(string methodName, Type classType, object instance = null)
+            where T : Delegate
+        {
+            return (T)Delegate.CreateDelegate(typeof(T), instance, classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static));
+        }
+
+        public static T CreateDelegate<T>(string methodName, Type classType, Type[] paramTypes, object instance = null)
+            where T : Delegate
+        {
+            return (T)Delegate.CreateDelegate(typeof(T), instance, classType.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, null, paramTypes, null));
         }
 
     }
