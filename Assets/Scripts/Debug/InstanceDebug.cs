@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Reflection;
 using System.Collections;
@@ -7,10 +8,8 @@ using Sirenix.OdinInspector;
 
 using ARKitect.Core;
 
-
 namespace ARKitect.Debug
 {
-#if UNITY_EDITOR
     public class InstanceDebug : SerializedMonoBehaviour
     {
         [Header("Objects")]
@@ -32,5 +31,6 @@ namespace ARKitect.Debug
         }
 
     }
-#endif
+
 }
+#endif

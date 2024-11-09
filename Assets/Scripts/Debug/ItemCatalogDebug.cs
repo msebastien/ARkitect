@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ using ARKitect.Items;
 
 namespace ARKitect.Debug
 {
-#if UNITY_EDITOR
     public class ItemCatalogDebug : SerializedMonoBehaviour
     {
         [Header("Item Catalog")]
@@ -23,5 +23,6 @@ namespace ARKitect.Debug
         }
 
     }
-#endif
+
 }
+#endif
