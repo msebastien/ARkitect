@@ -31,28 +31,39 @@ namespace ARKitect.Commands
         {
             _newMaterial = itemMaterial;
             _instanceId = instanceId;
+            _ray = Camera.main.ScreenPointToRay(screenPos);
 
             var instanceManager = ARKitectApp.Instance.InstanceManager;
             if (instanceManager.GetInstance(instanceId).TryGetComponent<GeometrySystem>(out var geometry))
             {
-                _face = geometry.GetFace(screenPos);
+                _face = geometry.GetFace(_ray);
                 var mat = geometry.GetFaceMaterial(_face);
                 _prevMaterial = new ResourceMaterial(new Identifier(mat.name), mat);
             }
+
+            Logger.LogWarning($"{ToString()}");
         }
 
         public void Execute()
         {
             var obj = ARKitectApp.Instance.InstanceManager.GetInstance(_instanceId);
 
-            if (_face != null)
-                _newMaterial.ApplyTo(obj, _face); // FIXME: Don't work when we destroy then reinstantiate the object as the reference to the face is no longer valid
+            if (_face == null && obj.TryGetComponent<GeometrySystem>(out var geometry))
+                _face = geometry.GetFace(_ray);
+
+            _newMaterial.ApplyTo(obj, _face);
         }
 
         public void Undo()
         {
             var obj = ARKitectApp.Instance.InstanceManager.GetInstance(_instanceId);
             _prevMaterial.ApplyTo(obj, _face);
+            _face = null;
+        }
+
+        public override string ToString()
+        {
+            return $"Apply Material (mtl: {_newMaterial.Item}/prev_mtl: {_prevMaterial.Item}/obj: {_instanceId})";
         }
     }
 
