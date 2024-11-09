@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,7 +12,6 @@ using System.Linq;
 
 namespace ARKitect.Debug
 {
-#if UNITY_EDITOR
     public class CommandHistoryDebug : MonoBehaviour
     {
         private CommandManager _commandManager;
@@ -112,5 +112,6 @@ namespace ARKitect.Debug
             }
         }
     }
-#endif
+
 }
+#endif

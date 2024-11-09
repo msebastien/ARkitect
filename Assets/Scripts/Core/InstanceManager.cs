@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
+
 
 namespace ARKitect.Core
 {
@@ -17,25 +18,31 @@ namespace ARKitect.Core
         private Transform _instancesParent;
         public Transform InstancesParent => _instancesParent;
 
-        [Header("Objects")]
-        [DictionaryDrawerSettings(KeyLabel = "Instance ID", ValueLabel = "GameObject")]
-        [Tooltip("Cached object instances")]
-        [SerializeField]
-        private Dictionary<int, GameObject> _instances = new Dictionary<int, GameObject>();
+        private Dictionary<Guid, GameObject> _instances = new Dictionary<Guid, GameObject>();
+
+        public GameObject GetInstance(Guid guid)
+        {
+            GameObject go = null;
+
+            if (_instances.TryGetValue(guid, out GameObject instance))
+                go = instance;
+
+            return go;
+        }
 
         /// <summary>
         /// Destroy the specified instance using its Id
         /// </summary>
-        /// <param name="id">Id of the instantiated object</param>
+        /// <param name="guid">Unique Id of the instantiated object</param>
         /// <returns>'true' if it succeeded, else 'false'</returns>
-        public bool DestroyInstance(int id)
+        public bool DestroyInstance(Guid guid)
         {
             bool ret = false;
 
-            if (_instances.TryGetValue(id, out GameObject instance))
+            if (_instances.TryGetValue(guid, out GameObject instance))
             {
                 Destroy(instance);
-                _instances.Remove(id);
+                _instances.Remove(guid);
                 ret = true;
             }
 
@@ -43,17 +50,31 @@ namespace ARKitect.Core
         }
 
         /// <summary>
-        /// Instantiate a GameObject and save it
+        /// Create a new instance of a GameObject with a random Guid and save it
         /// </summary>
         /// <param name="obj">GameObject to instantiate</param>
         /// <param name="position">Coordinates in World Space</param>
         /// <param name="rotation">Rotation</param>
         /// <returns>Instance ID</returns>
-        public int Spawn(GameObject obj, Vector3 position, Quaternion rotation)
+        public Guid Spawn(GameObject obj, Vector3 position, Quaternion rotation)
+        {
+            var guid = Guid.NewGuid();
+            Spawn(guid, obj, position, rotation);
+
+            return guid;
+        }
+
+        /// <summary>
+        /// Create a new instance of a GameObject with a specified Guid and save it
+        /// </summary>
+        /// <param name="guid">Unique Instance ID</param>
+        /// <param name="obj">GameObject to instantiate</param>
+        /// <param name="position">Coordinates in World Space</param>
+        /// <param name="rotation">Rotation</param>
+        public void Spawn(Guid guid, GameObject obj, Vector3 position, Quaternion rotation)
         {
             var go = Instantiate(obj, position, rotation, _instancesParent);
-            _instances.Add(go.GetInstanceID(), go);
-            return go.GetInstanceID();
+            _instances.Add(guid, go);
         }
     }
 

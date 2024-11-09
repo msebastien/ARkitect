@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
-using ARKitect.UI.Modal;
-using Logger = ARKitect.Core.Logger;
-using ARKitect.Items;
-using ARKitect.Commands;
 using ARKitect.Core;
-using ARKitect.Items.Resource;
+using ARKitect.UI.Modal;
+using ARKitect.Items;
+using Logger = ARKitect.Core.Logger;
 
 namespace ARKitect.UI.Items
 {
@@ -55,22 +52,24 @@ namespace ARKitect.UI.Items
 
         private bool DropOnGround(PointerEventData eventData)
         {
-            var screenPos = eventData.position;
-            var ray = Camera.main.ScreenPointToRay(screenPos);
+            var ray = Camera.main.ScreenPointToRay(eventData.position);
             Logger.LogInfo($"Ray: {ray.ToString()}");
-
 #if UNITY_EDITOR
             UnityEngine.Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 2f);
 #endif
+            // Get Item definition
+            Identifier itemId = _controller.GetItemId(_index);
+            var item = ARKitectApp.Instance.Items[itemId];
 
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            // Check if the the game object colliding with the ray is a valid one (specified in the layer mask)
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, item.ResourceActions.GetRaycastMask(), QueryTriggerInteraction.Collide))
             {
                 Logger.LogWarning($"Hit: {hit.collider.gameObject.name}");
 
-                ExecuteItemCommand(hit);
-
+                item.ResourceActions.RunCommand(hit, eventData);
                 return true;
             }
+
             return false;
         }
 
@@ -93,17 +92,6 @@ namespace ARKitect.UI.Items
             }
 
             return false;
-        }
-
-        private void ExecuteItemCommand(RaycastHit hit)
-        {
-            Identifier itemId = _controller.GetItemId(_index);
-            var item = ARKitectApp.Instance.Items[itemId];
-
-            if (item.Resource is ResourceObject)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandSpawn((ResourceObject)item.Resource, hit.point, Quaternion.identity));
-            else if (item.Resource is ResourceMaterial)
-                ARKitectApp.Instance.CommandManager.ExecuteCommand(new CommandApplyMaterial((ResourceMaterial)item.Resource, hit.collider.gameObject));
         }
 
         protected override void OpenModalWindow()

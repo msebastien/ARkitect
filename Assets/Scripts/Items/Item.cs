@@ -69,6 +69,7 @@ namespace ARKitect.Items
         [SerializeField]
         private IResource resource;
         public IResource Resource => resource;
+        public IResourceActions ResourceActions => (IResourceActions)resource;
 
         // TODO: Refactor to avoid this extremely big constructor using an ItemBuilder
         public Item(string name, Sprite icon, IResource resource, ItemCategory category = ItemCategory.Misc, string description = "", string author = "", IEnumerable<string> tags = default, bool builtin = false)
