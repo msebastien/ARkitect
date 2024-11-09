@@ -8,6 +8,8 @@ Some rough ideas/plans about what to do next and potentially how to do it:
 - ~~**Implement camera management** to move view and zoom in/out~~
 - ~~**Add a workspace grid with subdivision units and colored axes**~~
 - ~~**Implement Command Pattern** to undo/redo actions~~
+- ~~**Spawn** objects~~
+- ~~**Apply materials** to objects~~
 - **Select object**
 - **Translate** and **rotate** object
 - **Extrude/Resize** object
