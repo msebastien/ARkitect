@@ -105,7 +105,7 @@ namespace ARKitect.SettingsManagement
         string _key;
         string _repository;
         T _value;
-        T m_DefaultValue;
+        T _defaultValue;
         SettingsScope _scope;
         Settings _settings;
 
@@ -260,9 +260,9 @@ namespace ARKitect.SettingsManagement
         public void Delete(bool saveProjectSettingsImmediately = false)
         {
             Settings.DeleteKey<T>(Key, Scope);
-            // Don't Init() because that will set the key again. We just want to reset the m_Value with default and
+            // Don't Init() because that will set the key again. We just want to reset the _value with default and
             // pretend that this field hasn't been initialised yet.
-            _value = ValueWrapper<T>.DeepCopy(m_DefaultValue);
+            _value = ValueWrapper<T>.DeepCopy(_defaultValue);
             _initialized = false;
         }
 
@@ -303,7 +303,7 @@ namespace ARKitect.SettingsManagement
                 _initialized = true;
 
                 // DeepCopy uses JsonUtility which is not permitted during construction
-                m_DefaultValue = ValueWrapper<T>.DeepCopy(_value);
+                _defaultValue = ValueWrapper<T>.DeepCopy(_value);
 
                 if (Settings.ContainsKey<T>(_key, _scope))
                     _value = Settings.Get<T>(_key, _scope);
@@ -320,7 +320,7 @@ namespace ARKitect.SettingsManagement
             get
             {
                 Init();
-                return ValueWrapper<T>.DeepCopy(m_DefaultValue);
+                return ValueWrapper<T>.DeepCopy(_defaultValue);
             }
         }
 
