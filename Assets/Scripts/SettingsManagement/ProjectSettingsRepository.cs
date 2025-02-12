@@ -22,6 +22,17 @@ namespace ARKitect.SettingsManagement
         {
         }
 
+        /// <summary>
+        /// Initializes and returns an instance of the ProjectSettingsRepository with the
+        /// serialized data location set to a path defined by the specified `project`.
+        /// For example:
+        /// `{Application persistent data directory}/ProjectSettings/MyTestProject/Settings.json`.
+        /// </summary>
+        /// <param name="project">The name of the project to store the serialized data under.</param>
+        public ProjectSettingsRepository(string project) : base(GetSettingsPath(project))
+        {
+        }
+
 
         /// <summary>
         /// Builds and returns a path for a settings file relative to the application persistent data directory.
