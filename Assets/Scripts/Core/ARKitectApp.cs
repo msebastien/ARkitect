@@ -8,6 +8,7 @@ using ARKitect.Items;
 using ARKitect.Items.Import;
 using ARKitect.Coroutine;
 using ARKitect.Commands;
+using ARKitect.SettingsManagement;
 
 namespace ARKitect.Core
 {
@@ -29,6 +30,10 @@ namespace ARKitect.Core
         public CommandManager CommandManager => _commandManager;
 
 
+        private Settings _settings;
+        public Settings Settings => _settings;
+
+
         private Dictionary<Identifier, Item> _itemCatalog = new Dictionary<Identifier, Item>();
         public Dictionary<Identifier, Item> Items => _itemCatalog;
 
@@ -42,6 +47,7 @@ namespace ARKitect.Core
 
         private void Awake()
         {
+            _settings = new Settings(new ISettingsRepository[] { new UserSettingsRepository() });
             internalImporter = FindObjectOfType<InternalImporter>();
         }
 
